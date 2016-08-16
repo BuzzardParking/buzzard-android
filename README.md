@@ -1,5 +1,31 @@
 # buzzard-android
-An android app for better parking
+Parking is difficult in San Francisco (crowded urban area) if you don’t have a paid reserved spot. Buzzard is here to help tech-savvy users cue in on street parking and secure a space immediatly instead of searching high and low.
+
+### Target User
+- Lives in San Francisco
+- Owns car
+- Drives everyday to work in San Francisco
+- Doesn’t want to spend $300+/month on a reserved parking space
+- Have a street parking permit in the city
+- Tired of spending 30+ minutes driving around his neighborhood looking for parking (time consuming, wastes gas, a little dangerous)
+- Gets multiple parking tickets a month ($$$)
+
+### Size of Market
+79% of households in San Francisco have at least 1 vehicle.
+280,000 on-street parking spaces
+https://www.sfmta.com/sites/default/files/2013%20SAN%20FRANCISCO%20TRANSPORTATION%20FACT%20SHEET.pdf
+
+### Features
+- A user can show their car on the map (reminder: e.g. find my car)
+- A user can signal that it will leave soon (e.g. 5 minutes)
+- A user can report an empty space
+- A user can rent out its driveway
+- A user can find an empty space
+- A user can fill an empty space
+- Notifies users of parking spot changes in a given region
+- A user can set the timer for the parking spot
+
+
 
 #### Opening screen
 A user opens the app and sees open spots in their vicinity.
