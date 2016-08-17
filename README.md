@@ -1,31 +1,34 @@
-# buzzard-android
-Parking is difficult in San Francisco (crowded urban area) if you don’t have a paid reserved spot. Buzzard is here to help tech-savvy users cue in on street parking and secure a space immediatly instead of searching high and low.
+# *Buzzard*
 
-### Target User
-- Lives in San Francisco
-- Owns car
-- Drives everyday to work in San Francisco
-- Doesn’t want to spend $300+/month on a reserved parking space
-- Have a street parking permit in the city
-- Tired of spending 30+ minutes driving around his neighborhood looking for parking (time consuming, wastes gas, a little dangerous)
-- Gets multiple parking tickets a month ($$$)
+**Buzzard** is here to help tech-savvy users cue in on street parking and secure a space immediatly instead of searching high and low.
 
-### Size of Market
-79% of households in San Francisco have at least 1 vehicle.
-280,000 on-street parking spaces
-https://www.sfmta.com/sites/default/files/2013%20SAN%20FRANCISCO%20TRANSPORTATION%20FACT%20SHEET.pdf
+## User Stories
 
-### Features
-- A user can show their car on the map (reminder: e.g. find my car)
-- A user can signal that it will leave soon (e.g. 5 minutes)
-- A user can report an empty space
-- A user can rent out its driveway
-- A user can find an empty space
-- A user can fill an empty space
-- Notifies users of parking spot changes in a given region
-- A user can set the timer for the parking spot
+The following functionality is completed:
 
+* [ ] A user can see a map with available parking spaces
+* [ ] A user can search for an area and see available parking spaces
+* [ ] A user can park in a space
+* [ ] A user can report an available parking space
+* [ ] A user can navigate to a parking space using an external navigation app
+* [ ] A user can select a marker on the map
 
+Optional:
+* [ ] The map displays multiple types of custom markers depicting how old a spot is
+* [ ] A user can save a region to a list of favorites for quick checking
+  * [ ] A user can subscribe to parking changes in an area with push notifications
+  * [ ] A user can delete a saved region
+* [ ] Implement geofencing in order to automatically park in a space
+* [ ] A user can notify when they are going to leave a space
+  * [ ] Display a marker indicating the space will be vacated.
+* [ ] Display a group icon showing the number of spaces when the map is zoomed out.
+
+Bonus:
+* [ ] Notify a user parked in of parking restrictions ex. Street cleaning
+* [ ] Display parking garage data if no spaces are available
+* [ ] Display a persistent notification requesting action when a user is leaving their space
+* [ ] Reroute a user based on parking availability or if a their spot gets taken
+* [ ] Dispatch selected spaces to each users so not all users receive all spaces
 
 #### Opening screen
 A user opens the app and sees open spots in their vicinity.
