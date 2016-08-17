@@ -1,6 +1,6 @@
 # *Buzzard*
 
-**Buzzard** is here to help tech-savvy users cue in on street parking and secure a space immediatly instead of searching high and low.
+**Buzzard** is here to help tech-savvy drivers secure an on street parking space immediatly. Instead of searching high and low buzzard user's are navigated directly to an open space.
 
 ## User Stories
 
