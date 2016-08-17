@@ -37,11 +37,5 @@ Bonus:
 ![A user can signal when they are ready to leave to notify nearby drivers that a spot will be vacant soon.](https://s4.postimg.org/enxxs2tbh/Car+Parked.png)
 ![A user can leave and add their spot back into the available spaces.](https://s4.postimg.org/tvdxcfl65/Car+leaving.png)
 ![A user can choose a space on the map and navigate here through an external app.](https://s4.postimg.org/bb1pazkx9/navhere.png)
-
-#### Choose area to watch (V2)
-A user can save an area to watch for available parking spaces.
-![Chose area to watch](https://s4.postimg.org/asujpia5p/Choose+geobounded region.png)
-
-#### Push notifications (V2)
-A user can receive push notifications for available spots in saved regions.
-![Notifications](https://s4.postimg.org/ia3r4pzot/Notifications.png)
+![A user can save an area to watch for available parking spaces.](https://s4.postimg.org/asujpia5p/Choose+geobounded region.png)
+![A user can receive push notifications for available spots in saved regions.](https://s4.postimg.org/ia3r4pzot/Notifications.png)
