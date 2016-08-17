@@ -31,7 +31,7 @@ Bonus:
 * [ ] Dispatch selected spaces to each users so not all users receive all spaces
 
 ## Wireframes
-![A user opens the app and sees open spots in their vicinity.](https://s4.postimg.org/8e2o52twt/OpeningScreen.png =250x)
+![A user opens the app and sees open spots in their vicinity.](https://s4.postimg.org/8e2o52twt/OpeningScreen.png =100x)
 ![A user can search for parking in an area they are going and be directed to a spot through an external app.](https://s4.postimg.org/7r3rfjx0t/Search+Screen.png =250x)
 ![A user can fill a spot and then see their car on a map to make finding their car in unfamiliar areas easier.](https://s4.postimg.org/3tghq5a7h/Park+Now.png =250x)
 ![A user can signal when they are ready to leave to notify nearby drivers that a spot will be vacant soon.](https://s4.postimg.org/enxxs2tbh/Car+Parked.png)
