@@ -8,4 +8,5 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MarkerFont" parent="@android:style/TextAppearance.Medium.Inverse" />
 </resources>

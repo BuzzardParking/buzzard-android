@@ -68,7 +68,10 @@ public class MainActivity extends AppCompatActivity {
     // Use the MarkerFont text appearance style.
     // Use it to build custom markers.
     private IconGenerator getIconGenerator() {
-        return new IconGenerator(this);
+        IconGenerator generator = new IconGenerator(this);
+        generator.setStyle(IconGenerator.STYLE_GREEN);
+        generator.setTextAppearance(R.style.MarkerFont);
+        return generator;
     }
 
     // TODO Build LocationRequest

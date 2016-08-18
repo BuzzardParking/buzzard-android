@@ -9,10 +9,10 @@ public class AddLocationLayer implements
     private GoogleMap mGoogleMap;
     private OnPermission.Result mPermissionResult;
 
-    // TODO Add location layer
     @SuppressWarnings("MissingPermission")
     private void addLayer(GoogleMap map) {
-
+        // shows the default blue location dot
+        map.setMyLocationEnabled(true);
     }
 
     private void check() {
