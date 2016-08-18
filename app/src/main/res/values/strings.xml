@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Buzzard</string>
+    <string name="secret_maps_api_key">AIzaSyDb5WUa-gXmJjq3seWS0qB8KoqM4F5ROhg</string>
+    <string name="marker_title">Marker title</string>
 </resources>
