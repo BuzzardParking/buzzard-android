@@ -31,6 +31,10 @@ public class PlaceManager implements
         mAdder.addTo(map, title, latLng, true);
     }
 
+    public void clearPlaces() {
+        mAdder.removeMarkers();
+    }
+
     @Override
     public void onStatus(OnActivity.Status status) {
 

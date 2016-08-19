@@ -1,0 +1,39 @@
+package com.buzzardparking.buzzard.states;
+
+import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.interfaces.Controller;
+import com.buzzardparking.buzzard.util.PlaceManager;
+
+/**
+ * Created by nathansass on 8/19/16.
+ */
+public abstract class StateParent implements Controller {
+    private MainActivity context;
+
+    private PlaceManager manager;
+
+    public StateParent(MainActivity appContext, PlaceManager manager) {
+        this.context = appContext;
+        this.manager = manager;
+    }
+
+    @Override
+    public void start() {
+        // From StateMachine
+    }
+
+    @Override
+    public void stop() {
+        // From StateMachine
+    }
+
+    public abstract void updateUI();
+
+    public MainActivity getContext() {
+        return context;
+    }
+
+    public PlaceManager getManager() {
+        return manager;
+    }
+}

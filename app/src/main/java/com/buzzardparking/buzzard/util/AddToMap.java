@@ -14,12 +14,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.google.maps.android.ui.IconGenerator;
 
+import java.util.ArrayList;
+
 public class AddToMap {
 
     private IconGenerator mIconGenerator;
 
+    private ArrayList<Marker> markers;
+
     public AddToMap(IconGenerator generator) {
         mIconGenerator = generator;
+
+        markers = new ArrayList<>();
     }
 
     // Use IconGenerator, MarkerOptions, and GoogleMap.
@@ -30,9 +36,19 @@ public class AddToMap {
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
         Marker marker = map.addMarker(opts);
+        //Save reference to marker here for future clearing
+        markers.add(marker);
+
         if (animate) {
             animate(map, marker);
         }
+    }
+
+    public void removeMarkers() {
+        for (int i = 0; i < markers.size(); i++) {
+            markers.get(i).remove();
+        }
+        markers = new ArrayList<>();
     }
 
     // Get the marker's position and the map's projection.

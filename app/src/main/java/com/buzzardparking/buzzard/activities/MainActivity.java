@@ -4,8 +4,12 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 
 import com.buzzardparking.buzzard.R;
+import com.buzzardparking.buzzard.interfaces.UIStateMachine;
+import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.states.Looking;
 import com.buzzardparking.buzzard.util.AddLocationLayer;
 import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
 import com.buzzardparking.buzzard.util.AddToMap;
@@ -24,9 +28,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.ui.IconGenerator;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+
+    public AppState appState;
+
+    /* States */
+    Looking lookingState;
+
+    /* UI ELEMENTS */
+    public Button mainButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +73,15 @@ public class MainActivity extends AppCompatActivity {
         OnPermission.Request location = new OnPermission.Request(requestCode, permission, layer, move, track);
         OnPermission onPermission = new OnPermission.Builder(this).build();
         onPermission.beginRequest(location);
+
+        //// Get UI elements
+        mainButton = (Button) findViewById(R.id.mainButton);
+
+        /* Initialize States */
+        appState = AppState.LOOKING; // This will be retrieved from DB
+        lookingState = new Looking(this, manager);
+
+        gotTo(appState);
     }
 
     // Set IconGenerator attributes.
@@ -99,4 +120,14 @@ public class MainActivity extends AppCompatActivity {
         client.registerConnectionCallbacks(callbacks);
     }
 
+    @Override
+    public void gotTo(AppState state) {
+        switch (state) {
+            case LOOKING:
+                lookingState.start();
+                break;
+            default:
+                break;
+        }
+    }
 }
