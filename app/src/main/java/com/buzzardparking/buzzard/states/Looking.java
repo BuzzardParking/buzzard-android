@@ -16,6 +16,7 @@ public class Looking extends StateParent {
 
     @Override
     public void start() {
+
         updateUI();
     }
 

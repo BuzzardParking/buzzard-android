@@ -27,8 +27,9 @@ public class PlaceManager implements
     }
 
     public void addPlace(GoogleMap map, String title, LatLng latLng) {
-        // add marker to DB here
-        mPlaces.add(new Place(title, latLng));
+        Place newPlace = new Place(title, latLng);
+        newPlace.save();
+        mPlaces.add(newPlace);
         mAdder.addTo(map, title, latLng, true);
     }
 
@@ -39,6 +40,13 @@ public class PlaceManager implements
     public void clearPlaces() {
         mAdder.removeMarkers();
     }
+
+//    public void loadPlaces() {
+//        mPlaces.addAll(Place.getAll());
+//        for (Place place: mPlaces) {
+//            mAdder.addTo(map, place.getTitle(), place.getLatLng(), false);
+//        }
+//    }
 
     @Override
     public void onStatus(OnActivity.Status status) {
