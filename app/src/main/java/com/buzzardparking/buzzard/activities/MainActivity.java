@@ -10,6 +10,7 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.states.Looking;
+import com.buzzardparking.buzzard.states.StateParent;
 import com.buzzardparking.buzzard.util.AddLocationLayer;
 import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
 import com.buzzardparking.buzzard.util.AddToMap;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     public AppState appState;
 
     /* States */
+    StateParent currentState;
     Looking lookingState;
 
     /* UI ELEMENTS */
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //// Get UI elements - This will manipulated from context object in each state
+        mainButton = (Button) findViewById(R.id.mainButton);
 
         if (savedInstanceState == null) {
             // Things here will happen on initial load
@@ -57,12 +62,21 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         MoveToLocationFirstTime move = new MoveToLocationFirstTime(savedInstanceState);
         TrackLocation track = new TrackLocation(getLocationRequest(), new LogLocation());
 
+        /* Initialize States */
+        lookingState = new Looking(this, manager);
+        // navigateState = etc.
+        // parkedState = etc.
+        appState = AppState.LOOKING; // This will be retrieved from DB in future
+        gotTo(appState); // This will set currentState
+        /*                   */
+
         new OnActivity.Builder(this, manager, track).build();
 
         FragmentManager fm = getSupportFragmentManager();
         SupportMapFragment fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
         if (fragment != null) {
-            getMapAsync(fragment, new OnMap(manager, click, layer, move, track));
+            /* anything added to this list will receive a callback when the map is loaded */
+            getMapAsync(fragment, new OnMap(manager, click, layer, move, track, currentState));
         }
 
         GoogleApiClient client = getGoogleApiClient();
@@ -74,14 +88,6 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         OnPermission onPermission = new OnPermission.Builder(this).build();
         onPermission.beginRequest(location);
 
-        //// Get UI elements
-        mainButton = (Button) findViewById(R.id.mainButton);
-
-        /* Initialize States */
-        appState = AppState.LOOKING; // This will be retrieved from DB
-        lookingState = new Looking(this, manager);
-
-        gotTo(appState);
     }
 
     // Set IconGenerator attributes.
@@ -124,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     public void gotTo(AppState state) {
         switch (state) {
             case LOOKING:
+                currentState = lookingState;
                 lookingState.start();
                 break;
             default:

@@ -41,12 +41,16 @@ public class PlaceManager implements
         mAdder.removeMarkers();
     }
 
-//    public void loadPlaces() {
-//        mPlaces.addAll(Place.getAll());
-//        for (Place place: mPlaces) {
-//            mAdder.addTo(map, place.getTitle(), place.getLatLng(), false);
-//        }
-//    }
+    /*
+        Loads from active record.
+        TODO: load from API as well
+    */
+    public void loadPlaces(GoogleMap map) {
+        mPlaces.addAll(Place.getAll());
+        for (Place place: mPlaces) {
+            mAdder.addTo(map, place.getTitle(), place.getLatLng(), false);
+        }
+    }
 
     @Override
     public void onStatus(OnActivity.Status status) {

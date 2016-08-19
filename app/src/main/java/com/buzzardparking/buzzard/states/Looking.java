@@ -3,12 +3,14 @@ package com.buzzardparking.buzzard.states;
 import android.view.View;
 
 import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.util.OnMap;
 import com.buzzardparking.buzzard.util.PlaceManager;
+import com.google.android.gms.maps.GoogleMap;
 
 /**
  * Created by nathansass on 8/17/16.
  */
-public class Looking extends StateParent {
+public class Looking extends StateParent implements OnMap.Listener {
 
     public Looking(MainActivity appContext, PlaceManager manager) {
         super(appContext, manager);
@@ -16,15 +18,15 @@ public class Looking extends StateParent {
 
     @Override
     public void start() {
-
-        updateUI();
+        if ( mapIsLoaded() ) { /* If the map isn't loaded then onMap will be used */
+            updateUI();
+        }
     }
 
     @Override
     public void stop() {
         getContext().mainButton.setText("Not in Looking state");
         getContext().mainButton.setOnClickListener(null); // remove button functionality so next state can reset it
-
 
         /*
             After tearing down the customization
@@ -46,6 +48,13 @@ public class Looking extends StateParent {
         });
     }
 
+    @Override
+    public void onMap(GoogleMap map) {
+        super.onMap(map);
+        Boolean bool = mapIsLoaded();
+        getManager().loadPlaces(map);
+        updateUI();
+    }
 }
 
 /*
