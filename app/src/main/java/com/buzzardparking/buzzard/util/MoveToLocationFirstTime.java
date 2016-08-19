@@ -27,7 +27,6 @@ public class MoveToLocationFirstTime implements
         mSavedInstanceState = savedInstanceState;
     }
 
-    // TODO Move map to current location
     // Use LocationServices' FusedLocationApi.
     // Get last location.
     // Move map with camera.
@@ -45,7 +44,6 @@ public class MoveToLocationFirstTime implements
         }
     }
 
-    // TODO Build CameraPosition
     // Use CameraPosition.Builder.
     // Set target, zoom, and tilt (for 3d effect).
     private CameraPosition getCameraPosition(LatLng latLng) {

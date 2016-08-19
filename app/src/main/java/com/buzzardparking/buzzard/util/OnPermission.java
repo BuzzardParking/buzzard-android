@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// TODO Understand how OnPermission works
 // OnPermission is a headless fragment.
 public class OnPermission extends Fragment {
 

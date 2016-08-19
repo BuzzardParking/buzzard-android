@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         onPermission.beginRequest(location);
     }
 
-    // TODO Build IconGenerator
     // Set IconGenerator attributes.
     // Use the MarkerFont text appearance style.
     // Use it to build custom markers.
@@ -74,14 +73,16 @@ public class MainActivity extends AppCompatActivity {
         return generator;
     }
 
-    // TODO Build LocationRequest
     // Set priority, interval, and fastest interval.
     // Use it to start location updates.
     private LocationRequest getLocationRequest() {
-        return new LocationRequest();
+        LocationRequest request = new LocationRequest();
+        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        request.setInterval(10000);        // 10 seconds
+        request.setFastestInterval(5000);  // 5 seconds
+        return request;
     }
 
-    // TODO Build GoogleApiClient
     // Enable auto manage and add LocationServices API
     private GoogleApiClient getGoogleApiClient() {
         return new GoogleApiClient.Builder(this)
@@ -90,12 +91,10 @@ public class MainActivity extends AppCompatActivity {
                 .build();
     }
 
-    // TODO Get the map asynchronously
     private void getMapAsync(SupportMapFragment fragment, OnMapReadyCallback callback) {
         fragment.getMapAsync(callback);
     }
 
-    // TODO Add callbacks to the GoogleApiClient
     private void addConnectionCallbacks(GoogleApiClient client, GoogleApiClient.ConnectionCallbacks callbacks) {
         client.registerConnectionCallbacks(callbacks);
     }

@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.buzzardparking.buzzard.activities.MainActivity;
 
-// TODO Understand how OnActivity works
 // OnActivity is a headless fragment.
 public class OnActivity extends Fragment {
 
