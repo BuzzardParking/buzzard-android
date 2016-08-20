@@ -51,7 +51,6 @@ public class Looking extends StateParent implements OnMap.Listener {
     @Override
     public void onMap(GoogleMap map) {
         super.onMap(map);
-        Boolean bool = mapIsLoaded();
         getManager().loadPlaces(map);
         updateUI();
     }
