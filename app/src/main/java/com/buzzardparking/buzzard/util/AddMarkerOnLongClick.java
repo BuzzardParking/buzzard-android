@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.util;
 
 import android.content.Context;
+import android.os.Vibrator;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -18,9 +19,14 @@ public class AddMarkerOnLongClick implements OnMap.Listener {
     @Override
     public void onMap(final GoogleMap map) {
         map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+
             @Override
             public void onMapLongClick(LatLng latLng) {
                 mPlaceManager.addPlace(map, "New Space", latLng);
+
+                /* vibrates phone */
+                Vibrator vb = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+                vb.vibrate(50);
             }
         });
     }
