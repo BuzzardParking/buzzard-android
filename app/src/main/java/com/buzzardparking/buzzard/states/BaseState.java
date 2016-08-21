@@ -1,29 +1,28 @@
 package com.buzzardparking.buzzard.states;
 
+import android.content.Context;
+
 import com.buzzardparking.buzzard.activities.MainActivity;
-import com.buzzardparking.buzzard.interfaces.Controller;
 import com.buzzardparking.buzzard.util.OnMap;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
 
 /**
- * StateParent
+ * BaseState
  */
-public abstract class StateParent implements Controller, OnMap.Listener {
-    private MainActivity context;
-
+public abstract class BaseState implements OnMap.Listener {
+    private Context context;
     private PlaceManager manager;
 
     GoogleMap googleMap;
 
-    public StateParent(MainActivity appContext, PlaceManager manager) {
-        this.context = appContext;
+    public BaseState(Context context, PlaceManager manager) {
+        this.context = context;
         this.manager = manager;
     }
 
     public Boolean mapIsLoaded() {
-        // This may need to be more sophisticated
-
+        // TODO: This may need to be more sophisticated
         return googleMap != null;
     }
 
@@ -39,23 +38,17 @@ public abstract class StateParent implements Controller, OnMap.Listener {
     /**
      * Starts the state machine
      */
-    @Override
-    public void start() {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
+    public abstract void start();
 
     /**
      * Stops the state machine
      */
-    @Override
-    public void stop() {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
+    public abstract void stop();
 
     public abstract void updateUI();
 
     public MainActivity getContext() {
-        return context;
+        return (MainActivity)context;
     }
 
     public PlaceManager getManager() {

@@ -1,24 +1,23 @@
 package com.buzzardparking.buzzard.states;
 
+import android.content.Context;
 import android.view.View;
 
-import com.buzzardparking.buzzard.activities.MainActivity;
-import com.buzzardparking.buzzard.util.OnMap;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
 
 /**
  * Looking state: a user is looking for a parking spot.
  */
-public class Looking extends StateParent implements OnMap.Listener {
+public class Looking extends BaseState {
 
-    public Looking(MainActivity appContext, PlaceManager manager) {
-        super(appContext, manager);
+    public Looking(Context context, PlaceManager manager) {
+        super(context, manager);
     }
 
     @Override
     public void start() {
-        if (mapIsLoaded()) { /* If the map isn't loaded then onMap will be used */
+        if (mapIsLoaded()) {
             updateUI();
         }
     }

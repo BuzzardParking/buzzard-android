@@ -10,8 +10,8 @@ import android.widget.Toast;
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.states.BaseState;
 import com.buzzardparking.buzzard.states.Looking;
-import com.buzzardparking.buzzard.states.StateParent;
 import com.buzzardparking.buzzard.util.AddLocationLayer;
 import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
 import com.buzzardparking.buzzard.util.LogLocation;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     public AppState appState;
 
     /* States */
-    StateParent currentState;
+    BaseState currentState;
     Looking lookingState;
 
     /* UI ELEMENTS */
