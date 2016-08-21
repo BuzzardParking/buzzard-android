@@ -22,6 +22,8 @@ Optional:
 * [ ] A user can notify when they are going to leave a space
   * [ ] Display a marker indicating the space will be vacated.
 * [ ] Display a group icon showing the number of spaces when the map is zoomed out.
+* [ ] Polish the animations: pin a parking space
+* [ ] NUX(i.e. new user experience) screen to show you how to use the app
 
 Bonus:
 * [ ] Notify a user parked in of parking restrictions ex. Street cleaning

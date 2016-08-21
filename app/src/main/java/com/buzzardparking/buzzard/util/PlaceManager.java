@@ -10,19 +10,20 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-// PlaceManager saves marker state on device rotation.
+/**
+ * {@link PlaceManager} listens for the activity's saved instance state, to save and restore
+ * any places on rotation.
+ */
 public class PlaceManager implements
         OnActivity.Listener,
         OnMap.Listener {
 
     private static final String KEY = "places";
-
-    private final AddToMap mAdder;
-
+    private final MarkerManager mMarkerManager;
     private ArrayList<Place> mPlaces;
 
-    public PlaceManager(AddToMap adder) {
-        mAdder = adder;
+    public PlaceManager(MarkerManager markerManager) {
+        this.mMarkerManager = markerManager;
         mPlaces = new ArrayList<>();
     }
 
@@ -30,15 +31,11 @@ public class PlaceManager implements
         Place newPlace = new Place(title, latLng);
         newPlace.save();
         mPlaces.add(newPlace);
-        mAdder.addTo(map, title, latLng, true);
+        mMarkerManager.addMarker(map, title, latLng, true);
     }
 
-
-    /*  Removes markers from UI.
-        This will be leveraged to swap between different views
-     */
     public void clearPlaces() {
-        mAdder.removeMarkers();
+        mMarkerManager.removeMarkers();
     }
 
     /*
@@ -48,7 +45,7 @@ public class PlaceManager implements
     public void loadPlaces(GoogleMap map) {
         mPlaces.addAll(Place.getAll());
         for (Place place: mPlaces) {
-            mAdder.addTo(map, place.getTitle(), place.getLatLng(), false);
+            mMarkerManager.addMarker(map, place.getTitle(), place.getLatLng(), false);
         }
     }
 
@@ -73,7 +70,7 @@ public class PlaceManager implements
     @Override
     public void onMap(GoogleMap map) {
         for (Place place : mPlaces) {
-            mAdder.addTo(map, place.getTitle(), place.getLatLng(), false);
+            mMarkerManager.addMarker(map, place.getTitle(), place.getLatLng(), false);
         }
     }
 

@@ -2,6 +2,12 @@ package com.buzzardparking.buzzard.util;
 
 import com.google.android.gms.maps.GoogleMap;
 
+/**
+ * {@link AddLocationLayer} adds the current device location to the map.
+ *
+ * It listens for the map ready and the location permission event to
+ * enable the map's location layer.
+ */
 public class AddLocationLayer implements
         OnMap.Listener,
         OnPermission.Listener {

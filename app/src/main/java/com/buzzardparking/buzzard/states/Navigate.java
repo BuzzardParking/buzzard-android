@@ -1,7 +1,7 @@
 package com.buzzardparking.buzzard.states;
 
 /**
- * Created by nathansass on 8/17/16.
+ * Navigate state: a user is navigating to a parking spot.
  */
 public class Navigate {
 }

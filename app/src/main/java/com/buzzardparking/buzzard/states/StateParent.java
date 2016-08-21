@@ -7,7 +7,7 @@ import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
 
 /**
- * Created by nathansass on 8/19/16.
+ * StateParent
  */
 public abstract class StateParent implements Controller, OnMap.Listener {
     private MainActivity context;
@@ -27,20 +27,29 @@ public abstract class StateParent implements Controller, OnMap.Listener {
         return googleMap != null;
     }
 
-    @Override
-    public void start() {
-        // From StateMachine
-    }
-
+    /**
+     * This will get called when the map is ready to be manipulated
+     * @param map  {@link GoogleMap}
+     */
     @Override
     public void onMap(GoogleMap map) {
         this.googleMap = map;
-        // This will get called when the map is ready to be manipulated
     }
 
+    /**
+     * Starts the state machine
+     */
+    @Override
+    public void start() {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    /**
+     * Stops the state machine
+     */
     @Override
     public void stop() {
-        // From StateMachine
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public abstract void updateUI();

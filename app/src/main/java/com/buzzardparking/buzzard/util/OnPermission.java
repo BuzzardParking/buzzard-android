@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// OnPermission is a headless fragment.
+/**
+ * OnPermission is a headless fragment that handles permission request.
+ */
 public class OnPermission extends Fragment {
 
     private final Map<Integer, Request> mRequestMap;

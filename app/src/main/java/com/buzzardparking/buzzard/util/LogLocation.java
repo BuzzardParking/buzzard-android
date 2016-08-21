@@ -6,6 +6,9 @@ import com.buzzardparking.buzzard.activities.MainActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * LogLocation listens for a location from TrackLocation before it logs the location.
+ */
 public class LogLocation implements TrackLocation.Listener {
 
     // Use MapsActivity.TAG

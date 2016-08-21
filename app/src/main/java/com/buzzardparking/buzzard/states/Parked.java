@@ -1,7 +1,7 @@
 package com.buzzardparking.buzzard.states;
 
 /**
- * Created by nathansass on 8/17/16.
+ * Parked state: a user's car is parked at a parking spot.
  */
 public class Parked {
 }

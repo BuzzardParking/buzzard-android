@@ -14,7 +14,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by nathansass on 8/18/16.
+ * {@link TrackLocation} tracks the location updates.
+ *
+ * It listens for a resumed or paused activity, the connected GoogleApiClient,
+ * the map, and the location permission before it starts and stops location updates.
  */
 public class TrackLocation implements
         LocationListener,
@@ -37,10 +40,6 @@ public class TrackLocation implements
         mListeners = listeners;
     }
 
-    // Use LocationServices' FusedLocationApi.
-    // Pass mClient, mLocationRequest, and this TrackLocation.
-    // TrackLocation implements LocationListener.
-    // Look at preconditions in check method.
     @SuppressWarnings("MissingPermission")
     private void startLocationUpdates() {
         LocationServices.FusedLocationApi
@@ -48,9 +47,6 @@ public class TrackLocation implements
         Log.d(MainActivity.TAG, "Requested location updates");
     }
 
-    // Use LocationServices' FusedLocationApi.
-    // Pass mClient and this TrackLocation
-    // Look at preconditions in check method.
     private void stopLocationUpdates() {
         LocationServices.FusedLocationApi
                 .removeLocationUpdates(mClient, this);
@@ -123,6 +119,11 @@ public class TrackLocation implements
     }
 
     public interface Listener {
+        /**
+         *
+         * @param map  {@link GoogleMap}
+         * @param location  {@link LatLng}
+         */
         void accept(GoogleMap map, LatLng location);
     }
 

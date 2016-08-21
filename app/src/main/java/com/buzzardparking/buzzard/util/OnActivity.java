@@ -9,7 +9,9 @@ import android.util.Log;
 
 import com.buzzardparking.buzzard.activities.MainActivity;
 
-// OnActivity is a headless fragment.
+/**
+ * OnActivity is a headless fragment.
+ */
 public class OnActivity extends Fragment {
 
     private Listener[] mListeners;

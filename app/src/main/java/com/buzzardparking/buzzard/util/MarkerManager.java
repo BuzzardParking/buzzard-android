@@ -16,27 +16,34 @@ import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 
-public class AddToMap {
+public class MarkerManager {
 
     private IconGenerator mIconGenerator;
-
     private ArrayList<Marker> markers;
 
-    public AddToMap(IconGenerator generator) {
+    /**
+     * MarkerManager: manage parking space markers on the map
+     * @param generator an {@link IconGenerator} used to generate parking space markers
+     */
+    public MarkerManager(IconGenerator generator) {
         mIconGenerator = generator;
-
         markers = new ArrayList<>();
     }
 
-    // Use IconGenerator, MarkerOptions, and GoogleMap.
-    // Call animate method if animate flag is true.
-    public void addTo(GoogleMap map, String title, LatLng latLng, boolean animate) {
+    /**
+     * Add a parking space marker to the map
+     *
+     * @param map the {@link GoogleMap} to add markers to
+     * @param title label of the marker
+     * @param latLng lat lng location of the marker
+     * @param animate boolean to decide whether to add animation effect
+     */
+    public void addMarker(GoogleMap map, String title, LatLng latLng, boolean animate) {
         Bitmap bitmap = mIconGenerator.makeIcon(title);
         MarkerOptions opts = new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
         Marker marker = map.addMarker(opts);
-        //Save reference to marker here for future clearing
         markers.add(marker);
 
         if (animate) {
@@ -58,6 +65,7 @@ public class AddToMap {
     // Set the marker's position to this LatLng.
     // Set the animator's interpolator and duration.
     // Start animator.
+    // TODO: make a better animation
     private void animate(GoogleMap map, final Marker marker) {
         final LatLng target = marker.getPosition();
         Projection projection = map.getProjection();
@@ -78,8 +86,6 @@ public class AddToMap {
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.setDuration(2500);
         animator.start();
-
-
     }
 
 }

@@ -9,6 +9,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Random;
 
+
+/**
+ * Circle location listens to
+ */
 public class CircleLocation implements TrackLocation.Listener {
 
     private Circle mCircle;
@@ -29,5 +33,4 @@ public class CircleLocation implements TrackLocation.Listener {
                 .center(location);
         mCircle = map.addCircle(opts);
     }
-
 }

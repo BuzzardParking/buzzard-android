@@ -8,7 +8,7 @@ import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
 
 /**
- * Created by nathansass on 8/17/16.
+ * Looking state: a user is looking for a parking spot.
  */
 public class Looking extends StateParent implements OnMap.Listener {
 
@@ -18,7 +18,7 @@ public class Looking extends StateParent implements OnMap.Listener {
 
     @Override
     public void start() {
-        if ( mapIsLoaded() ) { /* If the map isn't loaded then onMap will be used */
+        if (mapIsLoaded()) { /* If the map isn't loaded then onMap will be used */
             updateUI();
         }
     }
@@ -32,7 +32,7 @@ public class Looking extends StateParent implements OnMap.Listener {
             After tearing down the customization
             for that app go to the next app state
 
-            getContext().gotTo(NEXT_APP_STATE);
+            getContext().goTo(NEXT_APP_STATE);
          */
     }
 

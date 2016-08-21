@@ -12,6 +12,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * {@link MoveToLocationFirstTime} moves the camera to current user's location in the first time.
+ *
+ * It listens for the map ready, the connected GoogleApiClient, and the
+ * location permission before it moves the map to the user's current location.
+ */
 public class MoveToLocationFirstTime implements
         OnMap.Listener,
         OnPermission.Listener,
@@ -27,10 +33,6 @@ public class MoveToLocationFirstTime implements
         mSavedInstanceState = savedInstanceState;
     }
 
-    // Use LocationServices' FusedLocationApi.
-    // Get last location.
-    // Move map with camera.
-    // Use getCameraPosition helper method.
     @SuppressWarnings("MissingPermission")
     private void moveToUserLocation(GoogleApiClient client, GoogleMap map) {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
@@ -44,7 +46,6 @@ public class MoveToLocationFirstTime implements
         }
     }
 
-    // Use CameraPosition.Builder.
     // Set target, zoom, and tilt (for 3d effect).
     private CameraPosition getCameraPosition(LatLng latLng) {
         return new CameraPosition.Builder().target(latLng)
