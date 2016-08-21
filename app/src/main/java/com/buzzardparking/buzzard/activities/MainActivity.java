@@ -10,8 +10,11 @@ import android.widget.Toast;
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
-import com.buzzardparking.buzzard.states.BaseState;
-import com.buzzardparking.buzzard.states.Looking;
+import com.buzzardparking.buzzard.states.LeavingState;
+import com.buzzardparking.buzzard.states.UserState;
+import com.buzzardparking.buzzard.states.LookingState;
+import com.buzzardparking.buzzard.states.NavigatingState;
+import com.buzzardparking.buzzard.states.ParkedState;
 import com.buzzardparking.buzzard.util.AddLocationLayer;
 import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
 import com.buzzardparking.buzzard.util.LogLocation;
@@ -35,9 +38,13 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     public AppState appState;
 
-    /* States */
-    BaseState currentState;
-    Looking lookingState;
+    // states
+    UserState currentState;
+    LookingState lookingState;
+    NavigatingState navigatingState;
+    ParkedState parkedState;
+    LeavingState leavingState;
+
 
     /* UI ELEMENTS */
     public Button mainButton;
@@ -62,8 +69,11 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         TrackLocation track = new TrackLocation(getLocationRequest(), new LogLocation());
 
         // TODO: retrieve from DB or backend in the future
-        // initialize State as looking state
-        lookingState = new Looking(this, placeManager);
+        lookingState = new LookingState(this, placeManager);
+        navigatingState = new NavigatingState(this, placeManager);
+        parkedState = new ParkedState(this, placeManager);
+        leavingState = new LeavingState(this, placeManager);
+
         appState = AppState.LOOKING;
         goTo(appState);
 
@@ -118,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
             case LOOKING:
                 currentState = lookingState;
                 lookingState.start();
+                break;
+            case PARKED:
+                currentState = parkedState;
+                parkedState.start();
                 break;
             default:
                 break;

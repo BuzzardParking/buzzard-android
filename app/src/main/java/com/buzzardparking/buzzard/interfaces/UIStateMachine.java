@@ -6,5 +6,5 @@ import com.buzzardparking.buzzard.models.AppState;
  * Created by nathansass on 8/17/16.
  */
 public interface UIStateMachine {
-    public void goTo(AppState state);
+    void goTo(AppState state);
 }

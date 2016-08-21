@@ -7,11 +7,11 @@ import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
 
 /**
- * Looking state: a user is looking for a parking spot.
+ * {@link LookingState}: a user is looking for a parking spot.
  */
-public class Looking extends BaseState {
+public class LookingState extends UserState {
 
-    public Looking(Context context, PlaceManager manager) {
+    public LookingState(Context context, PlaceManager manager) {
         super(context, manager);
     }
 
@@ -24,7 +24,7 @@ public class Looking extends BaseState {
 
     @Override
     public void stop() {
-        getContext().mainButton.setText("Not in Looking state");
+        getContext().mainButton.setText("Not in LookingState state");
         getContext().mainButton.setOnClickListener(null); // remove button functionality so next state can reset it
 
         /*
@@ -35,9 +35,8 @@ public class Looking extends BaseState {
          */
     }
 
-    @Override
-    public void updateUI() {
-        getContext().mainButton.setText("In Looking state");
+    private void updateUI() {
+        getContext().mainButton.setText("In LookingState state");
 
         getContext().mainButton.setOnClickListener(new View.OnClickListener() {
             @Override

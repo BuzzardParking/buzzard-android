@@ -8,15 +8,15 @@ import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
 
 /**
- * BaseState
+ * {@link UserState}: indicates the state a user is currently at.
  */
-public abstract class BaseState implements OnMap.Listener {
+public abstract class UserState implements OnMap.Listener {
     private Context context;
     private PlaceManager manager;
 
     GoogleMap googleMap;
 
-    public BaseState(Context context, PlaceManager manager) {
+    public UserState(Context context, PlaceManager manager) {
         this.context = context;
         this.manager = manager;
     }
@@ -27,7 +27,7 @@ public abstract class BaseState implements OnMap.Listener {
     }
 
     /**
-     * This will get called when the map is ready to be manipulated
+     * This will get called when the map is ready to be manipulated.
      * @param map  {@link GoogleMap}
      */
     @Override
@@ -36,16 +36,18 @@ public abstract class BaseState implements OnMap.Listener {
     }
 
     /**
-     * Starts the state machine
+     * The state starts.
+     *
+     * Operation about this state should happen here, e.g. update UI elements.
      */
     public abstract void start();
 
     /**
-     * Stops the state machine
+     * The state stops.
+     *
+     * Operation about this state should happen here, e.g. proper clean up.
      */
     public abstract void stop();
-
-    public abstract void updateUI();
 
     public MainActivity getContext() {
         return (MainActivity)context;
