@@ -2,7 +2,10 @@ package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
+import com.buzzardparking.buzzard.R;
+import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -17,40 +20,31 @@ public class LookingState extends UserState {
 
     @Override
     public void start() {
-        if (mapIsLoaded()) {
-            updateUI();
-        }
+        updateUI();
     }
 
     @Override
     public void stop() {
-        getContext().mainButton.setText("Not in LookingState state");
-        getContext().mainButton.setOnClickListener(null); // remove button functionality so next state can reset it
-
-        /*
-            After tearing down the customization
-            for that app go to the next app state
-
-            getContext().goTo(NEXT_APP_STATE);
-         */
+        super.stop();
+        getManager().clearPlaces();
     }
 
     private void updateUI() {
-        getContext().mainButton.setText("In LookingState state");
+        Toast.makeText(getContext(), "In looking state.", Toast.LENGTH_SHORT).show();
+        actionButton.setText(getContext().getString(R.string.btn_navigating));
 
-        getContext().mainButton.setOnClickListener(new View.OnClickListener() {
+        actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getManager().clearPlaces();
+                getContext().goTo(AppState.NAVIGATING);
             }
         });
     }
 
     @Override
     public void onMap(GoogleMap map) {
-        super.onMap(map);
-        getManager().loadPlaces(map);
-        updateUI();
+//        getManager().loadPlaces(map);
+//        updateUI();
     }
 }
 

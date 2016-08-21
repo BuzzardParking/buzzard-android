@@ -1,7 +1,11 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.Toast;
 
+import com.buzzardparking.buzzard.R;
+import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.util.PlaceManager;
 
 /**
@@ -20,10 +24,19 @@ public class LeavingState extends UserState {
         // 2. Able to mark the space as available when the device sensor detects the car is leaving
         // 3. Able to send time information to the server, so the server could keep track of the time elapsedA
         // ...
+        Toast.makeText(getContext(), "In leaving state.", Toast.LENGTH_SHORT).show();
+        actionButton.setText(getContext().getString(R.string.btn_reset));
+
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getContext().goTo(AppState.OVERVIEW);
+            }
+        });
     }
 
     @Override
     public void stop() {
-
+        super.stop();
     }
 }

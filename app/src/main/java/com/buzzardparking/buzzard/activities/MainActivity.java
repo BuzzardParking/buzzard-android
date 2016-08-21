@@ -11,6 +11,7 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.states.LeavingState;
+import com.buzzardparking.buzzard.states.OverviewState;
 import com.buzzardparking.buzzard.states.UserState;
 import com.buzzardparking.buzzard.states.LookingState;
 import com.buzzardparking.buzzard.states.NavigatingState;
@@ -36,48 +37,36 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    public AppState appState;
-
     // states
-    UserState currentState;
-    LookingState lookingState;
-    NavigatingState navigatingState;
-    ParkedState parkedState;
-    LeavingState leavingState;
-
+    private UserState currentState;
+    private PlaceManager placeManager;
 
     /* UI ELEMENTS */
-    public Button mainButton;
+    public Button actionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainButton = (Button) findViewById(R.id.mainButton);
+        actionButton = (Button) findViewById(R.id.btn_action);
 
         if (savedInstanceState == null) {
             Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
         }
 
         MarkerManager markerManager = new MarkerManager(getIconGenerator());
-        PlaceManager placeManager = new PlaceManager(markerManager);
+        placeManager = new PlaceManager(markerManager);
 
         AddMarkerOnLongClick click = new AddMarkerOnLongClick(this, placeManager);
         AddLocationLayer layer = new AddLocationLayer();
         MoveToLocationFirstTime move = new MoveToLocationFirstTime(savedInstanceState);
         TrackLocation track = new TrackLocation(getLocationRequest(), new LogLocation());
 
-        // TODO: retrieve from DB or backend in the future
-        lookingState = new LookingState(this, placeManager);
-        navigatingState = new NavigatingState(this, placeManager);
-        parkedState = new ParkedState(this, placeManager);
-        leavingState = new LeavingState(this, placeManager);
-
-        appState = AppState.LOOKING;
-        goTo(appState);
-
         new OnActivity.Builder(this, placeManager, track).build();
+
+        // TODO: retrieve from DB or backend in the future
+        goTo(AppState.OVERVIEW);
 
         // initialize the map system and view
         FragmentManager fm = getSupportFragmentManager();
@@ -124,17 +113,30 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     @Override
     public void goTo(AppState state) {
+        if (currentState != null) {
+            currentState.stop();
+        }
+
         switch (state) {
+           case OVERVIEW:
+                currentState = new OverviewState(this, placeManager);
+                break;
             case LOOKING:
-                currentState = lookingState;
-                lookingState.start();
+                currentState = new LookingState(this, placeManager);
+                break;
+            case NAVIGATING:
+                currentState = new NavigatingState(this, placeManager);
                 break;
             case PARKED:
-                currentState = parkedState;
-                parkedState.start();
+                currentState = new ParkedState(this, placeManager);
+                break;
+            case LEAVING:
+                currentState = new LeavingState(this, placeManager);
                 break;
             default:
                 break;
         }
+
+        currentState.start();
     }
 }
