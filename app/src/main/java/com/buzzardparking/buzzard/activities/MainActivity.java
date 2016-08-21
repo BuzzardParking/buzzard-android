@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         // navigateState = etc.
         // parkedState = etc.
         appState = AppState.LOOKING; // This will be retrieved from DB in future
-        gotTo(appState); // This will set currentState
+        goTo(appState); // This will set currentState
         /*                   */
 
         new OnActivity.Builder(this, manager, track).build();
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     }
 
     @Override
-    public void gotTo(AppState state) {
+    public void goTo(AppState state) {
         switch (state) {
             case LOOKING:
                 currentState = lookingState;
