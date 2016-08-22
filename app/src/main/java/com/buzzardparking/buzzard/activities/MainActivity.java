@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.Map;
 import com.buzzardparking.buzzard.states.LeavingState;
 import com.buzzardparking.buzzard.states.LookingState;
 import com.buzzardparking.buzzard.states.NavigatingState;
@@ -31,6 +32,7 @@ import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.ui.IconGenerator;
 import com.parse.Parse;
@@ -39,14 +41,17 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
+    // Singleton instance of map
+    public Map buzzardMap;
+
     // states
     private UserState currentState;
-    private PlaceManager placeManager;
 
+    private PlaceManager placeManager;
     /* UI ELEMENTS */
     public Button actionButton;
-    public BottomSheetLayout bottomSheet;
 
+    public BottomSheetLayout bottomSheet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
         new OnActivity.Builder(this, placeManager, track).build();
 
+        // save the map reference
+        buzzardMap = new Map();
+
         // TODO: retrieve from DB or backend in the future
         goTo(AppState.OVERVIEW);
 
@@ -82,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         FragmentManager fm = getSupportFragmentManager();
         SupportMapFragment fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
         if (fragment != null) {
-            fragment.getMapAsync(new OnMap(placeManager, click, layer, move, track, currentState));
+            fragment.getMapAsync(new OnMap(placeManager, click, layer, move, track, currentState, buzzardMap));
         }
 
         // connect the google client
@@ -119,6 +127,10 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
                 .enableAutoManage(this, null)
                 .addApi(LocationServices.API)
                 .build();
+    }
+
+    public GoogleMap getMap() {
+        return buzzardMap.get();
     }
 
     @Override

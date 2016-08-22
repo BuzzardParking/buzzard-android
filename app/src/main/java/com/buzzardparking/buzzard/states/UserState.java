@@ -17,17 +17,10 @@ public abstract class UserState implements OnMap.Listener {
     private PlaceManager manager;
     protected Button actionButton;
 
-    GoogleMap googleMap;
-
     public UserState(Context context, PlaceManager manager) {
         this.context = context;
         this.manager = manager;
         this.actionButton = ((MainActivity)context).actionButton;
-    }
-
-    protected Boolean mapIsLoaded() {
-        // TODO: This may need to be more sophisticated
-        return googleMap != null;
     }
 
     /**
@@ -36,7 +29,6 @@ public abstract class UserState implements OnMap.Listener {
      */
     @Override
     public void onMap(GoogleMap map) {
-        this.googleMap = map;
     }
 
     /**

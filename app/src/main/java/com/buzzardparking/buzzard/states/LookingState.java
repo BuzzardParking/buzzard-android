@@ -20,7 +20,9 @@ public class LookingState extends UserState {
 
     @Override
     public void start() {
-        updateUI();
+        if (getContext().buzzardMap.isLoaded()) {
+            updateUI();
+        }
     }
 
     @Override
@@ -31,6 +33,9 @@ public class LookingState extends UserState {
 
     private void updateUI() {
         Toast.makeText(getContext(), "In looking state.", Toast.LENGTH_SHORT).show();
+
+        getManager().loadPlaces(getContext().getMap());
+
         actionButton.setText(getContext().getString(R.string.btn_navigating));
 
         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -43,8 +48,7 @@ public class LookingState extends UserState {
 
     @Override
     public void onMap(GoogleMap map) {
-//        getManager().loadPlaces(map);
-//        updateUI();
+        updateUI();
     }
 }
 
