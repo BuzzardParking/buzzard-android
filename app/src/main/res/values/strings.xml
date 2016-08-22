@@ -7,4 +7,5 @@
     <string name="btn_navigating">Navigate me now</string>
     <string name="btn_reset">Start Over</string>
     <string name="btn_parked">I\'m Parked</string>
+    <string name="parse_application_id">buzzard</string>
 </resources>

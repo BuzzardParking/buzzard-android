@@ -33,6 +33,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.ui.IconGenerator;
+import com.parse.Parse;
 
 public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
@@ -50,6 +51,11 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                .applicationId(getString(R.string.parse_application_id))
+                .server("https://buzzard-parking.herokuapp.com/parse/")
+                .build());
 
         actionButton = (Button) findViewById(R.id.btn_action);
         bottomSheet = (BottomSheetLayout) findViewById(R.id.bottomsheet);
