@@ -1,14 +1,19 @@
 package com.buzzardparking.buzzard.util;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.buzzardparking.buzzard.models.Place;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link PlaceManager} listens for the activity's saved instance state, to save and restore
@@ -30,6 +35,7 @@ public class PlaceManager implements
     public void addPlace(GoogleMap map, String title, LatLng latLng) {
         Place newPlace = new Place(title, latLng);
         newPlace.save();
+        newPlace.saveParse();
         mPlaces.add(newPlace);
         mMarkerManager.addMarker(map, title, latLng, true);
     }
@@ -38,15 +44,38 @@ public class PlaceManager implements
         mMarkerManager.removeMarkers();
     }
 
-    /*
-        Loads from active record.
-        TODO: load from API as well
-    */
     public void loadPlaces(GoogleMap map) {
+        loadFromLocal(map);
+        loadFromParse(map);
+    }
+
+    public void loadFromLocal(GoogleMap map) {
         mPlaces.addAll(Place.getAll());
-        for (Place place: mPlaces) {
+        placesToMarkers(mPlaces, map);
+    }
+
+    private void placesToMarkers(ArrayList<Place> places, GoogleMap map) {
+        for (Place place: places) {
             mMarkerManager.addMarker(map, place.getTitle(), place.getLatLng(), false);
         }
+    }
+
+    public void loadFromParse(final GoogleMap map) {
+        ParseQuery query = new ParseQuery("Place");
+        query.findInBackground(new FindCallback() {
+            @Override
+            public void done(Object places, Throwable throwable) {
+                mPlaces.clear();
+                clearPlaces();
+                mPlaces.addAll(Place.fromParse(places));
+                placesToMarkers(mPlaces, map);
+            }
+
+            @Override
+            public void done(List objects, ParseException e) {
+                Log.v("DEBUG", objects.toString());
+            }
+        });
     }
 
     @Override

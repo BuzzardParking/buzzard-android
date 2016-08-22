@@ -5,9 +5,11 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseObject;
 
 import org.parceler.Parcel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -34,6 +36,12 @@ public class Place extends Model{
         this.longitude = latLng.longitude;
     }
 
+    public Place(ParseObject parsePlace) {
+        this.title = parsePlace.getString("title");
+        this.longitude = parsePlace.getDouble("longitude");
+        this.latitude = parsePlace.getDouble("latitude");
+    }
+
     public String getTitle() {
         return title;
     }
@@ -46,6 +54,24 @@ public class Place extends Model{
         return new Select()
                 .from(Place.class)
                 .execute();
+    }
+
+    public void saveParse() {
+        ParseObject place = new ParseObject("Place");
+        place.put("title", getTitle());
+        place.put("latitude", latitude);
+        place.put("longitude", longitude);
+        place.saveInBackground();
+    }
+
+    public static ArrayList<Place> fromParse(Object parsePlaces) {
+        ArrayList<ParseObject> placesToConvert = (ArrayList<ParseObject>) parsePlaces;
+        ArrayList<Place> placesArr = new ArrayList<>();
+
+        for (ParseObject place: placesToConvert) {
+            placesArr.add(new Place(place));
+        }
+        return placesArr;
     }
 
 }
