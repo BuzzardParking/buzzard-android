@@ -1,6 +1,6 @@
 # *Buzzard*
 
-**Buzzard** is here to help tech-savvy drivers secure an on street parking space immediatly. Instead of searching high and low buzzard user's are navigated directly to an open space.
+**Buzzard** is here to help tech-savvy drivers secure an on street parking space immediately. Instead of searching high and low, buzzard user's are navigated directly to an open space.
 
 ## User Stories
 
@@ -24,6 +24,7 @@ Optional:
 * [ ] Display a group icon showing the number of spaces when the map is zoomed out.
 * [ ] Polish the animations: pin a parking space
 * [ ] NUX(i.e. new user experience) screen to show you how to use the app
+* [ ] A user can swipe up and see a few card details about any spot
 
 Bonus:
 * [ ] Notify a user parked in of parking restrictions ex. Street cleaning

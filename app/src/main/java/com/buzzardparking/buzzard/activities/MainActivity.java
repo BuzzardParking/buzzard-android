@@ -11,11 +11,11 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.states.LeavingState;
-import com.buzzardparking.buzzard.states.OverviewState;
-import com.buzzardparking.buzzard.states.UserState;
 import com.buzzardparking.buzzard.states.LookingState;
 import com.buzzardparking.buzzard.states.NavigatingState;
+import com.buzzardparking.buzzard.states.OverviewState;
 import com.buzzardparking.buzzard.states.ParkedState;
+import com.buzzardparking.buzzard.states.UserState;
 import com.buzzardparking.buzzard.util.AddLocationLayer;
 import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
 import com.buzzardparking.buzzard.util.LogLocation;
@@ -27,6 +27,7 @@ import com.buzzardparking.buzzard.util.OnMap;
 import com.buzzardparking.buzzard.util.OnPermission;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.buzzardparking.buzzard.util.TrackLocation;
+import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     /* UI ELEMENTS */
     public Button actionButton;
+    public BottomSheetLayout bottomSheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         setContentView(R.layout.activity_main);
 
         actionButton = (Button) findViewById(R.id.btn_action);
+        bottomSheet = (BottomSheetLayout) findViewById(R.id.bottomsheet);
+
 
         if (savedInstanceState == null) {
             Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
