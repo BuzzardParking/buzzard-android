@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.parse.Parse;
 
@@ -21,6 +20,4 @@ public class BuzzardApplication extends com.activeandroid.app.Application {
                 .server("https://buzzard-parking.herokuapp.com/parse/")
                 .build());
     }
-}
-
 }
