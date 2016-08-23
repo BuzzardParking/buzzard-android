@@ -124,7 +124,7 @@ public class MarkerManager {
         clusterManager.setRenderer(new PlaceRenderer(context));
 
         map.setOnCameraChangeListener(clusterManager);
-        onMarkerClick(map, context);
+//        onMarkerClick(map, context);
 
     }
 
