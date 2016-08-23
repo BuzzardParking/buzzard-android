@@ -2,11 +2,13 @@ package com.buzzardparking.buzzard.util;
 
 import android.animation.ValueAnimator;
 import android.graphics.Point;
+import android.view.LayoutInflater;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MainActivity;
 import com.buzzardparking.buzzard.models.Place;
+import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -25,6 +27,7 @@ public class MarkerManager {
 
     private ArrayList<Marker> markers;
     private ClusterManager<Place> clusterManager;
+    private MainActivity context;
 
     /**
      * MarkerManager: manage parking space markers on the map
@@ -84,9 +87,26 @@ public class MarkerManager {
         animator.start();
     }
 
+    public void onMarkerClick(GoogleMap map, final MainActivity context) {
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                BottomSheetLayout bottomSheet = context.bottomSheet;
+                bottomSheet.showWithSheetView(
+                    LayoutInflater
+                        .from(context)
+                        .inflate(R.layout.image_card, bottomSheet, false)
+                );
+                return true;
+            }
+        });
+    }
+
     private class PlaceRenderer extends DefaultClusterRenderer<Place> {
+        MainActivity context;
         public PlaceRenderer(MainActivity context) {
             super(context, context.getMap(), clusterManager);
+            this.context = context;
         }
 
         @Override
@@ -104,7 +124,8 @@ public class MarkerManager {
         clusterManager.setRenderer(new PlaceRenderer(context));
 
         map.setOnCameraChangeListener(clusterManager);
-        map.setOnMarkerClickListener(clusterManager);
+        onMarkerClick(map, context);
+
     }
 
 }
