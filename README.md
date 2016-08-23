@@ -6,7 +6,7 @@
 
 The following functionality is completed:
 
-* [ ] A user can see a map with available parking spaces
+* [x] A user can see a map with available parking spaces
 * [ ] A user can search for an area and see available parking spaces
 * [ ] A user can park in a space
 * [ ] A user can report an available parking space

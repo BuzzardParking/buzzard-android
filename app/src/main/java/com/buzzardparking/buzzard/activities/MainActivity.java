@@ -14,7 +14,6 @@ import com.buzzardparking.buzzard.models.Map;
 import com.buzzardparking.buzzard.states.LeavingState;
 import com.buzzardparking.buzzard.states.LookingState;
 import com.buzzardparking.buzzard.states.NavigatingState;
-import com.buzzardparking.buzzard.states.OverviewState;
 import com.buzzardparking.buzzard.states.ParkedState;
 import com.buzzardparking.buzzard.states.UserState;
 import com.buzzardparking.buzzard.util.AddLocationLayer;
@@ -79,13 +78,13 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         buzzardMap = new Map();
 
         // TODO: retrieve from DB or backend in the future
-        goTo(AppState.OVERVIEW);
+        goTo(AppState.LOOKING);
 
         // initialize the map system and view
         FragmentManager fm = getSupportFragmentManager();
         SupportMapFragment fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
         if (fragment != null) {
-            fragment.getMapAsync(new OnMap(placeManager, click, layer, move, track, currentState, buzzardMap));
+            fragment.getMapAsync(new OnMap(buzzardMap, placeManager, click, layer, move, track, currentState));
         }
 
         // connect the google client
@@ -135,9 +134,6 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         }
 
         switch (state) {
-            case OVERVIEW:
-                currentState = new OverviewState(this, placeManager);
-                break;
             case LOOKING:
                 currentState = new LookingState(this, placeManager);
                 break;

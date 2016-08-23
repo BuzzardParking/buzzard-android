@@ -30,7 +30,7 @@ public class LeavingState extends UserState {
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getContext().goTo(AppState.OVERVIEW);
+                getContext().goTo(AppState.LOOKING);
             }
         });
     }
