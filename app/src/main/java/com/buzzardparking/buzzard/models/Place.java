@@ -5,6 +5,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
 import com.parse.ParseObject;
 
 import org.parceler.Parcel;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @Table(name = "Places")
 @Parcel(analyze={Place.class})
-public class Place extends Model{
+public class Place extends Model implements ClusterItem {
 
     @Column(name = "Title")
     public String title;
@@ -74,4 +75,8 @@ public class Place extends Model{
         return placesArr;
     }
 
+    @Override
+    public LatLng getPosition() {
+        return getLatLng();
+    }
 }

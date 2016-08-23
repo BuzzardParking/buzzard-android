@@ -3,6 +3,7 @@ package com.buzzardparking.buzzard.util;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.buzzardparking.buzzard.activities.MainActivity;
 import com.buzzardparking.buzzard.models.Place;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -25,22 +26,26 @@ public class PlaceManager implements
 
     private static final String KEY = "places";
     private final MarkerManager mMarkerManager;
-    private ArrayList<Place> mPlaces;
+    private ArrayList<Place> mPlaces; // May not need this. Need to know more about screen rotation
+    private MainActivity context;
 
-    public PlaceManager(MarkerManager markerManager) {
+    public PlaceManager(MarkerManager markerManager, MainActivity context) {
         this.mMarkerManager = markerManager;
+        this.context = context;
         mPlaces = new ArrayList<>();
     }
 
-    public void addPlace(GoogleMap map, String title, LatLng latLng) {
+    public void addPlace(String title, LatLng latLng) {
         Place newPlace = new Place(title, latLng);
         newPlace.save();
         newPlace.saveParse();
         mPlaces.add(newPlace);
-        mMarkerManager.addMarker(map, title, latLng, true);
+
+        mMarkerManager.addMarker(newPlace);
+
     }
 
-    public void clearPlaces() {
+    public void clearMap() {
         mMarkerManager.removeMarkers();
     }
 
@@ -51,13 +56,7 @@ public class PlaceManager implements
 
     public void loadFromLocal(GoogleMap map) {
         mPlaces.addAll(Place.getAll());
-        placesToMarkers(mPlaces, map);
-    }
-
-    private void placesToMarkers(ArrayList<Place> places, GoogleMap map) {
-        for (Place place: places) {
-            mMarkerManager.addMarker(map, place.getTitle(), place.getLatLng(), false);
-        }
+        mMarkerManager.addAll(mPlaces);
     }
 
     public void loadFromParse(final GoogleMap map) {
@@ -66,9 +65,11 @@ public class PlaceManager implements
             @Override
             public void done(Object places, Throwable throwable) {
                 mPlaces.clear();
-                clearPlaces();
+                mMarkerManager.removeMarkers();
+
                 mPlaces.addAll(Place.fromParse(places));
-                placesToMarkers(mPlaces, map);
+
+                mMarkerManager.addAll(mPlaces);
             }
 
             @Override
@@ -98,9 +99,7 @@ public class PlaceManager implements
 
     @Override
     public void onMap(GoogleMap map) {
-        for (Place place : mPlaces) {
-            mMarkerManager.addMarker(map, place.getTitle(), place.getLatLng(), false);
-        }
+        mMarkerManager.setUpClusterer(map, context);
     }
 
 }

@@ -1,10 +1,12 @@
 package com.buzzardparking.buzzard.util;
 
 import android.animation.ValueAnimator;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.buzzardparking.buzzard.R;
+import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.models.Place;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -12,50 +14,44 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MarkerManager {
 
-    private IconGenerator mIconGenerator;
     private ArrayList<Marker> markers;
+    private ClusterManager<Place> clusterManager;
 
     /**
      * MarkerManager: manage parking space markers on the map
      * @param generator an {@link IconGenerator} used to generate parking space markers
      */
     public MarkerManager(IconGenerator generator) {
-        mIconGenerator = generator;
         markers = new ArrayList<>();
     }
 
     /**
      * Add a parking space marker to the map
      *
-     * @param map the {@link GoogleMap} to add markers to
-     * @param title label of the marker
-     * @param latLng lat lng location of the marker
-     * @param animate boolean to decide whether to add animation effect
+     * @param place all the details will be used the onBeforeItemClustered method
      */
-    public void addMarker(GoogleMap map, String title, LatLng latLng, boolean animate) {
-        Bitmap bitmap = mIconGenerator.makeIcon(title);
-        MarkerOptions opts = new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
-        Marker marker = map.addMarker(opts);
-        markers.add(marker);
+    public void addMarker(Place place) {
+        clusterManager.addItem(place);
+        clusterManager.cluster();
+    }
 
-        if (animate) {
-            animate(map, marker);
-        }
+    public void addAll(List<Place> places) {
+        clusterManager.addItems(places);
+        clusterManager.cluster();
     }
 
     public void removeMarkers() {
-        for (int i = 0; i < markers.size(); i++) {
-            markers.get(i).remove();
-        }
-        markers = new ArrayList<>();
+        clusterManager.clearItems(); //these used to be seperate
+        clusterManager.cluster();
     }
 
     // Get the marker's position and the map's projection.
@@ -86,6 +82,29 @@ public class MarkerManager {
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.setDuration(2500);
         animator.start();
+    }
+
+    private class PlaceRenderer extends DefaultClusterRenderer<Place> {
+        public PlaceRenderer(MainActivity context) {
+            super(context, context.getMap(), clusterManager);
+        }
+
+        @Override
+        protected void onBeforeClusterItemRendered(Place item, MarkerOptions markerOptions) {
+            markerOptions
+                    .position(item.getLatLng())
+//                    .alpha(0.5f) //TODO: use alpha
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.carmarker));
+        }
+    }
+
+    public void setUpClusterer(GoogleMap map, MainActivity context) {
+
+        clusterManager = new ClusterManager<>(context, map);
+        clusterManager.setRenderer(new PlaceRenderer(context));
+
+        map.setOnCameraChangeListener(clusterManager);
+        map.setOnMarkerClickListener(clusterManager);
     }
 
 }

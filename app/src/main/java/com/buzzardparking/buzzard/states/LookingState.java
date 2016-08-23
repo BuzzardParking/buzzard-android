@@ -28,7 +28,7 @@ public class LookingState extends UserState {
     @Override
     public void stop() {
         super.stop();
-        getManager().clearPlaces();
+        getManager().clearMap();
     }
 
     private void updateUI() {

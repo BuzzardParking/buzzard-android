@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         }
 
         MarkerManager markerManager = new MarkerManager(getIconGenerator());
-        placeManager = new PlaceManager(markerManager);
+        placeManager = new PlaceManager(markerManager, this);
 
         AddMarkerOnLongClick click = new AddMarkerOnLongClick(this, placeManager);
         AddLocationLayer layer = new AddLocationLayer();

@@ -34,7 +34,7 @@ public class AddMarkerOnLongClick implements OnMap.Listener, GoogleMap.OnMarkerC
 
             @Override
             public void onMapLongClick(LatLng latLng) {
-                mPlaceManager.addPlace(map, "New Space", latLng);
+                mPlaceManager.addPlace("New Space", latLng); // TODO: title not needed remove
 
                 // vibrates phone
                 Vibrator vb = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
