@@ -14,14 +14,14 @@ The following functionality is completed:
 * [ ] A user can select a marker on the map
 
 Optional:
-* [ ] The map displays multiple types of custom markers depicting how old a spot is
+* [x] The map displays multiple types of custom markers depicting how old a spot is
 * [ ] A user can save a region to a list of favorites for quick checking
   * [ ] A user can subscribe to parking changes in an area with push notifications
   * [ ] A user can delete a saved region
 * [ ] Implement geofencing in order to automatically park in a space
 * [ ] A user can notify when they are going to leave a space
   * [ ] Display a marker indicating the space will be vacated.
-* [ ] Display a group icon showing the number of spaces when the map is zoomed out.
+* [x] Display a group icon showing the number of spaces when the map is zoomed out.
 * [ ] Polish the animations: pin a parking space
 * [ ] NUX(i.e. new user experience) screen to show you how to use the app
 * [ ] A user can swipe up and see a few card details about any spot
