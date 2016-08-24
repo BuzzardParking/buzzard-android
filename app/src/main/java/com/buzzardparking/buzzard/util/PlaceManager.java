@@ -51,7 +51,7 @@ public class PlaceManager implements
     }
 
     public void loadPlaces(GoogleMap map) {
-        loadFromLocal(map);
+//        loadFromLocal(map);
         loadFromParse(map);
 //        deleteFromParse();
     }

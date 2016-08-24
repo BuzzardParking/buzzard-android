@@ -20,12 +20,10 @@ import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MarkerManager {
 
-    private ArrayList<Marker> markers;
     private ClusterManager<Place> clusterManager;
     private MainActivity context;
 
@@ -34,7 +32,6 @@ public class MarkerManager {
      * @param generator an {@link IconGenerator} used to generate parking space markers
      */
     public MarkerManager(IconGenerator generator) {
-        markers = new ArrayList<>();
     }
 
     /**
@@ -110,11 +107,23 @@ public class MarkerManager {
         }
 
         @Override
-        protected void onBeforeClusterItemRendered(Place item, MarkerOptions markerOptions) {
+        protected void onBeforeClusterItemRendered(Place place, MarkerOptions markerOptions) {
             markerOptions
-                    .position(item.getLatLng())
-//                    .alpha(0.5f) //TODO: use alpha
+                    .position(place.getLatLng())
+                    .alpha(getAlpha(place))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.carmarker));
+        }
+    }
+
+    public float getAlpha(Place place) {
+        long age = place.getAgeinMinutes();
+//        Log.v("DEBUG", "Marker Age: " + age);
+        if (age < 5 ) {
+            return 1.0f;
+        } else if (age < 10) {
+            return 0.7f;
+        } else {
+            return 0.5f;
         }
     }
 

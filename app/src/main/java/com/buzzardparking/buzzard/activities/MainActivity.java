@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
             Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
         }
 
-        MarkerManager markerManager = new MarkerManager(getIconGenerator());
+        MarkerManager markerManager = new MarkerManager(getIconGenerator()); // Icongenerator currently not being used
         placeManager = new PlaceManager(markerManager, this);
 
         AddMarkerOnLongClick click = new AddMarkerOnLongClick(this, placeManager);
