@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -9,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
@@ -45,6 +47,7 @@ import com.google.maps.android.ui.IconGenerator;
 public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+    private final int REQUEST_CODE = 99;
 
     // Singleton instance of map
     public Map buzzardMap;
@@ -182,10 +185,23 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
         if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        } else if (id == R.id.miSearch) {
+            Toast.makeText(this, "YEEE", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MainActivity.this, SearchActivity.class);
+            startActivityForResult(i, REQUEST_CODE);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        return true;
     }
 
     @Override
