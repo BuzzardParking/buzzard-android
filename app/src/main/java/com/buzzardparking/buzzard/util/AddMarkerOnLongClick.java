@@ -28,7 +28,7 @@ public class AddMarkerOnLongClick implements OnMap.Listener {
 
             @Override
             public void onMapLongClick(LatLng latLng) {
-                mPlaceManager.addPlace("New Space", latLng); // TODO: title not needed remove
+                mPlaceManager.addPlace(latLng);
 
                 // vibrates phone
                 Vibrator vb = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);

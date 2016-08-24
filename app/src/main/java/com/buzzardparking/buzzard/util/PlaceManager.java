@@ -36,8 +36,8 @@ public class PlaceManager implements
         mPlaces = new ArrayList<>();
     }
 
-    public void addPlace(String title, LatLng latLng) {
-        Place newPlace = new Place(title, latLng);
+    public void addPlace(LatLng latLng) {
+        Place newPlace = new Place(latLng);
         newPlace.save();
         newPlace.saveParse();
         mPlaces.add(newPlace);
@@ -51,7 +51,7 @@ public class PlaceManager implements
     }
 
     public void loadPlaces(GoogleMap map) {
-//        loadFromLocal(map);
+//        loadFromLocal(map); // If you uncomment this, you must reinstall the app first
         loadFromParse(map);
 //        deleteFromParse();
     }

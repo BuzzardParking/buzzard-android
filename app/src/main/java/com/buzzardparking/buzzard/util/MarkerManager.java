@@ -116,7 +116,7 @@ public class MarkerManager {
     }
 
     public float getAlpha(Place place) {
-        long age = place.getAgeinMinutes();
+        long age = place.getAgeInMinutes();
 //        Log.v("DEBUG", "Marker Age: " + age);
         if (age < 5 ) {
             return 1.0f;

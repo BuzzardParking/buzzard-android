@@ -23,11 +23,6 @@ import java.util.List;
 @Parcel(analyze={Place.class})
 public class Place extends Model implements ClusterItem {
 
-    // TODO dig out title attribute, then display opacities for the thingies based on age.
-
-    @Column(name = "Title")
-    public String title;
-
     @Column(name = "Latitude")
     public double latitude;
 
@@ -39,23 +34,18 @@ public class Place extends Model implements ClusterItem {
 
     public Place(){ super();}
 
-    public Place(String title, LatLng latLng) {
-        this.title = title;
+    public Place(LatLng latLng) {
         this.latitude = latLng.latitude;
         this.longitude = latLng.longitude;
         this.timestamp = formatter().print(DateTime.now());
     }
 
     public Place(ParseObject parsePlace) {
-        this.title = parsePlace.getString("title");
         this.longitude = parsePlace.getDouble("longitude");
         this.latitude = parsePlace.getDouble("latitude");
         this.timestamp = parsePlace.getString("timestamp");
     }
 
-    public String getTitle() {
-        return title;
-    }
 
     public LatLng getLatLng() {
         return new LatLng(latitude, longitude);
@@ -69,14 +59,13 @@ public class Place extends Model implements ClusterItem {
 
     public void saveParse() {
         ParseObject place = new ParseObject("Place");
-        place.put("title", getTitle());
         place.put("latitude", latitude);
         place.put("longitude", longitude);
         place.put("timestamp", timestamp);
         place.saveInBackground();
     }
 
-    public long getAgeinMinutes() {
+    public long getAgeInMinutes() {
         DateTime d1 = formatter().parseDateTime(timestamp);
         DateTime d2 = DateTime.now();
         long diffInMillis = d2.getMillis() - d1.getMillis();
