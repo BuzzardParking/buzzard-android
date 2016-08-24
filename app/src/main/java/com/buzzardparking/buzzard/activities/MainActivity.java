@@ -1,10 +1,15 @@
 package com.buzzardparking.buzzard.activities;
 
 import android.Manifest;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,8 +53,13 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     private UserState currentState;
 
     private PlaceManager placeManager;
+
     /* UI ELEMENTS */
     public Button actionButton;
+    private DrawerLayout mDrawer;
+    private NavigationView nvDrawer;
+    private ActionBarDrawerToggle drawerToggle;
+    private Toolbar toolbar;
 
     public BottomSheetLayout bottomSheet;
 
@@ -58,10 +68,10 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupToolbar();
+        setupDrawer();
 
         actionButton = (Button) findViewById(R.id.btn_action);
         bottomSheet = (BottomSheetLayout) findViewById(R.id.bottomsheet);
-
 
         if (savedInstanceState == null) {
             Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
@@ -103,11 +113,17 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     }
 
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         mTitle.setText(R.string.toolbarTitle);
+    }
+
+    private void setupDrawer() {
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = setupDrawerToggle();
+        mDrawer.addDrawerListener(drawerToggle);
     }
 
     private IconGenerator getIconGenerator() {
@@ -162,5 +178,29 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         }
 
         currentState.start();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 }
