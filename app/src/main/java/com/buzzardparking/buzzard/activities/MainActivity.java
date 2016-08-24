@@ -4,7 +4,9 @@ import android.Manifest;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupToolbar();
 
         actionButton = (Button) findViewById(R.id.btn_action);
         bottomSheet = (BottomSheetLayout) findViewById(R.id.bottomsheet);
@@ -97,6 +100,14 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         OnPermission.Request location = new OnPermission.Request(requestCode, permission, layer, move, track);
         OnPermission onPermission = new OnPermission.Builder(this).build();
         onPermission.beginRequest(location);
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(R.string.toolbarTitle);
     }
 
     private IconGenerator getIconGenerator() {
