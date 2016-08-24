@@ -9,6 +9,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import org.parceler.Parcels;
@@ -52,6 +53,7 @@ public class PlaceManager implements
     public void loadPlaces(GoogleMap map) {
         loadFromLocal(map);
         loadFromParse(map);
+//        deleteFromParse();
     }
 
     public void loadFromLocal(GoogleMap map) {
@@ -75,6 +77,24 @@ public class PlaceManager implements
             @Override
             public void done(List objects, ParseException e) {
                 Log.v("DEBUG", objects.toString());
+            }
+        });
+    }
+
+    public void deleteFromParse(){
+        ParseQuery query = new ParseQuery("Place");
+        query.findInBackground(new FindCallback() {
+            @Override
+            public void done(List objects, ParseException e) {
+
+            }
+
+            @Override
+            public void done(Object places, Throwable throwable) {
+                ArrayList<ParseObject> placesToDelete = (ArrayList<ParseObject>) places;
+                for (ParseObject place: placesToDelete) {
+                    place.deleteInBackground();
+                }
             }
         });
     }
