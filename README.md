@@ -9,7 +9,7 @@ The following functionality is completed:
 * [x] A user can see a map with available parking spaces
 * [ ] A user can search for an area and see available parking spaces
 * [ ] A user can park in a space
-* [ ] A user can report an available parking space
+* [x] A user can report an available parking space
 * [ ] A user can navigate to a parking space using an external navigation app
 * [ ] A user can select a marker on the map
 
