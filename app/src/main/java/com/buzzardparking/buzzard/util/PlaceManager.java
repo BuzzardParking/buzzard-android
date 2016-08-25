@@ -1,6 +1,5 @@
 package com.buzzardparking.buzzard.util;
 
-import android.os.Bundle;
 import android.util.Log;
 
 import com.buzzardparking.buzzard.activities.MainActivity;
@@ -12,8 +11,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +19,6 @@ import java.util.List;
  * any places on rotation.
  */
 public class PlaceManager implements
-        OnActivity.Listener,
         OnMap.Listener {
 
     private static final String KEY = "places";
@@ -97,24 +93,6 @@ public class PlaceManager implements
                 }
             }
         });
-    }
-
-    @Override
-    public void onStatus(OnActivity.Status status) {
-
-    }
-
-    @Override
-    public void onSave(Bundle state) {
-        state.putParcelable(KEY, Parcels.wrap(mPlaces));
-    }
-
-    @Override
-    public void onRestore(Bundle state) {
-        ArrayList<Place> places = Parcels.unwrap(state.getParcelable(KEY));
-        if (places != null) {
-            mPlaces = places;
-        }
     }
 
     @Override

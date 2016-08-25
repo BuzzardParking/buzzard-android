@@ -10,8 +10,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,9 +40,15 @@ import com.buzzardparking.buzzard.util.OnPermission;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.buzzardparking.buzzard.util.TrackLocation;
 import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.ui.IconGenerator;
@@ -48,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private final int REQUEST_CODE = 99;
+    private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     // Singleton instance of map
     public Map buzzardMap;
@@ -88,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         MoveToLocationFirstTime move = new MoveToLocationFirstTime(savedInstanceState);
         TrackLocation track = new TrackLocation(getLocationRequest(), new LogLocation());
 
-        new OnActivity.Builder(this, placeManager, track).build();
+        new OnActivity.Builder(this, track).build();
 
         // save the map reference
         buzzardMap = new Map();
@@ -148,6 +158,8 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     // Enable auto manage and add LocationServices API
     private GoogleApiClient getGoogleApiClient() {
         return new GoogleApiClient.Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, null)
                 .addApi(LocationServices.API)
                 .build();
@@ -190,12 +202,50 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         } else if (id == R.id.miSearch) {
-            Toast.makeText(this, "YEEE", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(MainActivity.this, SearchActivity.class);
-            startActivityForResult(i, REQUEST_CODE);
+            try {
+                Intent intent =
+                        new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                .build(this);
+                startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+            } catch (GooglePlayServicesRepairableException e) {
+                // TODO: Handle the error.
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // TODO: Handle the error.
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                Log.i(TAG, "Place: " + place.getName());
+                showDestinationDetails(place);
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                // TODO: Handle the error.
+                Log.i(TAG, status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        };
+    }
+
+    public void showDestinationDetails(Place googlePlace) {
+        View myView =  LayoutInflater
+                .from(this)
+                .inflate(R.layout.destination_detail_bottomsheet, bottomSheet, false);
+        bottomSheet.showWithSheetView(myView);
+        TextView tvName = (TextView) myView.findViewById(R.id.tvName);
+        TextView tvAddress = (TextView) myView.findViewById(R.id.tvAddress);
+
+        tvAddress.setText(googlePlace.getAddress());
+        tvName.setText(googlePlace.getName());
+
     }
 
     @Override
