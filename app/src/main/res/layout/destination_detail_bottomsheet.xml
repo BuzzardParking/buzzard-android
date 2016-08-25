@@ -17,6 +17,7 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:id="@+id/rlTopPiece"
             android:layout_height="wrap_content">
 
             <TextView
@@ -34,9 +35,17 @@
                 android:layout_below="@+id/tvName"
                 android:id="@+id/tvAddress"/>
         </RelativeLayout>
+        <!--<RelativeLayout-->
+            <!--android:layout_below="@id/rlTopPiece"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/colorAccent"-->
+            <!--android:minHeight="200dp">-->
+
+        <!--</RelativeLayout>-->
     </RelativeLayout>
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabNavigate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ import com.buzzardparking.buzzard.util.OnPermission;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.buzzardparking.buzzard.util.TrackLocation;
 import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.flipboard.bottomsheet.OnSheetDismissedListener;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -242,9 +245,28 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         bottomSheet.showWithSheetView(myView);
         TextView tvName = (TextView) myView.findViewById(R.id.tvName);
         TextView tvAddress = (TextView) myView.findViewById(R.id.tvAddress);
+        FloatingActionButton fabNavigate = (FloatingActionButton) myView.findViewById(R.id.fabNavigate);
+        RelativeLayout rlTopPiece = (RelativeLayout) myView.findViewById(R.id.rlTopPiece);
 
         tvAddress.setText(googlePlace.getAddress());
         tvName.setText(googlePlace.getName());
+
+        fabNavigate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Nav Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        bottomSheet.addOnSheetDismissedListener(new OnSheetDismissedListener() {
+            @Override
+            public void onDismissed(BottomSheetLayout bottomSheetLayout) {
+                Toast.makeText(getApplicationContext(), "Sheet Dismissed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        int height = rlTopPiece.getMeasuredHeight();
+//        bottomSheet.setPeekSheetTranslation(250); // BUGBUG: This should be dynamic
 
     }
 
