@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.google.maps.android.ui.IconGenerator;
 
@@ -22,6 +23,8 @@ public class MarkerManager {
 
     private com.google.maps.android.clustering.ClusterManager clusterManager;
     private MainActivity context;
+
+    Marker destinationMarker;
 
     /**
      * MarkerManager: manage parking space markers on the map
@@ -38,6 +41,21 @@ public class MarkerManager {
     public void addMarker(Place place) {
         clusterManager.addItem(place);
         clusterManager.cluster();
+    }
+
+    public void addDestinationMarker(GoogleMap map, com.google.android.gms.location.places.Place googlePlace) {
+        MarkerOptions opts = new MarkerOptions()
+                .position(googlePlace.getLatLng());
+        destinationMarker = map.addMarker(opts);
+//        if (animate) {
+//            animate(map, marker);
+//        }
+    }
+
+    public void removeDestinationMarker() {
+        if (destinationMarker != null) {
+            destinationMarker.remove();
+        }
     }
 
     public void addAll(List<Place> places) {

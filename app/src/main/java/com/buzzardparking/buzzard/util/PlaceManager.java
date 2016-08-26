@@ -42,6 +42,14 @@ public class PlaceManager implements
 
     }
 
+    public void addDestinationMarker(GoogleMap map, com.google.android.gms.location.places.Place googlePlace) {
+        mMarkerManager.addDestinationMarker(map, googlePlace);
+    }
+
+    public void removeDestinationMarker() {
+        mMarkerManager.removeDestinationMarker();
+    }
+
     public void clearMap() {
         mMarkerManager.removeMarkers();
     }

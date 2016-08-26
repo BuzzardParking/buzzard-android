@@ -46,6 +46,8 @@ public class ChoosingState extends UserState {
 
         getCameraManager().moveToLocation(getContext().getMap(), googlePlace.getLatLng());
 
+        getPlaceManager().addDestinationMarker(getContext().getMap(), googlePlace);
+
         Toast.makeText(getContext(), "In Choosing state.", Toast.LENGTH_SHORT).show();
         actionButton.setText(getContext().getString(R.string.btn_reset));
 
@@ -60,6 +62,7 @@ public class ChoosingState extends UserState {
     @Override
     public void stop() {
         super.stop();
+        getPlaceManager().removeDestinationMarker();
         bottomSheet.removeOnSheetDismissedListener(onSheetDismissedListener); // This must be above dismiss sheet
         bottomSheet.dismissSheet();
     }
