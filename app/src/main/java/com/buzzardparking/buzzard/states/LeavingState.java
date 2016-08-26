@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 
@@ -26,12 +27,42 @@ public class LeavingState extends UserState {
         // 3. Able to send time information to the server, so the server could keep track of the time elapsedA
         // ...
         Toast.makeText(getContext(), "In leaving state.", Toast.LENGTH_SHORT).show();
-        actionButton.setText(getContext().getString(R.string.btn_reset));
 
-        actionButton.setOnClickListener(new View.OnClickListener() {
+        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_reset));
+        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
+
+        bottomSheet.expand();
+        bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick() {
                 getContext().goTo(AppState.LOOKING);
+            }
+        });
+
+        bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
+            @Override
+            public void onCollapsed() {
+
+            }
+
+            @Override
+            public void onDragging() {
+                bottomSheet.expand();
+            }
+
+            @Override
+            public void onExpanded() {
+
+            }
+
+            @Override
+            public void onHidden() {
+
+            }
+
+            @Override
+            public void onSettling() {
+
             }
         });
     }

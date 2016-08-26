@@ -6,8 +6,10 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.GoogleMap;
 
 /**
@@ -30,6 +32,19 @@ public class LookingState extends UserState {
     public void stop() {
         super.stop();
         getPlaceManager().clearMap();
+        getPlaceManager().removeDestinationMarker();
+    }
+
+    public void showDestinationDetails(Place googlePlace) {
+        getPlaceManager().removeDestinationMarker();
+
+        getContext().tvBottomSheetHeading.setText(googlePlace.getName());
+        getContext().tvBottomSheetSubHeading.setVisibility(View.VISIBLE);
+        getContext().tvBottomSheetSubHeading.setText(googlePlace.getAddress());
+
+        getPlaceManager().addDestinationMarker(getContext().getMap(), googlePlace);
+        getCameraManager().moveToLocation(getContext().getMap(), googlePlace.getLatLng());
+
     }
 
     private void updateUI() {
@@ -39,14 +54,44 @@ public class LookingState extends UserState {
 
         getCameraManager().moveToUserLocation();
 
-        actionButton.setText(getContext().getString(R.string.btn_navigating));
+        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
+        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
 
-        actionButton.setOnClickListener(new View.OnClickListener() {
+        bottomSheet.expand();
+        bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick() {
                 getContext().goTo(AppState.NAVIGATING);
             }
         });
+
+        bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
+            @Override
+            public void onCollapsed() {
+
+            }
+
+            @Override
+            public void onDragging() {
+                bottomSheet.expand();
+            }
+
+            @Override
+            public void onExpanded() {
+
+            }
+
+            @Override
+            public void onHidden() {
+
+            }
+
+            @Override
+            public void onSettling() {
+
+            }
+        });
+
     }
 
     @Override

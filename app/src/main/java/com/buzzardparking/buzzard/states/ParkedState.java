@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 
@@ -29,12 +30,42 @@ public class ParkedState extends UserState {
         // 6. able to fav the parking location, and revisit your parking history
 
         Toast.makeText(getContext(), "In parked state.", Toast.LENGTH_SHORT).show();
-        actionButton.setText(getContext().getString(R.string.btn_leaving));
 
-        actionButton.setOnClickListener(new View.OnClickListener() {
+        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_leaving));
+        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
+
+        bottomSheet.expand();
+        bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick() {
                 getContext().goTo(AppState.LEAVING);
+            }
+        });
+
+        bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
+            @Override
+            public void onCollapsed() {
+
+            }
+
+            @Override
+            public void onDragging() {
+                bottomSheet.expand();
+            }
+
+            @Override
+            public void onExpanded() {
+
+            }
+
+            @Override
+            public void onHidden() {
+
+            }
+
+            @Override
+            public void onSettling() {
+
             }
         });
     }

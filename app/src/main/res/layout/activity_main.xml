@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.flipboard.bottomsheet.BottomSheetLayout
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/bottomsheet"
         android:layout_width="match_parent"
         android:background="#00FFFFFF"
@@ -27,18 +27,11 @@
                 android:layout_below="@+id/toolbar"
                 tools:context="com.buzzardparking.buzzard.activities.MainActivity"/>
 
-            <Button
-                android:id="@+id/btn_action"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:text="New Button"/>
-
-
         </RelativeLayout>
 
-    </com.flipboard.bottomsheet.BottomSheetLayout>
+        <include layout="@layout/destination_detail_bottomsheet" />
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nvView"

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -13,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +21,6 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Map;
-import com.buzzardparking.buzzard.states.ChoosingState;
 import com.buzzardparking.buzzard.states.LeavingState;
 import com.buzzardparking.buzzard.states.LookingState;
 import com.buzzardparking.buzzard.states.NavigatingState;
@@ -29,16 +28,16 @@ import com.buzzardparking.buzzard.states.ParkedState;
 import com.buzzardparking.buzzard.states.UserState;
 import com.buzzardparking.buzzard.util.AddLocationLayer;
 import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
+import com.buzzardparking.buzzard.util.BottomSheetManager;
+import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.LogLocation;
 import com.buzzardparking.buzzard.util.MarkerManager;
-import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.OnActivity;
 import com.buzzardparking.buzzard.util.OnClient;
 import com.buzzardparking.buzzard.util.OnMap;
 import com.buzzardparking.buzzard.util.OnPermission;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.buzzardparking.buzzard.util.TrackLocation;
-import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -69,13 +68,15 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     CameraManager cameraManager;
 
     /* UI ELEMENTS */
-    public Button actionButton;
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
 
-    public BottomSheetLayout bottomSheet;
+    public TextView tvBottomSheetHeading;
+    public TextView tvBottomSheetSubHeading;
+
+    public BottomSheetBehavior bottomSheet;
 
     public Place googlePlace;
 
@@ -86,8 +87,11 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         setupToolbar();
         setupDrawer();
 
-        actionButton = (Button) findViewById(R.id.btn_action);
-        bottomSheet = (BottomSheetLayout) findViewById(R.id.bottomsheet);
+        bottomSheet = BottomSheetBehavior.from(findViewById(R.id.rlBottomSheet));
+
+        tvBottomSheetHeading = (TextView) findViewById(R.id.tvBottomSheetHeading);
+        tvBottomSheetSubHeading = (TextView) findViewById(R.id.tvBottomSheetSubheading);
+        new BottomSheetManager(this, bottomSheet);
 
         if (savedInstanceState == null) {
             Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
@@ -172,6 +176,10 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         return buzzardMap.get();
     }
 
+    public BottomSheetBehavior getBottomSheet() {
+        return bottomSheet;
+    }
+
     @Override
     public void goTo(AppState state) {
         if (currentState != null) {
@@ -190,9 +198,6 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
                 break;
             case LEAVING:
                 currentState = new LeavingState(this, placeManager, cameraManager);
-                break;
-            case CHOOSING:
-                currentState = new ChoosingState(this, placeManager, cameraManager, googlePlace);
                 break;
             default:
                 break;
@@ -229,7 +234,12 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
             if (resultCode == RESULT_OK) {
 
                 googlePlace = PlaceAutocomplete.getPlace(this, data); // This is hoisted and then collected in goTo
-                goTo(AppState.CHOOSING);
+
+                goTo(AppState.LOOKING); // TODO: check if it is already looking, if not change
+
+                LookingState lookingState = (LookingState) currentState;
+
+                lookingState.showDestinationDetails(googlePlace);
                 ;
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/rlBottomSheet"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:behavior_hideable="true"
+    app:layout_behavior="@string/bottom_sheet_behavior">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_marginTop="24dp"
@@ -24,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:id="@+id/tvName"
+                android:id="@+id/tvBottomSheetHeading"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"/>
 
@@ -32,20 +35,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Address"
-                android:layout_below="@+id/tvName"
-                android:id="@+id/tvAddress"/>
+                android:layout_below="@+id/tvBottomSheetHeading"
+                android:id="@+id/tvBottomSheetSubheading"/>
         </RelativeLayout>
-        <!--<RelativeLayout-->
-            <!--android:layout_below="@id/rlTopPiece"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/colorAccent"-->
-            <!--android:minHeight="200dp">-->
-
-        <!--</RelativeLayout>-->
     </RelativeLayout>
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabNavigate"
+        android:id="@+id/fabAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"

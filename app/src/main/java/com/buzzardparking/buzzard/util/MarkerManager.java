@@ -2,13 +2,10 @@ package com.buzzardparking.buzzard.util;
 
 import android.animation.ValueAnimator;
 import android.graphics.Point;
-import android.view.LayoutInflater;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MainActivity;
 import com.buzzardparking.buzzard.models.Place;
-import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLng;
@@ -99,18 +96,18 @@ public class MarkerManager {
     }
 
     public void onMarkerClick(GoogleMap map, final MainActivity context) {
-        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                BottomSheetLayout bottomSheet = context.bottomSheet;
-                bottomSheet.showWithSheetView(
-                    LayoutInflater
-                        .from(context)
-                        .inflate(R.layout.image_card, bottomSheet, false)
-                );
-                return true;
-            }
-        });
+//        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                BottomSheetLayout bottomSheet = context.bottomSheet;
+//                bottomSheet.showWithSheetView(
+//                    LayoutInflater
+//                        .from(context)
+//                        .inflate(R.layout.image_card, bottomSheet, false)
+//                );
+//                return true;
+//            }
+//        });
     }
 
     public void setUpClusterer(GoogleMap map, MainActivity context) {

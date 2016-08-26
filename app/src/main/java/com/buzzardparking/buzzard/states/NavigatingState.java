@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 
@@ -27,12 +28,42 @@ public class NavigatingState extends UserState {
         // 4. button to go to the parked state
         // ...
         Toast.makeText(getContext(), "In navigating state.", Toast.LENGTH_SHORT).show();
-        actionButton.setText(getContext().getString(R.string.btn_parked));
 
-        actionButton.setOnClickListener(new View.OnClickListener() {
+        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_parked));
+        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
+
+        bottomSheet.expand();
+        bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick() {
                 getContext().goTo(AppState.PARKED);
+            }
+        });
+
+        bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
+            @Override
+            public void onCollapsed() {
+
+            }
+
+            @Override
+            public void onDragging() {
+                bottomSheet.expand();
+            }
+
+            @Override
+            public void onExpanded() {
+
+            }
+
+            @Override
+            public void onHidden() {
+
+            }
+
+            @Override
+            public void onSettling() {
+
             }
         });
     }
