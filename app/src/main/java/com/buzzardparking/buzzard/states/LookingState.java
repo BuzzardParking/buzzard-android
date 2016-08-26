@@ -11,11 +11,12 @@ import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.maps.android.clustering.ClusterManager;
 
 /**
  * {@link LookingState}: a user is looking for a parking spot.
  */
-public class LookingState extends UserState {
+public class LookingState extends UserState implements ClusterManager.OnClusterItemClickListener<com.buzzardparking.buzzard.models.Place>{
 
     public LookingState(Context context, PlaceManager manager, CameraManager cameraManager) {
         super(context, manager, cameraManager);
@@ -48,6 +49,12 @@ public class LookingState extends UserState {
 
     }
 
+    public void showParkingSpaceDetails(com.buzzardparking.buzzard.models.Place place) {
+        getContext().tvBottomSheetHeading.setText("User parking space");
+        getContext().tvBottomSheetSubHeading.setVisibility(View.VISIBLE);
+        getContext().tvBottomSheetSubHeading.setText("details");
+    }
+
     private void updateUI() {
         Toast.makeText(getContext(), "In looking state.", Toast.LENGTH_SHORT).show();
 
@@ -65,6 +72,8 @@ public class LookingState extends UserState {
                 getContext().goTo(AppState.NAVIGATING);
             }
         });
+
+        getPlaceManager().getClusterManager().setOnClusterItemClickListener(this);
 
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
@@ -98,6 +107,13 @@ public class LookingState extends UserState {
     @Override
     public void onMap(GoogleMap map) {
         updateUI();
+    }
+
+    @Override
+    public boolean onClusterItemClick(com.buzzardparking.buzzard.models.Place place) {
+        showParkingSpaceDetails(place);
+        // TODO get ready to send this to the navigation
+        return true;
     }
 }
 

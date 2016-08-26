@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
+import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.util.List;
@@ -114,10 +115,17 @@ public class MarkerManager {
 
         clusterManager = new com.google.maps.android.clustering.ClusterManager(context, map);
         clusterManager.setRenderer(new ClusterPlaceManager(context, clusterManager));
+        map.setOnMarkerClickListener(clusterManager); // This must be set so onClusterItemClick will work
+
+
 
         map.setOnCameraChangeListener(clusterManager);
 //        onMarkerClick(map, context);
 
+    }
+
+    public ClusterManager getClusterManager() {
+        return clusterManager;
     }
 
 }

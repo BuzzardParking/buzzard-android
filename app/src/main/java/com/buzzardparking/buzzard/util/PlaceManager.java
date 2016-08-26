@@ -6,6 +6,7 @@ import com.buzzardparking.buzzard.activities.MainActivity;
 import com.buzzardparking.buzzard.models.Place;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterManager;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -101,6 +102,10 @@ public class PlaceManager implements
                 }
             }
         });
+    }
+
+    public ClusterManager getClusterManager() {
+        return mMarkerManager.getClusterManager();
     }
 
     @Override

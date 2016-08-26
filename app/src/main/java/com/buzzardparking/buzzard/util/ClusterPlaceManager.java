@@ -24,7 +24,7 @@ import com.google.maps.android.ui.SquareTextView;
 /**
  * {@link ClusterPlaceManager}: Manages the display and rendering of place clusters on the map
  */
-public class ClusterPlaceManager extends DefaultClusterRenderer<Place> {
+public class ClusterPlaceManager extends DefaultClusterRenderer<Place>{
     MainActivity context;
     private final IconGenerator iconGenerator;
     private SparseArray<BitmapDescriptor> mIcons = new SparseArray();
