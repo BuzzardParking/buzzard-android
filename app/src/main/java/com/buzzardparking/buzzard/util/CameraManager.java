@@ -34,7 +34,7 @@ public class CameraManager implements
     }
 
     @SuppressWarnings("MissingPermission")
-    public void moveToUserLocation(GoogleApiClient client, GoogleMap map) {
+    private void moveToUserLocation(GoogleApiClient client, GoogleMap map) {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 client);
 
@@ -46,6 +46,10 @@ public class CameraManager implements
         }
     }
 
+    public void moveToLocation(GoogleMap map, LatLng latLng) {
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng)));
+    }
+
     // Set target, zoom, and tilt (for 3d effect).
     private CameraPosition getCameraPosition(LatLng latLng) {
         return new CameraPosition.Builder().target(latLng)
@@ -54,7 +58,7 @@ public class CameraManager implements
                 .build();
     }
 
-    public void check() {
+    public void moveToUserLocation() {
         if (mSavedInstanceState == null &&
                 mClient != null && mClient.isConnected() &&
                 mGoogleMap != null &&
@@ -70,19 +74,19 @@ public class CameraManager implements
     @Override
     public void onClient(@Nullable GoogleApiClient client) {
         mClient = client;
-        check();
+        moveToUserLocation();
     }
 
     @Override
     public void onMap(GoogleMap map) {
         mGoogleMap = map;
-        check();
+        moveToUserLocation();
     }
 
     @Override
     public void onResult(int requestCode, OnPermission.Result result) {
         mPermissionResult = result;
-        check();
+        moveToUserLocation();
     }
 
 }

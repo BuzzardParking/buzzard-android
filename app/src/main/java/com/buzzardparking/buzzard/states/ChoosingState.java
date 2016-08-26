@@ -44,6 +44,8 @@ public class ChoosingState extends UserState {
 
         showDestinationDetails(googlePlace);
 
+        getCameraManager().moveToLocation(getContext().getMap(), googlePlace.getLatLng());
+
         Toast.makeText(getContext(), "In Choosing state.", Toast.LENGTH_SHORT).show();
         actionButton.setText(getContext().getString(R.string.btn_reset));
 

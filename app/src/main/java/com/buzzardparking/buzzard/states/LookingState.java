@@ -37,7 +37,7 @@ public class LookingState extends UserState {
 
         getPlaceManager().loadPlaces(getContext().getMap());
 
-        getCameraManager().moveToUserLocation(getCameraManager().getClient(), getContext().getMap());
+        getCameraManager().moveToUserLocation();
 
         actionButton.setText(getContext().getString(R.string.btn_navigating));
 
