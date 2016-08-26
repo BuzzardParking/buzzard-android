@@ -235,12 +235,13 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
                 googlePlace = PlaceAutocomplete.getPlace(this, data); // This is hoisted and then collected in goTo
 
-                goTo(AppState.LOOKING); // TODO: check if it is already looking, if not change
+                if (currentState.APP_STATE != AppState.LOOKING) {
+                    goTo(AppState.LOOKING);
+                }
 
                 LookingState lookingState = (LookingState) currentState;
-
                 lookingState.showDestinationDetails(googlePlace);
-                ;
+
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.

@@ -17,6 +17,7 @@ public class LeavingState extends UserState {
 
     public LeavingState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
         super(context, placeManager, cameraManager);
+        APP_STATE = AppState.LEAVING;
     }
 
     @Override

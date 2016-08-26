@@ -17,6 +17,7 @@ public class NavigatingState extends UserState {
 
     public NavigatingState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
         super(context, placeManager, cameraManager);
+        APP_STATE = AppState.NAVIGATING;
     }
 
     @Override

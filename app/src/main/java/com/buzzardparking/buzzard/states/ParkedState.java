@@ -17,6 +17,7 @@ public class ParkedState extends UserState {
 
     public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
         super(context, placeManager, cameraManager);
+        APP_STATE = AppState.PARKED;
     }
 
     @Override

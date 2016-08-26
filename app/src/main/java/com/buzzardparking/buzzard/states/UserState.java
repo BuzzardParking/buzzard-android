@@ -1,9 +1,9 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
-import android.widget.Button;
 
 import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.OnMap;
@@ -18,7 +18,7 @@ public abstract class UserState implements OnMap.Listener {
     private Context context;
     private PlaceManager manager;
     private CameraManager cameraManager;
-
+    public AppState APP_STATE;
     protected BottomSheetManager bottomSheet;
 
     public UserState(Context context, PlaceManager manager, CameraManager cameraManager) {
@@ -26,6 +26,7 @@ public abstract class UserState implements OnMap.Listener {
         this.manager = manager;
         this.cameraManager = cameraManager;
         this.bottomSheet = new BottomSheetManager(getContext(), getContext().getBottomSheet());
+        APP_STATE = null;
     }
 
     /**

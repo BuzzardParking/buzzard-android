@@ -19,6 +19,7 @@ public class LookingState extends UserState {
 
     public LookingState(Context context, PlaceManager manager, CameraManager cameraManager) {
         super(context, manager, cameraManager);
+        APP_STATE = AppState.LOOKING;
     }
 
     @Override
