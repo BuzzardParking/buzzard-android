@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.flipboard.bottomsheet.OnSheetDismissedListener;
@@ -27,8 +28,8 @@ public class ChoosingState extends UserState {
 
     OnSheetDismissedListener onSheetDismissedListener;
 
-    public ChoosingState(Context context, PlaceManager placeManager, Place googlePlace) {
-        super(context, placeManager);
+    public ChoosingState(Context context, PlaceManager placeManager, CameraManager cameraManager, Place googlePlace) {
+        super(context, placeManager, cameraManager);
         this.googlePlace = googlePlace;
     }
 

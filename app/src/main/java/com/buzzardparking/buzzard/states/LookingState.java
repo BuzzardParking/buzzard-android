@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -14,8 +15,8 @@ import com.google.android.gms.maps.GoogleMap;
  */
 public class LookingState extends UserState {
 
-    public LookingState(Context context, PlaceManager manager) {
-        super(context, manager);
+    public LookingState(Context context, PlaceManager manager, CameraManager cameraManager) {
+        super(context, manager, cameraManager);
     }
 
     @Override
@@ -28,13 +29,15 @@ public class LookingState extends UserState {
     @Override
     public void stop() {
         super.stop();
-        getManager().clearMap();
+        getPlaceManager().clearMap();
     }
 
     private void updateUI() {
         Toast.makeText(getContext(), "In looking state.", Toast.LENGTH_SHORT).show();
 
-        getManager().loadPlaces(getContext().getMap());
+        getPlaceManager().loadPlaces(getContext().getMap());
+
+        getCameraManager().moveToUserLocation(getCameraManager().getClient(), getContext().getMap());
 
         actionButton.setText(getContext().getString(R.string.btn_navigating));
 

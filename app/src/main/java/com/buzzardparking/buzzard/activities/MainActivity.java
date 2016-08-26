@@ -31,7 +31,7 @@ import com.buzzardparking.buzzard.util.AddLocationLayer;
 import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
 import com.buzzardparking.buzzard.util.LogLocation;
 import com.buzzardparking.buzzard.util.MarkerManager;
-import com.buzzardparking.buzzard.util.MoveToLocationFirstTime;
+import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.OnActivity;
 import com.buzzardparking.buzzard.util.OnClient;
 import com.buzzardparking.buzzard.util.OnMap;
@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
     private PlaceManager placeManager;
 
+    CameraManager cameraManager;
+
     /* UI ELEMENTS */
     public Button actionButton;
     private DrawerLayout mDrawer;
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
         AddMarkerOnLongClick click = new AddMarkerOnLongClick(this, placeManager);
         AddLocationLayer layer = new AddLocationLayer();
-        MoveToLocationFirstTime move = new MoveToLocationFirstTime(savedInstanceState);
+        cameraManager = new CameraManager(savedInstanceState);
         TrackLocation track = new TrackLocation(getLocationRequest(), new LogLocation());
 
         new OnActivity.Builder(this, track).build();
@@ -111,17 +113,17 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
         FragmentManager fm = getSupportFragmentManager();
         SupportMapFragment fragment = (SupportMapFragment) fm.findFragmentById(R.id.map);
         if (fragment != null) {
-            fragment.getMapAsync(new OnMap(buzzardMap, placeManager, click, layer, move, track, currentState));
+            fragment.getMapAsync(new OnMap(buzzardMap, placeManager, click, layer, cameraManager, track, currentState));
         }
 
         // connect the google client
         GoogleApiClient client = getGoogleApiClient();
-        client.registerConnectionCallbacks(new OnClient(client, move, track));
+        client.registerConnectionCallbacks(new OnClient(client, cameraManager, track));
 
         // request permissions about current location
         int requestCode = 1001;
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
-        OnPermission.Request location = new OnPermission.Request(requestCode, permission, layer, move, track);
+        OnPermission.Request location = new OnPermission.Request(requestCode, permission, layer, cameraManager, track);
         OnPermission onPermission = new OnPermission.Builder(this).build();
         onPermission.beginRequest(location);
     }
@@ -178,19 +180,19 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
 
         switch (state) {
             case LOOKING:
-                currentState = new LookingState(this, placeManager);
+                currentState = new LookingState(this, placeManager, cameraManager);
                 break;
             case NAVIGATING:
-                currentState = new NavigatingState(this, placeManager);
+                currentState = new NavigatingState(this, placeManager, cameraManager);
                 break;
             case PARKED:
-                currentState = new ParkedState(this, placeManager);
+                currentState = new ParkedState(this, placeManager, cameraManager);
                 break;
             case LEAVING:
-                currentState = new LeavingState(this, placeManager);
+                currentState = new LeavingState(this, placeManager, cameraManager);
                 break;
             case CHOOSING:
-                currentState = new ChoosingState(this, placeManager, googlePlace);
+                currentState = new ChoosingState(this, placeManager, cameraManager, googlePlace);
                 break;
             default:
                 break;

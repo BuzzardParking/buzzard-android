@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 
 /**
@@ -13,8 +14,8 @@ import com.buzzardparking.buzzard.util.PlaceManager;
  */
 public class ParkedState extends UserState {
 
-    public ParkedState(Context context, PlaceManager placeManager) {
-        super(context, placeManager);
+    public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
+        super(context, placeManager, cameraManager);
     }
 
     @Override

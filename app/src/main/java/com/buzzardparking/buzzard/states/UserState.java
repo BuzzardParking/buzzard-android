@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.Button;
 
 import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.OnMap;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,10 +17,12 @@ public abstract class UserState implements OnMap.Listener {
     private Context context;
     private PlaceManager manager;
     protected Button actionButton;
+    private CameraManager cameraManager;
 
-    public UserState(Context context, PlaceManager manager) {
+    public UserState(Context context, PlaceManager manager, CameraManager cameraManager) {
         this.context = context;
         this.manager = manager;
+        this.cameraManager = cameraManager;
         this.actionButton = ((MainActivity)context).actionButton;
     }
 
@@ -51,7 +54,9 @@ public abstract class UserState implements OnMap.Listener {
         return (MainActivity)context;
     }
 
-    public PlaceManager getManager() {
+    public PlaceManager getPlaceManager() {
         return manager;
     }
+
+    public CameraManager getCameraManager() { return cameraManager; }
 }

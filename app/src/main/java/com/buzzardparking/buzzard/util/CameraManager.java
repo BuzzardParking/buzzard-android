@@ -13,12 +13,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * {@link MoveToLocationFirstTime} moves the camera to current user's location in the first time.
+ * {@link CameraManager} moves the camera to current user's location in the first time.
  *
  * It listens for the map ready, the connected GoogleApiClient, and the
  * location permission before it moves the map to the user's current location.
  */
-public class MoveToLocationFirstTime implements
+public class CameraManager implements
         OnMap.Listener,
         OnPermission.Listener,
         OnClient.Listener {
@@ -29,12 +29,12 @@ public class MoveToLocationFirstTime implements
     private GoogleMap mGoogleMap;
     private OnPermission.Result mPermissionResult;
 
-    public MoveToLocationFirstTime(@Nullable Bundle savedInstanceState) {
+    public CameraManager(@Nullable Bundle savedInstanceState) {
         mSavedInstanceState = savedInstanceState;
     }
 
     @SuppressWarnings("MissingPermission")
-    private void moveToUserLocation(GoogleApiClient client, GoogleMap map) {
+    public void moveToUserLocation(GoogleApiClient client, GoogleMap map) {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 client);
 
@@ -42,7 +42,7 @@ public class MoveToLocationFirstTime implements
             LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
             map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng)));
         } else {
-            Log.v("DEBUG", "LOCation null");
+            Log.v("DEBUG", "Location null");
         }
     }
 
@@ -54,13 +54,17 @@ public class MoveToLocationFirstTime implements
                 .build();
     }
 
-    private void check() {
+    public void check() {
         if (mSavedInstanceState == null &&
                 mClient != null && mClient.isConnected() &&
                 mGoogleMap != null &&
                 mPermissionResult == OnPermission.Result.GRANTED) {
             moveToUserLocation(mClient, mGoogleMap);
         }
+    }
+
+    public GoogleApiClient getClient() {
+        return mClient;
     }
 
     @Override
