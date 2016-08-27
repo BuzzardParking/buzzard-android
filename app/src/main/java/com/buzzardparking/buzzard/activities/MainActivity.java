@@ -21,6 +21,7 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Map;
+import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.states.LeavingState;
 import com.buzzardparking.buzzard.states.LookingState;
 import com.buzzardparking.buzzard.states.NavigatingState;
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     }
 
     @Override
-    public void goTo(AppState state) {
+    public void goTo(AppState state) { // TODO: switch to other goTo
         if (currentState != null) {
             currentState.stop();
         }
@@ -190,14 +191,27 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
             case LOOKING:
                 currentState = new LookingState(this, placeManager, cameraManager);
                 break;
-            case NAVIGATING:
-                currentState = new NavigatingState(this, placeManager, cameraManager);
-                break;
-            case PARKED:
-                currentState = new ParkedState(this, placeManager, cameraManager);
-                break;
             case LEAVING:
                 currentState = new LeavingState(this, placeManager, cameraManager);
+                break;
+            default:
+                break;
+        }
+
+        currentState.start();
+    }
+
+    public void goTo(AppState state, Spot spot) {
+        if (currentState != null) {
+            currentState.stop();
+        }
+
+        switch (state) {
+            case NAVIGATING:
+                currentState = new NavigatingState(this, placeManager, cameraManager, spot);
+                break;
+            case PARKED:
+                currentState = new ParkedState(this, placeManager, cameraManager, spot);
                 break;
             default:
                 break;

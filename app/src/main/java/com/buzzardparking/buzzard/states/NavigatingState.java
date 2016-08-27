@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
@@ -15,8 +16,11 @@ import com.buzzardparking.buzzard.util.PlaceManager;
  */
 public class NavigatingState extends UserState {
 
-    public NavigatingState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
+    private Spot spot;
+
+    public NavigatingState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
         super(context, placeManager, cameraManager);
+        this.spot = spot;
         APP_STATE = AppState.NAVIGATING;
     }
 
@@ -37,7 +41,7 @@ public class NavigatingState extends UserState {
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {
-                getContext().goTo(AppState.PARKED);
+                getContext().goTo(AppState.PARKED, spot);
             }
         });
 

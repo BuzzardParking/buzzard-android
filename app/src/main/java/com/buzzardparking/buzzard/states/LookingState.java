@@ -18,10 +18,11 @@ import com.google.maps.android.clustering.ClusterManager;
  * {@link LookingState}: a user is looking for a parking spot.
  */
 public class LookingState extends UserState implements ClusterManager.OnClusterItemClickListener<Spot>{
-    Spot spotToNavTo;
+    private Spot spotToNavTo;
 
     public LookingState(Context context, PlaceManager manager, CameraManager cameraManager) {
         super(context, manager, cameraManager);
+        this.spotToNavTo = null;
         APP_STATE = AppState.LOOKING;
     }
 
@@ -46,8 +47,11 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         getContext().tvBottomSheetSubHeading.setVisibility(View.VISIBLE);
         getContext().tvBottomSheetSubHeading.setText(googlePlace.getAddress());
 
-        getPlaceManager().addDestinationMarker(getContext().getMap(), googlePlace);
+        getPlaceManager().addDestinationMarker(getContext().getMap(), googlePlace.getLatLng());
         getCameraManager().moveToLocation(getContext().getMap(), googlePlace.getLatLng());
+
+        // TODO: set the googlePlace to spotToNavTo, so it can be sent along
+        // TODO: find the closest spot to this destination, and this is what should be passed along
 
     }
 
@@ -71,7 +75,14 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {
-                getContext().goTo(AppState.NAVIGATING);
+
+                if (spotToNavTo != null) {
+                    getContext().goTo(AppState.NAVIGATING, spotToNavTo);
+                } else {
+                    // TODO: create a function that automatically finds the closest parking space
+                    Toast.makeText(getContext(), "Automatically choose closest parking space", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -114,7 +125,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
     @Override
     public boolean onClusterItemClick(Spot spot) {
         showParkingSpaceDetails(spot);
-        // TODO get ready to send this to the navigation
+        this.spotToNavTo = spot;
         return true;
     }
 }

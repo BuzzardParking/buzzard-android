@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
@@ -15,9 +16,12 @@ import com.buzzardparking.buzzard.util.PlaceManager;
  */
 public class ParkedState extends UserState {
 
-    public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
+    private Spot spot;
+
+    public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
         super(context, placeManager, cameraManager);
         APP_STATE = AppState.PARKED;
+        this.spot = spot;
     }
 
     @Override
@@ -29,6 +33,14 @@ public class ParkedState extends UserState {
         // 4. a evaluation modal to ask user to give a thumb up/down about its parking experience
         // 5. able to set up an alarm clock to remind the parking duration
         // 6. able to fav the parking location, and revisit your parking history
+
+
+        // Temporary marker to show the car location
+        getPlaceManager().addCarParkedMarker(getContext().getMap(), spot.getLatLng());
+        getCameraManager().moveToLocation(getContext().getMap(), spot.getLatLng());
+
+
+
 
         Toast.makeText(getContext(), "In parked state.", Toast.LENGTH_SHORT).show();
 
@@ -74,5 +86,6 @@ public class ParkedState extends UserState {
     @Override
     public void stop() {
         super.stop();
+        getPlaceManager().removeDestinationMarker();
     }
 }

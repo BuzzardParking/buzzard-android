@@ -41,9 +41,9 @@ public class MarkerManager {
         clusterManager.cluster();
     }
 
-    public void addDestinationMarker(GoogleMap map, com.google.android.gms.location.places.Place googlePlace) {
+    public void addDestinationMarker(GoogleMap map, LatLng latLng) {
         MarkerOptions opts = new MarkerOptions()
-                .position(googlePlace.getLatLng());
+                .position(latLng);
         destinationMarker = map.addMarker(opts);
 //        if (animate) {
 //            animate(map, marker);
