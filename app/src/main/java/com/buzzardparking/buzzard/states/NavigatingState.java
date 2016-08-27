@@ -39,6 +39,7 @@ public class NavigatingState extends UserState {
 
         // Temporary marker to show the parking spot location
         getPlaceManager().addParkingSpotMarker(getContext().getMap(), spot.getLatLng());
+        getCameraManager().moveToLocation(getContext().getMap(), spot.getLatLng()); // Maybe zoom out to show both
 
         bottomSheet.expand();
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {

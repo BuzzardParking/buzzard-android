@@ -59,6 +59,25 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         getPlaceManager().addDestinationMarker(getContext().getMap(), googlePlace.getLatLng());
         getCameraManager().moveToLocation(getContext().getMap(), googlePlace.getLatLng());
 
+        ParseGeoPoint googlePlaceParsePoint = new ParseGeoPoint(googlePlace.getLatLng().latitude, googlePlace.getLatLng().longitude);
+
+        // TODO: move to its own function
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Spot");
+        query.whereNear("location", googlePlaceParsePoint);
+        query.setLimit(10);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                ArrayList<Spot> spotsArray = Spot.fromParse(objects);
+
+                spotToNavTo = spotsArray.get(0);
+
+
+            }
+        });
+        Toast.makeText(getContext(), "Chose closest parking space to " + googlePlace.getName(), Toast.LENGTH_SHORT).show();
+
+
         // TODO: set the googlePlace to spotToNavTo, so it can be sent along
         // TODO: find the closest spot to this destination, and this is what should be passed along
 
