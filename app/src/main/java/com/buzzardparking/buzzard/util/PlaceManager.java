@@ -3,7 +3,7 @@ package com.buzzardparking.buzzard.util;
 import android.util.Log;
 
 import com.buzzardparking.buzzard.activities.MainActivity;
-import com.buzzardparking.buzzard.models.Place;
+import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
@@ -24,22 +24,22 @@ public class PlaceManager implements
 
     private static final String KEY = "places";
     private final MarkerManager mMarkerManager;
-    private ArrayList<Place> mPlaces; // May not need this. Need to know more about screen rotation
+    private ArrayList<Spot> mSpots; // May not need this. Need to know more about screen rotation
     private MainActivity context;
 
     public PlaceManager(MarkerManager markerManager, MainActivity context) {
         this.mMarkerManager = markerManager;
         this.context = context;
-        mPlaces = new ArrayList<>();
+        mSpots = new ArrayList<>();
     }
 
     public void addPlace(LatLng latLng) {
-        Place newPlace = new Place(latLng);
-        newPlace.save();
-        newPlace.saveParse();
-        mPlaces.add(newPlace);
+        Spot newSpot = new Spot(latLng);
+        newSpot.save();
+        newSpot.saveParse();
+        mSpots.add(newSpot);
 
-        mMarkerManager.addMarker(newPlace);
+        mMarkerManager.addMarker(newSpot);
 
     }
 
@@ -62,21 +62,21 @@ public class PlaceManager implements
     }
 
     public void loadFromLocal(GoogleMap map) {
-        mPlaces.addAll(Place.getAll());
-        mMarkerManager.addAll(mPlaces);
+        mSpots.addAll(Spot.getAll());
+        mMarkerManager.addAll(mSpots);
     }
 
     public void loadFromParse(final GoogleMap map) {
-        ParseQuery query = new ParseQuery("Place");
+        ParseQuery query = new ParseQuery("Spot");
         query.findInBackground(new FindCallback() {
             @Override
             public void done(Object places, Throwable throwable) {
-                mPlaces.clear();
+                mSpots.clear();
                 mMarkerManager.removeMarkers();
 
-                mPlaces.addAll(Place.fromParse(places));
+                mSpots.addAll(Spot.fromParse(places));
 
-                mMarkerManager.addAll(mPlaces);
+                mMarkerManager.addAll(mSpots);
             }
 
             @Override
@@ -87,7 +87,7 @@ public class PlaceManager implements
     }
 
     public void deleteFromParse(){
-        ParseQuery query = new ParseQuery("Place");
+        ParseQuery query = new ParseQuery("Spot");
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {

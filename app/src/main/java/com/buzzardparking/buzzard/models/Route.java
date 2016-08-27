@@ -43,7 +43,7 @@ public class Route {
         }
     }
 
-    public void createAndDisplayOnMap(final GoogleMap googleMap, Place start, Place end) {
+    public void createAndDisplayOnMap(final GoogleMap googleMap, Spot start, Spot end) {
         String baseUrl = "https://maps.googleapis.com/maps/api/directions/json";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();

@@ -20,8 +20,8 @@ import java.util.List;
  * Used to build markers.
  */
 @Table(name = "Places")
-@Parcel(analyze={Place.class})
-public class Place extends Model implements ClusterItem {
+@Parcel(analyze={Spot.class})
+public class Spot extends Model implements ClusterItem {
 
     @Column(name = "Latitude")
     public double latitude;
@@ -32,15 +32,15 @@ public class Place extends Model implements ClusterItem {
     @Column(name = "Timestamp")
     public String timestamp;
 
-    public Place(){ super();}
+    public Spot(){ super();}
 
-    public Place(LatLng latLng) {
+    public Spot(LatLng latLng) {
         this.latitude = latLng.latitude;
         this.longitude = latLng.longitude;
         this.timestamp = formatter().print(DateTime.now());
     }
 
-    public Place(ParseObject parsePlace) {
+    public Spot(ParseObject parsePlace) {
         this.longitude = parsePlace.getDouble("longitude");
         this.latitude = parsePlace.getDouble("latitude");
         this.timestamp = parsePlace.getString("timestamp");
@@ -51,14 +51,14 @@ public class Place extends Model implements ClusterItem {
         return new LatLng(latitude, longitude);
     }
 
-    public static List<Place> getAll() {
+    public static List<Spot> getAll() {
         return new Select()
-                .from(Place.class)
+                .from(Spot.class)
                 .execute();
     }
 
     public void saveParse() {
-        ParseObject place = new ParseObject("Place");
+        ParseObject place = new ParseObject("Spot");
         place.put("latitude", latitude);
         place.put("longitude", longitude);
         place.put("timestamp", timestamp);
@@ -73,12 +73,12 @@ public class Place extends Model implements ClusterItem {
         return diffMinutes;
     }
 
-    public static ArrayList<Place> fromParse(Object parsePlaces) {
+    public static ArrayList<Spot> fromParse(Object parsePlaces) {
         ArrayList<ParseObject> placesToConvert = (ArrayList<ParseObject>) parsePlaces;
-        ArrayList<Place> placesArr = new ArrayList<>();
+        ArrayList<Spot> placesArr = new ArrayList<>();
 
         for (ParseObject place: placesToConvert) {
-            placesArr.add(new Place(place));
+            placesArr.add(new Spot(place));
         }
         return placesArr;
     }

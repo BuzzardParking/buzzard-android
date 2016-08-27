@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
@@ -16,7 +17,8 @@ import com.google.maps.android.clustering.ClusterManager;
 /**
  * {@link LookingState}: a user is looking for a parking spot.
  */
-public class LookingState extends UserState implements ClusterManager.OnClusterItemClickListener<com.buzzardparking.buzzard.models.Place>{
+public class LookingState extends UserState implements ClusterManager.OnClusterItemClickListener<Spot>{
+    Spot spotToNavTo;
 
     public LookingState(Context context, PlaceManager manager, CameraManager cameraManager) {
         super(context, manager, cameraManager);
@@ -49,7 +51,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     }
 
-    public void showParkingSpaceDetails(com.buzzardparking.buzzard.models.Place place) {
+    public void showParkingSpaceDetails(Spot spot) {
         getContext().tvBottomSheetHeading.setText("User parking space");
         getContext().tvBottomSheetSubHeading.setVisibility(View.VISIBLE);
         getContext().tvBottomSheetSubHeading.setText("details");
@@ -110,8 +112,8 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
     }
 
     @Override
-    public boolean onClusterItemClick(com.buzzardparking.buzzard.models.Place place) {
-        showParkingSpaceDetails(place);
+    public boolean onClusterItemClick(Spot spot) {
+        showParkingSpaceDetails(spot);
         // TODO get ready to send this to the navigation
         return true;
     }

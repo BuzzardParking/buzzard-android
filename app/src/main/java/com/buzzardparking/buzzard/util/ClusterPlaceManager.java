@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MainActivity;
-import com.buzzardparking.buzzard.models.Place;
+import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -24,14 +24,14 @@ import com.google.maps.android.ui.SquareTextView;
 /**
  * {@link ClusterPlaceManager}: Manages the display and rendering of place clusters on the map
  */
-public class ClusterPlaceManager extends DefaultClusterRenderer<Place>{
+public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
     MainActivity context;
     private final IconGenerator iconGenerator;
     private SparseArray<BitmapDescriptor> mIcons = new SparseArray();
     private final float density;
     private ShapeDrawable coloredCircleBackground;
 
-    public ClusterPlaceManager(MainActivity context, ClusterManager<Place> clusterManager) {
+    public ClusterPlaceManager(MainActivity context, ClusterManager<Spot> clusterManager) {
         super(context, context.getMap(), clusterManager);
         this.context = context;
         this.density = context.getResources().getDisplayMetrics().density;
@@ -43,15 +43,15 @@ public class ClusterPlaceManager extends DefaultClusterRenderer<Place>{
     }
 
     @Override
-    protected void onBeforeClusterItemRendered(Place place, MarkerOptions markerOptions) {
+    protected void onBeforeClusterItemRendered(Spot spot, MarkerOptions markerOptions) {
         markerOptions
-                .position(place.getLatLng())
-                .alpha(getAlpha(place))
+                .position(spot.getLatLng())
+                .alpha(getAlpha(spot))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.carmarker));
     }
 
     @Override
-    protected void onBeforeClusterRendered(Cluster<Place> cluster, MarkerOptions markerOptions) {
+    protected void onBeforeClusterRendered(Cluster<Spot> cluster, MarkerOptions markerOptions) {
 
         int clusterColor = ContextCompat.getColor(context, R.color.colorPrimary);
 
@@ -92,8 +92,8 @@ public class ClusterPlaceManager extends DefaultClusterRenderer<Place>{
         return background;
     }
 
-    public float getAlpha(Place place) {
-        long age = place.getAgeInMinutes();
+    public float getAlpha(Spot spot) {
+        long age = spot.getAgeInMinutes();
 //        Log.v("DEBUG", "Marker Age: " + age);
         if (age < 5 ) {
             return 1.0f;

@@ -5,7 +5,7 @@ import android.graphics.Point;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.buzzardparking.buzzard.activities.MainActivity;
-import com.buzzardparking.buzzard.models.Place;
+import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.LatLng;
@@ -34,10 +34,10 @@ public class MarkerManager {
     /**
      * Add a parking space marker to the map
      *
-     * @param place all the details will be used the onBeforeItemClustered method
+     * @param spot all the details will be used the onBeforeItemClustered method
      */
-    public void addMarker(Place place) {
-        clusterManager.addItem(place);
+    public void addMarker(Spot spot) {
+        clusterManager.addItem(spot);
         clusterManager.cluster();
     }
 
@@ -56,8 +56,8 @@ public class MarkerManager {
         }
     }
 
-    public void addAll(List<Place> places) {
-        clusterManager.addItems(places);
+    public void addAll(List<Spot> spots) {
+        clusterManager.addItems(spots);
         clusterManager.cluster();
     }
 
