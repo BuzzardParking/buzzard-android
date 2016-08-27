@@ -34,6 +34,13 @@ public class CameraManager implements
     }
 
     @SuppressWarnings("MissingPermission")
+    public LatLng getLastLocation() {
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
+
+        return new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+    }
+
+    @SuppressWarnings("MissingPermission")
     private void moveToUserLocation(GoogleApiClient client, GoogleMap map) {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 client);

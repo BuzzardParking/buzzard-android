@@ -12,7 +12,16 @@ import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link LookingState}: a user is looking for a parking spot.
@@ -79,7 +88,25 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
                 if (spotToNavTo != null) {
                     getContext().goTo(AppState.NAVIGATING, spotToNavTo);
                 } else {
-                    // TODO: create a function that automatically finds the closest parking space
+
+                    LatLng userLoc = getCameraManager().getLastLocation();
+                    ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
+
+                    // TODO: move to its own function
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Spot");
+                    query.whereNear("location", userGeoPoint);
+                    query.setLimit(10);
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> objects, ParseException e) {
+                            ArrayList<Spot> spotsArray = Spot.fromParse(objects);
+                            Spot nearestSpot = spotsArray.get(0);
+
+                            getContext().goTo(AppState.NAVIGATING, nearestSpot);
+
+
+                        }
+                    });
                     Toast.makeText(getContext(), "Automatically choose closest parking space", Toast.LENGTH_SHORT).show();
                 }
 

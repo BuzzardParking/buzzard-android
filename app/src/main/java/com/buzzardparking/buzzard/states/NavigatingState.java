@@ -37,6 +37,9 @@ public class NavigatingState extends UserState {
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_parked));
         getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
 
+        // Temporary marker to show the parking spot location
+        getPlaceManager().addParkingSpotMarker(getContext().getMap(), spot.getLatLng());
+
         bottomSheet.expand();
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
@@ -76,5 +79,6 @@ public class NavigatingState extends UserState {
     @Override
     public void stop() {
         super.stop();
+        getPlaceManager().removeDestinationMarker();
     }
 }

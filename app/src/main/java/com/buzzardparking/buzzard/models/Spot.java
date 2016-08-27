@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 import org.joda.time.DateTime;
@@ -19,7 +20,7 @@ import java.util.List;
 /*
  * Used to build markers.
  */
-@Table(name = "Places")
+@Table(name = "Spots")
 @Parcel(analyze={Spot.class})
 public class Spot extends Model implements ClusterItem {
 
@@ -62,6 +63,8 @@ public class Spot extends Model implements ClusterItem {
         place.put("latitude", latitude);
         place.put("longitude", longitude);
         place.put("timestamp", timestamp);
+        ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+        place.put("location", point);
         place.saveInBackground();
     }
 

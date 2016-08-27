@@ -52,6 +52,11 @@ public class PlaceManager implements
         mMarkerManager.addDestinationMarker(map, latLng);
     }
 
+    public void addParkingSpotMarker(GoogleMap map, LatLng latLng) {
+        // TODO: customize this
+        mMarkerManager.addDestinationMarker(map, latLng);
+    }
+
     public void removeDestinationMarker() {
         mMarkerManager.removeDestinationMarker();
     }
