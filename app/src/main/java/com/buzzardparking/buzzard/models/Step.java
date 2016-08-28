@@ -1,14 +1,14 @@
 package com.buzzardparking.buzzard.models;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by lee on 8/21/16.
- */
+// Steps are used to show direction lines; routes have many steps
 public class Step {
     private String instructions;
     private Double startLat;
@@ -45,8 +45,8 @@ public class Step {
             JSONObject endLocation = jsonStep.getJSONObject("end_location");
             this.endLng = endLocation.getDouble("lng");
             this.endLat = endLocation.getDouble("lat");
-
         } catch (JSONException e) {
+            Log.e("e", e.toString());
             e.printStackTrace();
         }
     }
@@ -58,6 +58,7 @@ public class Step {
             try {
                 steps.add(new Step(array.getJSONObject(x)));
             } catch (JSONException e) {
+                Log.e("e", e.toString());
                 e.printStackTrace();
             }
         }

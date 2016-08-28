@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,6 +11,8 @@ import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
+import com.buzzardparking.buzzard.util.PolylineManager;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * {@link NavigatingState}: a user is navigating to a parking spot.
@@ -17,6 +20,7 @@ import com.buzzardparking.buzzard.util.PlaceManager;
 public class NavigatingState extends UserState {
 
     private Spot spot;
+    PolylineManager lineManager = new PolylineManager();
 
     public NavigatingState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
         super(context, placeManager, cameraManager);
@@ -36,10 +40,13 @@ public class NavigatingState extends UserState {
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_parked));
         getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
-
         // Temporary marker to show the parking spot location
         getPlaceManager().addParkingSpotMarker(getContext().getMap(), spot.getLatLng());
+
         getCameraManager().moveToLocation(getContext().getMap(), spot.getLatLng()); // Maybe zoom out to show both
+        LatLng currentLocation = getCameraManager().getLastLocation();
+
+        lineManager.createAndDisplay(getContext().getMap(), currentLocation, spot.getLatLng());
 
         bottomSheet.expand();
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
@@ -80,6 +87,7 @@ public class NavigatingState extends UserState {
     @Override
     public void stop() {
         super.stop();
+        lineManager.remove();
         getPlaceManager().removeDestinationMarker();
     }
 }
