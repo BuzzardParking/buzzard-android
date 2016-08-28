@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.buzzardparking.buzzard"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.buzzardparking.buzzard">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:name=".BuzzardApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_buzzard"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="RestClient.db"/>
+            android:value="RestClient.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="1"/>
+            android:value="1" />
         <!-- Have to explicit about models to solve the instant run issue with gradle 2.0 -->
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.buzzardparking.buzzard.models.Spot"/>
+            android:value="com.buzzardparking.buzzard.models.Spot" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/secret_maps_api_key"/>
+            android:value="@string/secret_maps_api_key" />
 
         <activity android:name=".activities.MapActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".services.OverlayService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

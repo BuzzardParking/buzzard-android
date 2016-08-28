@@ -3,7 +3,9 @@ package com.buzzardparking.buzzard.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +24,7 @@ import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Map;
 import com.buzzardparking.buzzard.models.Spot;
+import com.buzzardparking.buzzard.services.OverlayService;
 import com.buzzardparking.buzzard.states.LeavingState;
 import com.buzzardparking.buzzard.states.LookingState;
 import com.buzzardparking.buzzard.states.NavigatingState;
@@ -55,8 +58,8 @@ import com.google.maps.android.ui.IconGenerator;
 public class MapActivity extends AppCompatActivity implements UIStateMachine {
 
     public static final String TAG = MapActivity.class.getSimpleName();
-    private final int REQUEST_CODE = 99;
-    private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private static final int OVERLAY_REQUEST_CODE = 99;
 
     // Singleton instance of map
     public Map buzzardMap;
@@ -264,6 +267,10 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
+        } else if (requestCode == OVERLAY_REQUEST_CODE) {
+            if (Settings.canDrawOverlays(this)) {
+                startService(new Intent(this, OverlayService.class));
+            }
         }
     }
 
@@ -287,5 +294,27 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        checkDrawOverlayPermission();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        stopService(new Intent(this, OverlayService.class));
+    }
+
+    public void checkDrawOverlayPermission() {
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, OVERLAY_REQUEST_CODE);
+        } else {
+            startService(new Intent(this, OverlayService.class));
+        }
     }
 }
