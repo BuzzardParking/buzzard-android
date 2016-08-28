@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.BottomSheetBehavior;
@@ -268,9 +269,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
                 // The user canceled the operation.
             }
         } else if (requestCode == OVERLAY_REQUEST_CODE) {
-            if (Settings.canDrawOverlays(this)) {
-                startService(new Intent(this, OverlayService.class));
-            }
+            startService(new Intent(this, OverlayService.class));
         }
     }
 
@@ -315,10 +314,14 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     }
 
     public void checkDrawOverlayPermission() {
-        if (!Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, OVERLAY_REQUEST_CODE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, OVERLAY_REQUEST_CODE);
+            } else {
+                startService(new Intent(this, OverlayService.class));
+            }
         } else {
             startService(new Intent(this, OverlayService.class));
         }
