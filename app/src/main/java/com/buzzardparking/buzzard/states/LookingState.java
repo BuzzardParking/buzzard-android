@@ -14,14 +14,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * {@link LookingState}: a user is looking for a parking spot.
@@ -61,25 +54,15 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
         ParseGeoPoint googlePlaceParsePoint = new ParseGeoPoint(googlePlace.getLatLng().latitude, googlePlace.getLatLng().longitude);
 
-        // TODO: move to its own function
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Spot");
-        query.whereNear("location", googlePlaceParsePoint);
-        query.setLimit(10);
-        query.findInBackground(new FindCallback<ParseObject>() {
+
+        getPlaceManager().getNearestSpot(googlePlaceParsePoint, new PlaceManager.NearestSpotListener() {
             @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                ArrayList<Spot> spotsArray = Spot.fromParse(objects);
-
-                spotToNavTo = spotsArray.get(0);
-
-
+            public void onReturn(Spot nearestSpot) {
+                spotToNavTo = nearestSpot;
             }
         });
+
         Toast.makeText(getContext(), "Chose closest parking space to " + googlePlace.getName(), Toast.LENGTH_SHORT).show();
-
-
-        // TODO: set the googlePlace to spotToNavTo, so it can be sent along
-        // TODO: find the closest spot to this destination, and this is what should be passed along
 
     }
 
@@ -111,24 +94,14 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
                     LatLng userLoc = getCameraManager().getLastLocation();
                     ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
 
-                    // TODO: move to its own function
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Spot");
-                    query.whereNear("location", userGeoPoint);
-                    query.setLimit(10);
-                    query.findInBackground(new FindCallback<ParseObject>() {
+                    getPlaceManager().getNearestSpot(userGeoPoint, new PlaceManager.NearestSpotListener() {
                         @Override
-                        public void done(List<ParseObject> objects, ParseException e) {
-                            ArrayList<Spot> spotsArray = Spot.fromParse(objects);
-                            Spot nearestSpot = spotsArray.get(0);
-
+                        public void onReturn(Spot nearestSpot) {
                             getContext().goTo(AppState.NAVIGATING, nearestSpot);
-
-
                         }
                     });
-                    Toast.makeText(getContext(), "Automatically choose closest parking space", Toast.LENGTH_SHORT).show();
-                }
 
+                }
             }
         });
 

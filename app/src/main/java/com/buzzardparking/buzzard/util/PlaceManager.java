@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -76,6 +77,23 @@ public class PlaceManager implements
         mMarkerManager.addAll(mSpots);
     }
 
+
+    public void getNearestSpot(ParseGeoPoint geoPoint, final NearestSpotListener nearestSpotListener) {
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Spot");
+        query.whereNear("location", geoPoint);
+        query.setLimit(10);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                ArrayList<Spot> spotsArray = Spot.fromParse(objects);
+                Spot nearestSpot = spotsArray.get(0);
+                nearestSpotListener.onReturn(nearestSpot);
+
+            }
+        });
+    }
+
     public void loadFromParse(final GoogleMap map) {
         ParseQuery query = new ParseQuery("Spot");
         query.findInBackground(new FindCallback() {
@@ -121,6 +139,10 @@ public class PlaceManager implements
     @Override
     public void onMap(GoogleMap map) {
         mMarkerManager.setUpClusterer(map, context);
+    }
+
+    public interface NearestSpotListener {
+        void onReturn(Spot nearestSpot);
     }
 
 }

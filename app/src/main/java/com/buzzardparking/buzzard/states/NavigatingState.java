@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,7 +23,7 @@ public class NavigatingState extends UserState {
 
     public NavigatingState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
         super(context, placeManager, cameraManager);
-        this.spot = spot;
+            this.spot = spot;
         APP_STATE = AppState.NAVIGATING;
     }
 
