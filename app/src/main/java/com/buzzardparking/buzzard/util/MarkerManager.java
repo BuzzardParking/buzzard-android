@@ -4,10 +4,12 @@ import android.animation.ValueAnimator;
 import android.graphics.Point;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -23,6 +25,8 @@ public class MarkerManager {
     private MapActivity context;
 
     Marker destinationMarker;
+    Marker carParkedMarker;
+    Marker parkingSpotMarker;
 
     /**
      * MarkerManager: manage parking space markers on the map
@@ -45,14 +49,37 @@ public class MarkerManager {
         MarkerOptions opts = new MarkerOptions()
                 .position(latLng);
         destinationMarker = map.addMarker(opts);
-//        if (animate) {
-//            animate(map, marker);
-//        }
+
+        MarkerManager.animate(map, destinationMarker, 1000);
+    }
+
+    public void addCarParkedMarker(GoogleMap map, LatLng latLng) {
+        MarkerOptions opts = new MarkerOptions()
+            .position(latLng)
+            .icon(BitmapDescriptorFactory.fromResource(R.drawable.carmarker));
+        carParkedMarker = map.addMarker(opts);
+
+        MarkerManager.animate(map, carParkedMarker, 1000);
+    }
+
+    public void addParkingSpotMarker(GoogleMap map, LatLng latLng) {
+        MarkerOptions opts = new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.spot_icon));
+        parkingSpotMarker = map.addMarker(opts);
+
+        MarkerManager.animate(map, parkingSpotMarker, 1000);
     }
 
     public void removeDestinationMarker() {
         if (destinationMarker != null) {
             destinationMarker.remove();
+        }
+        if (carParkedMarker != null) {
+            carParkedMarker.remove();
+        }
+        if (parkingSpotMarker != null) {
+            parkingSpotMarker.remove();
         }
     }
 
@@ -66,15 +93,7 @@ public class MarkerManager {
         clusterManager.cluster();
     }
 
-    // Get the marker's position and the map's projection.
-    // Create start and stop LatLng's to animate with.
-    // Create a ValueAnimator and add an update listener.
-    // Use SphericalUtil to calculate interpolated LatLng.
-    // Set the marker's position to this LatLng.
-    // Set the animator's interpolator and duration.
-    // Start animator.
-    // TODO: make a better animation
-    private void animate(GoogleMap map, final Marker marker) {
+    public static void animate(GoogleMap map, final Marker marker, int duration) {
         final LatLng target = marker.getPosition();
         Projection projection = map.getProjection();
         Point endPoint = projection.toScreenLocation(target);
@@ -92,23 +111,8 @@ public class MarkerManager {
         });
 
         animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        animator.setDuration(2500);
+        animator.setDuration(duration);
         animator.start();
-    }
-
-    public void onMarkerClick(GoogleMap map, final MapActivity context) {
-//        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//                BottomSheetLayout bottomSheet = context.bottomSheet;
-//                bottomSheet.showWithSheetView(
-//                    LayoutInflater
-//                        .from(context)
-//                        .inflate(R.layout.image_card, bottomSheet, false)
-//                );
-//                return true;
-//            }
-//        });
     }
 
     public void setUpClusterer(GoogleMap map, MapActivity context) {
@@ -120,7 +124,6 @@ public class MarkerManager {
 
 
         map.setOnCameraChangeListener(clusterManager);
-//        onMarkerClick(map, context);
 
     }
 

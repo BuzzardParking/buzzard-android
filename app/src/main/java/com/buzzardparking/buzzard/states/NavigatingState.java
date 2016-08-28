@@ -36,6 +36,7 @@ public class NavigatingState extends UserState {
         // 2. draw poly line of navigation path from current location to the destination parking spot
         // 3. stop button to stop navigating, and back to looking state
         // 4. button to go to the parked state
+        // 5. Show the parking space as well as the destination
         // ...
         Toast.makeText(getContext(), "In navigating state.", Toast.LENGTH_SHORT).show();
 

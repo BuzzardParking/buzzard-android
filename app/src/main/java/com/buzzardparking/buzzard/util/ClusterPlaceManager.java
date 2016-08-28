@@ -14,6 +14,7 @@ import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
@@ -44,10 +45,22 @@ public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
 
     @Override
     protected void onBeforeClusterItemRendered(Spot spot, MarkerOptions markerOptions) {
-        markerOptions
-                .position(spot.getLatLng())
-                .alpha(getAlpha(spot))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.carmarker));
+        if (isNew(spot)) {
+            markerOptions
+                    .position(spot.getLatLng())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.decorated_spot_icon));
+        } else {
+            markerOptions
+                    .position(spot.getLatLng())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.spot_icon));
+        }
+    }
+
+    @Override
+    protected void onClusterItemRendered(Spot clusterItem, Marker marker) {
+        super.onClusterItemRendered(clusterItem, marker);
+//        MarkerManager.animate(context.getMap(), marker, 500);
+
     }
 
     @Override
@@ -92,9 +105,17 @@ public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
         return background;
     }
 
+    public boolean isNew(Spot spot) {
+        long age = spot.getAgeInMinutes();
+        if (age < 15) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public float getAlpha(Spot spot) {
         long age = spot.getAgeInMinutes();
-//        Log.v("DEBUG", "Marker Age: " + age);
         if (age < 5 ) {
             return 1.0f;
         } else if (age < 10) {

@@ -40,6 +40,8 @@ public class LeavingState extends UserState {
             }
         });
 
+        getCameraManager().moveToUserLocation(); //TODO: This doesn't seem to be working
+
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
             public void onCollapsed() {

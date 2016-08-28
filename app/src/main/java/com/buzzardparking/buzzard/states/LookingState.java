@@ -59,6 +59,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             @Override
             public void onReturn(Spot nearestSpot) {
                 spotToNavTo = nearestSpot;
+                // TODO: Also pass along the google place
             }
         });
 
