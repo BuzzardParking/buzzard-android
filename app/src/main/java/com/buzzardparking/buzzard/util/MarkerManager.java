@@ -4,7 +4,7 @@ import android.animation.ValueAnimator;
 import android.graphics.Point;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
@@ -20,7 +20,7 @@ import java.util.List;
 public class MarkerManager {
 
     private com.google.maps.android.clustering.ClusterManager clusterManager;
-    private MainActivity context;
+    private MapActivity context;
 
     Marker destinationMarker;
 
@@ -96,7 +96,7 @@ public class MarkerManager {
         animator.start();
     }
 
-    public void onMarkerClick(GoogleMap map, final MainActivity context) {
+    public void onMarkerClick(GoogleMap map, final MapActivity context) {
 //        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 //            @Override
 //            public boolean onMarkerClick(Marker marker) {
@@ -111,7 +111,7 @@ public class MarkerManager {
 //        });
     }
 
-    public void setUpClusterer(GoogleMap map, MainActivity context) {
+    public void setUpClusterer(GoogleMap map, MapActivity context) {
 
         clusterManager = new com.google.maps.android.clustering.ClusterManager(context, map);
         clusterManager.setRenderer(new ClusterPlaceManager(context, clusterManager));

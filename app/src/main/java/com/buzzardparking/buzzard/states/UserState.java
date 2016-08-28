@@ -2,7 +2,7 @@ package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
 
-import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
@@ -54,8 +54,8 @@ public abstract class UserState implements OnMap.Listener {
         bottomSheet.setBottomSheetStateListeners(null);
     }
 
-    public MainActivity getContext() {
-        return (MainActivity)context;
+    public MapActivity getContext() {
+        return (MapActivity)context;
     }
 
 

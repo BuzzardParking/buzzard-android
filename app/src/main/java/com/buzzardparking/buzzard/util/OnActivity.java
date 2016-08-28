@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
-import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.activities.MapActivity;
 
 /**
  * OnActivity is a headless fragment.
@@ -76,7 +76,7 @@ public class OnActivity extends Fragment {
     }
 
     private void notifyOnStatus(Status status) {
-        Log.d(MainActivity.TAG, "Activity status is " + status);
+        Log.d(MapActivity.TAG, "Activity status is " + status);
         for (Listener listener : mListeners) {
             listener.onStatus(status);
         }

@@ -10,7 +10,7 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 
 import com.buzzardparking.buzzard.R;
-import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -25,13 +25,13 @@ import com.google.maps.android.ui.SquareTextView;
  * {@link ClusterPlaceManager}: Manages the display and rendering of place clusters on the map
  */
 public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
-    MainActivity context;
+    MapActivity context;
     private final IconGenerator iconGenerator;
     private SparseArray<BitmapDescriptor> mIcons = new SparseArray();
     private final float density;
     private ShapeDrawable coloredCircleBackground;
 
-    public ClusterPlaceManager(MainActivity context, ClusterManager<Spot> clusterManager) {
+    public ClusterPlaceManager(MapActivity context, ClusterManager<Spot> clusterManager) {
         super(context, context.getMap(), clusterManager);
         this.context = context;
         this.density = context.getResources().getDisplayMetrics().density;

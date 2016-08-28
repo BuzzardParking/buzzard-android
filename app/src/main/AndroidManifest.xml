@@ -23,12 +23,12 @@
         <!-- Have to explicit about models to solve the instant run issue with gradle 2.0 -->
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.buzzardparking.buzzard.models.Place"/>
+            android:value="com.buzzardparking.buzzard.models.Spot"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/secret_maps_api_key"/>
 
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.MapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.activities.MapActivity;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -44,13 +44,13 @@ public class TrackLocation implements
     private void startLocationUpdates() {
         LocationServices.FusedLocationApi
                 .requestLocationUpdates(mClient, mLocationRequest, this);
-        Log.d(MainActivity.TAG, "Requested location updates");
+        Log.d(MapActivity.TAG, "Requested location updates");
     }
 
     private void stopLocationUpdates() {
         LocationServices.FusedLocationApi
                 .removeLocationUpdates(mClient, this);
-        Log.d(MainActivity.TAG, "Removed location updates");
+        Log.d(MapActivity.TAG, "Removed location updates");
     }
 
     private void check() {

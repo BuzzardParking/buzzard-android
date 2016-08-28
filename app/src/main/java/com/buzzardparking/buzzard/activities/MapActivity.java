@@ -52,9 +52,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.ui.IconGenerator;
 
-public class MainActivity extends AppCompatActivity implements UIStateMachine {
+public class MapActivity extends AppCompatActivity implements UIStateMachine {
 
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG = MapActivity.class.getSimpleName();
     private final int REQUEST_CODE = 99;
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements UIStateMachine {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_map);
         setupToolbar();
         setupDrawer();
 
