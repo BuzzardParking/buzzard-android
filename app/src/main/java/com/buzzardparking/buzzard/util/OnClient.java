@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.activities.MapActivity;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 /**
@@ -25,7 +25,7 @@ public class OnClient implements GoogleApiClient.ConnectionCallbacks {
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d(MainActivity.TAG, "Client connected!");
+        Log.d(MapActivity.TAG, "Client connected!");
         for (Listener listener : mListeners) {
             listener.onClient(mGoogleApiClient);
         }

@@ -10,7 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
-import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.activities.MapActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +96,7 @@ public class OnPermission extends Fragment {
     }
 
     private void notifyListeners(Request request, Result result) {
-        Log.d(MainActivity.TAG, "Location permission request " + request.mRequestCode + " " + result);
+        Log.d(MapActivity.TAG, "Location permission request " + request.mRequestCode + " " + result);
         for (Listener listener : request.mListeners) {
             listener.onResult(request.mRequestCode, result);
         }

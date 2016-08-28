@@ -2,7 +2,7 @@ package com.buzzardparking.buzzard.util;
 
 import android.util.Log;
 
-import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -26,9 +26,9 @@ public class PlaceManager implements
     private static final String KEY = "places";
     private final MarkerManager mMarkerManager;
     private ArrayList<Spot> mSpots; // May not need this. Need to know more about screen rotation
-    private MainActivity context;
+    private MapActivity context;
 
-    public PlaceManager(MarkerManager markerManager, MainActivity context) {
+    public PlaceManager(MarkerManager markerManager, MapActivity context) {
         this.mMarkerManager = markerManager;
         this.context = context;
         mSpots = new ArrayList<>();

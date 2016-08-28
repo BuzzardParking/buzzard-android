@@ -5,7 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import com.buzzardparking.buzzard.R;
-import com.buzzardparking.buzzard.activities.MainActivity;
+import com.buzzardparking.buzzard.activities.MapActivity;
 
 /**
  * {@link BottomSheetManager} manages the states of the bottomsheet.
@@ -15,7 +15,7 @@ import com.buzzardparking.buzzard.activities.MainActivity;
  */
 public class BottomSheetManager {
     public BottomSheetBehavior bottomSheet;
-    private MainActivity context;
+    private MapActivity context;
     BottomSheetListeners bottomSheetListeners;
     FabListener fabListener;
     FloatingActionButton fabAction;
@@ -40,7 +40,7 @@ public class BottomSheetManager {
         this.fabListener = listener;
     }
 
-    public BottomSheetManager(MainActivity context, BottomSheetBehavior bottomSheet) {
+    public BottomSheetManager(MapActivity context, BottomSheetBehavior bottomSheet) {
         this.bottomSheet = bottomSheet;
         this.context = context;
         this.bottomSheetListeners = null;
