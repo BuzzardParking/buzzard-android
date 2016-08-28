@@ -64,7 +64,7 @@ public class PolylineManager {
         Polyline polyline;
         rectOptions = new PolylineOptions();
         rectOptions.color(Color.BLUE);
-        rectOptions.width(10);
+        rectOptions.width(12);
 
 
         for (int i = 0; i < route.getSteps().size(); i++) {
@@ -75,9 +75,6 @@ public class PolylineManager {
         }
 
         rectOptions.addAll(points);
-        if (mGoogleMap == null) {
-            Log.e("fnully", "nully");
-        }
         polyline = mGoogleMap.addPolyline(rectOptions);
         polylines.add(polyline);
     }

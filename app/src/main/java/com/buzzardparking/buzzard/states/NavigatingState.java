@@ -11,7 +11,9 @@ import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.buzzardparking.buzzard.util.PolylineManager;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 /**
  * {@link NavigatingState}: a user is navigating to a parking spot.
@@ -23,7 +25,7 @@ public class NavigatingState extends UserState {
 
     public NavigatingState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
         super(context, placeManager, cameraManager);
-            this.spot = spot;
+        this.spot = spot;
         APP_STATE = AppState.NAVIGATING;
     }
 
@@ -46,6 +48,12 @@ public class NavigatingState extends UserState {
         LatLng currentLocation = getCameraManager().getLastLocation();
 
         lineManager.createAndDisplay(getContext().getMap(), currentLocation, spot.getLatLng());
+
+        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+        boundsBuilder.include(currentLocation);
+        boundsBuilder.include(spot.getLatLng());
+        LatLngBounds bounds = boundsBuilder.build();
+        getContext().getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
 
         bottomSheet.expand();
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
