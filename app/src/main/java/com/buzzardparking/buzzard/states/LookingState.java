@@ -102,6 +102,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
 
         bottomSheet.expand();
+        bottomSheet.setFabIcon(R.drawable.ic_navigation);
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {

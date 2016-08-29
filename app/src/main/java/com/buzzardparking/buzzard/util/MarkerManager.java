@@ -120,11 +120,7 @@ public class MarkerManager {
         clusterManager = new com.google.maps.android.clustering.ClusterManager(context, map);
         clusterManager.setRenderer(new ClusterPlaceManager(context, clusterManager));
         map.setOnMarkerClickListener(clusterManager); // This must be set so onClusterItemClick will work
-
-
-
         map.setOnCameraChangeListener(clusterManager);
-
     }
 
     public ClusterManager getClusterManager() {

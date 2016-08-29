@@ -41,6 +41,7 @@ public class ParkedState extends UserState {
         getContext().tvBottomSheetSubHeading.setText(getContext().getString(R.string.tv_parked_subtitle));
 
         bottomSheet.expand();
+        bottomSheet.setFabIcon(R.drawable.ic_parked);
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {

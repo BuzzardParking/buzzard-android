@@ -11,18 +11,20 @@ The following functionality is completed:
 * [x] A user can park in a space
 * [x] A user can report an available parking space
 * [x] A user can navigate to a parking space within the app, guided by polylines
-* [x] A user can navigate to a parking space using an external navigation app (i.e. Google Map)c:w
-* [x] A user can select a marker on the map
+* [x] A user can navigate to a parking space using an external navigation app (i.e. Google Map).
+* [x] A user can select a marker on the map and see details.
 
 Optional:
 * [x] The map displays multiple types of custom markers depicting how old a spot is
+* [x] The map can display a group icon showing the number of spaces when the map is zoomed out.
+* [x] A floating icon can be shown on top of Google Map while navigating so that a user can easily go back to the app.
+* [ ] A user can switch to indicate whether it wants to launch external navigation app.
 * [ ] A user can save a region to a list of favorites for quick checking
   * [ ] A user can subscribe to parking changes in an area with push notifications
   * [ ] A user can delete a saved region
 * [ ] Implement geofencing in order to automatically park in a space
 * [ ] A user can notify when they are going to leave a space
   * [ ] Display a marker indicating the space will be vacated.
-* [x] Display a group icon showing the number of spaces when the map is zoomed out.
 * [ ] Polish the animations: pin a parking space
 * [ ] NUX(i.e. new user experience) screen to show you how to use the app
 * [ ] A user can swipe up and see a few card details about any parking spot

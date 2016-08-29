@@ -21,6 +21,7 @@ public class BottomSheetManager {
     private MapActivity context;
     private BottomSheetListeners bottomSheetListeners;
     private FabListener fabListener;
+    private FloatingActionButton fabBtn;
 
     public interface FabListener {
         void onClick();
@@ -61,9 +62,9 @@ public class BottomSheetManager {
     public void expand() {bottomSheet.setState(STATE_EXPANDED);}
 
     private void initListeners() {
-        FloatingActionButton fabAction = (FloatingActionButton) this.context.findViewById(R.id.fabAction);
+        fabBtn = (FloatingActionButton) this.context.findViewById(R.id.fabAction);
 
-        fabAction.setOnClickListener(new View.OnClickListener() {
+        fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (fabListener != null) {
@@ -103,6 +104,9 @@ public class BottomSheetManager {
                 // TODO: Add slide behavior for ??
             }
         });
+    }
 
+    public void setFabIcon(int resourceId) {
+        fabBtn.setImageResource(resourceId);
     }
 }
