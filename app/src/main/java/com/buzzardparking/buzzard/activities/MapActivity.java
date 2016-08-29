@@ -80,6 +80,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
 
     public TextView tvBottomSheetHeading;
     public TextView tvBottomSheetSubHeading;
+    public TextView tvBottomSheetSubheadingRight;
 
     public BottomSheetBehavior bottomSheet;
 
@@ -96,6 +97,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
 
         tvBottomSheetHeading = (TextView) findViewById(R.id.tvBottomSheetHeading);
         tvBottomSheetSubHeading = (TextView) findViewById(R.id.tvBottomSheetSubheading);
+        tvBottomSheetSubheadingRight = (TextView) findViewById(R.id.tvBottomSheetSubheadingRight);
         new BottomSheetManager(this, bottomSheet);
 
         if (savedInstanceState == null) {
