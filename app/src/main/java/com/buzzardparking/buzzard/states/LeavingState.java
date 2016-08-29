@@ -27,7 +27,6 @@ public class LeavingState extends UserState {
         // 2. Able to mark the space as available when the device sensor detects the car is leaving
         // 3. Able to send time information to the server, so the server could keep track of the time elapsedA
         // ...
-        Toast.makeText(getContext(), "In leaving state.", Toast.LENGTH_SHORT).show();
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_reset));
         getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);

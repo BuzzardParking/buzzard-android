@@ -38,7 +38,6 @@ public class NavigatingState extends UserState {
         // 4. button to go to the parked state
         // 5. Show the parking space as well as the destination
         // ...
-        Toast.makeText(getContext(), "In navigating state.", Toast.LENGTH_SHORT).show();
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_parked));
         getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);

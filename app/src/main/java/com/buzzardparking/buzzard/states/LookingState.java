@@ -74,7 +74,6 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
     }
 
     private void updateUI() {
-        Toast.makeText(getContext(), "In looking state.", Toast.LENGTH_SHORT).show();
 
         getPlaceManager().loadPlaces(getContext().getMap());
 

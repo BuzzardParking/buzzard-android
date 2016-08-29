@@ -42,7 +42,6 @@ public class ParkedState extends UserState {
 
 
 
-        Toast.makeText(getContext(), "In parked state.", Toast.LENGTH_SHORT).show();
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_leaving));
         getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
