@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -147,6 +146,29 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         drawerToggle = new ActionBarDrawerToggle(
                 this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         mDrawer.addDrawerListener(drawerToggle);
+
+        NavigationView navView = (NavigationView) findViewById(R.id.navView);
+        navView.setNavigationItemSelectedListener(
+            new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    selectDrawerItem(menuItem);
+                    return true;
+                }
+            });
+    }
+
+    private void selectDrawerItem(MenuItem menuItem) {
+        switch(menuItem.getItemId()) {
+            case R.id.nav_parking_history:
+                startActivity(new Intent(this, HistoryActivity.class));
+                break;
+            case R.id.nav_second_fragment:
+                break;
+            default:
+                break;
+        }
+        mDrawer.closeDrawers();
     }
 
     private void setupBottomSheet() {
