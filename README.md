@@ -10,7 +10,8 @@ The following functionality is completed:
 * [x] A user can search for an area and see available parking spaces
 * [x] A user can park in a space
 * [x] A user can report an available parking space
-* [ ] A user can navigate to a parking space using an external navigation app
+* [x] A user can navigate to a parking space within the app, guided by polylines
+* [x] A user can navigate to a parking space using an external navigation app (i.e. Google Map)c:w
 * [x] A user can select a marker on the map
 
 Optional:
@@ -24,7 +25,8 @@ Optional:
 * [x] Display a group icon showing the number of spaces when the map is zoomed out.
 * [ ] Polish the animations: pin a parking space
 * [ ] NUX(i.e. new user experience) screen to show you how to use the app
-* [ ] A user can swipe up and see a few card details about any spot
+* [ ] A user can swipe up and see a few card details about any parking spot
+* [ ] A user can see google street view as the detail about any parking spot
 
 Bonus:
 * [ ] Notify a user parked in of parking restrictions ex. Street cleaning

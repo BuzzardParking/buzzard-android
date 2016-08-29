@@ -1,13 +1,15 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
+import com.buzzardparking.buzzard.gateways.RouteGateway;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Route;
 import com.buzzardparking.buzzard.models.Spot;
-import com.buzzardparking.buzzard.gateways.RouteGateway;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
@@ -77,6 +79,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
     }
 
     public void showParkingSpaceDetails(Spot spot) {
+        // TODO: load google map street view as part of the details
         getContext().tvBottomSheetHeading.setText("User parking space");
         getContext().tvBottomSheetSubHeading.setText("details");
         getContext().tvBottomSheetSubheadingRight.setText("...");
@@ -104,16 +107,16 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             public void onClick() {
 
                 if (spotToNavTo != null) {
-                    getContext().goTo(AppState.NAVIGATING, spotToNavTo);
+                    startNavigating();
                 } else {
-
                     LatLng userLoc = getCameraManager().getLastLocation();
                     ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
 
                     getPlaceManager().getNearestSpot(userGeoPoint, new PlaceManager.NearestSpotListener() {
                         @Override
                         public void onReturn(Spot nearestSpot) {
-                            getContext().goTo(AppState.NAVIGATING, nearestSpot);
+                            spotToNavTo = nearestSpot;
+                            startNavigating();
                         }
                     });
 
@@ -149,7 +152,18 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
             }
         });
+    }
 
+    private void startNavigating() {
+        // launch in-app navigation
+        getContext().goTo(AppState.NAVIGATING, spotToNavTo);
+
+        // launch external navigation as well
+        LatLng latLng = spotToNavTo.getLatLng();
+        Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s", latLng.latitude, latLng.longitude));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        getContext().startActivity(mapIntent);
     }
 
     @Override
