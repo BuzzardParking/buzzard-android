@@ -18,7 +18,8 @@ Optional:
 * [x] The map displays multiple types of custom markers depicting how old a spot is
 * [x] The map can display a group icon showing the number of spaces when the map is zoomed out.
 * [x] A floating icon can be shown on top of Google Map while navigating so that a user can easily go back to the app.
-* [ ] A user can switch to indicate whether it wants to launch external navigation app.
+* [x] A user can see its parking history.
+* [x] A user can switch to indicate whether it always wants to launch external navigation app.
 * [ ] A user can save a region to a list of favorites for quick checking
   * [ ] A user can subscribe to parking changes in an area with push notifications
   * [ ] A user can delete a saved region

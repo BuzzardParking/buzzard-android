@@ -25,6 +25,7 @@ import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Map;
 import com.buzzardparking.buzzard.models.Spot;
+import com.buzzardparking.buzzard.models.User;
 import com.buzzardparking.buzzard.services.OverlayService;
 import com.buzzardparking.buzzard.states.LeavingState;
 import com.buzzardparking.buzzard.states.LookingState;
@@ -56,10 +57,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.ui.IconGenerator;
 
+import org.parceler.Parcels;
+
+import java.util.List;
+
 public class MapActivity extends AppCompatActivity implements UIStateMachine {
 
     public static final String TAG = MapActivity.class.getSimpleName();
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private static final int SETTING_REQUEST_CODE = 2;
     private static final int OVERLAY_REQUEST_CODE = 99;
 
     // Singleton instance of map
@@ -85,6 +91,8 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     public BottomSheetBehavior bottomSheet;
 
     public Place googlePlace;
+    // TODO: scope user with sessions
+    public User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +141,14 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         onPermission.beginRequest(location);
 
         checkDrawOverlayPermission();
+
+        // TODO: fetch real user based on session from Parse
+        List<User> users = User.getAll();
+        if (users.isEmpty()) {
+            user = new User("buzzard-admin");
+        } else {
+            user = users.get(0);
+        }
     }
 
     private void setupToolbar() {
@@ -165,7 +181,10 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
             case R.id.nav_parking_history:
                 startActivity(new Intent(this, HistoryActivity.class));
                 break;
-            case R.id.nav_second_fragment:
+            case R.id.nav_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                intent.putExtra("user", Parcels.wrap(user));
+                startActivityForResult(intent, SETTING_REQUEST_CODE);
                 break;
             default:
                 break;
@@ -300,6 +319,10 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
             }
         } else if (requestCode == OVERLAY_REQUEST_CODE) {
             startService(new Intent(this, OverlayService.class));
+        } else if (requestCode == SETTING_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                user = Parcels.unwrap(data.getExtras().getParcelable("user"));
+            }
         }
     }
 

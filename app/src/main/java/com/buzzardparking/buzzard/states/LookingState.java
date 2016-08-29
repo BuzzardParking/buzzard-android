@@ -159,12 +159,14 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         // launch in-app navigation
         getContext().goTo(AppState.NAVIGATING, spotToNavTo);
 
-        // launch external navigation as well
-        LatLng latLng = spotToNavTo.getLatLng();
-        Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s", latLng.latitude, latLng.longitude));
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        getContext().startActivity(mapIntent);
+        if (getContext().user.doesPreferExternalNavigation()) {
+            // launch external navigation as well
+            LatLng latLng = spotToNavTo.getLatLng();
+            Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s", latLng.latitude, latLng.longitude));
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            getContext().startActivity(mapIntent);
+        }
     }
 
     @Override
