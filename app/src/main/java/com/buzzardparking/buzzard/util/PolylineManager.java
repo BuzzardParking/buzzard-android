@@ -2,7 +2,6 @@ package com.buzzardparking.buzzard.util;
 
 import android.graphics.Color;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.Route;
@@ -65,9 +64,10 @@ public class PolylineManager {
         });
     }
 
-    public void notifyUser(Route route) {
+    private void notifyUser(Route route) {
+        // TODO: add nice animation here
         String message = "You are " + route.getDuration() + " away (" + route.getDistance() + ")";
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        context.tvBottomSheetHeading.setText(message);
     }
 
     public void displayOnMap(Route route) {

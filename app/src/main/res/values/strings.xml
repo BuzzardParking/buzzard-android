@@ -4,9 +4,8 @@
     <string name="marker_title">Marker title</string>
     <string name="btn_leaving">I\'m leaving</string>
     <string name="btn_looking">park now</string>
-    <string name="btn_navigating">Navigate me now</string>
+    <string name="btn_navigating">Tap navigation button to the closest spot</string>
     <string name="btn_reset">Start Over</string>
-    <string name="btn_parked">I\'m Parked</string>
     <string name="parse_application_id">buzzard</string>
     <string name="toolbarTitle">Buzzard</string>
     <string name="title_parking_history">Parking History</string>
@@ -14,4 +13,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="tv_parked">Woot! You are parked!</string>
+    <string name="tv_parked_subtitle">You can navigate to your parking spot anytime by tapping the navigation button. Please kindly mark your spot as empty when you leave.</string>
+    <string name="tv_optimizing_navigation">Optimizing your route...</string>
 </resources>

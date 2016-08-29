@@ -2,7 +2,6 @@ package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -39,12 +38,9 @@ public class ParkedState extends UserState {
         getPlaceManager().addCarParkedMarker(getContext().getMap(), spot.getLatLng());
         getCameraManager().moveToLocation(getContext().getMap(), spot.getLatLng());
 
-
-
-
-
-        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_leaving));
-        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
+        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_parked));
+        getContext().tvBottomSheetSubHeading.setText(getContext().getString(R.string.tv_parked_subtitle));
+        getContext().tvBottomSheetSubHeading.setVisibility(View.VISIBLE);
 
         bottomSheet.expand();
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {

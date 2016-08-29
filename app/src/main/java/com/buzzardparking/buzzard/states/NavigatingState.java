@@ -2,7 +2,6 @@ package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -21,7 +20,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 public class NavigatingState extends UserState {
 
     private Spot spot;
-    PolylineManager lineManager = new PolylineManager(getContext());
+    private PolylineManager lineManager = new PolylineManager(getContext());
 
     public NavigatingState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
         super(context, placeManager, cameraManager);
@@ -39,7 +38,7 @@ public class NavigatingState extends UserState {
         // 5. Show the parking space as well as the destination
         // ...
 
-        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_parked));
+        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_optimizing_navigation));
         getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
         // Temporary marker to show the parking spot location
         getPlaceManager().addParkingSpotMarker(getContext().getMap(), spot.getLatLng());
@@ -49,10 +48,10 @@ public class NavigatingState extends UserState {
 
         lineManager.createAndDisplay(getContext().getMap(), currentLocation, spot.getLatLng());
 
-        LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
-        boundsBuilder.include(currentLocation);
-        boundsBuilder.include(spot.getLatLng());
-        LatLngBounds bounds = boundsBuilder.build();
+        LatLngBounds bounds = new LatLngBounds.Builder()
+                .include(currentLocation)
+                .include(spot.getLatLng())
+                .build();
         getContext().getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
 
         bottomSheet.expand();
