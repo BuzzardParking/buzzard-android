@@ -2,7 +2,6 @@ package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -17,7 +16,7 @@ public class LeavingState extends UserState {
 
     public LeavingState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
         super(context, placeManager, cameraManager);
-        APP_STATE = AppState.LEAVING;
+        appState = AppState.LEAVING;
     }
 
     @Override

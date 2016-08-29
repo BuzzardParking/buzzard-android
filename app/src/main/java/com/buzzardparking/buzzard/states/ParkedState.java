@@ -19,7 +19,7 @@ public class ParkedState extends UserState {
 
     public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
         super(context, placeManager, cameraManager);
-        APP_STATE = AppState.PARKED;
+        appState = AppState.PARKED;
         this.spot = spot;
     }
 

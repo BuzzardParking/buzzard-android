@@ -259,7 +259,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
 
                 googlePlace = PlaceAutocomplete.getPlace(this, data); // This is hoisted and then collected in goTo
 
-                if (currentState.APP_STATE != AppState.LOOKING) {
+                if (currentState.appState != AppState.LOOKING) {
                     goTo(AppState.LOOKING);
                 }
 

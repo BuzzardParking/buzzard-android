@@ -18,7 +18,8 @@ public abstract class UserState implements OnMap.Listener {
     private Context context;
     private PlaceManager manager;
     private CameraManager cameraManager;
-    public AppState APP_STATE;
+    // TODO: not a good idea to expose a public field from the state, we probably need refactor all UserState later
+    public AppState appState;
     protected BottomSheetManager bottomSheet;
 
     public UserState(Context context, PlaceManager manager, CameraManager cameraManager) {
@@ -26,7 +27,7 @@ public abstract class UserState implements OnMap.Listener {
         this.manager = manager;
         this.cameraManager = cameraManager;
         this.bottomSheet = new BottomSheetManager(getContext(), getContext().getBottomSheet());
-        APP_STATE = null;
+        appState = null;
     }
 
     /**

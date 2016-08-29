@@ -27,7 +27,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
     public LookingState(Context context, PlaceManager manager, CameraManager cameraManager) {
         super(context, manager, cameraManager);
         this.spotToNavTo = null;
-        APP_STATE = AppState.LOOKING;
+        appState = AppState.LOOKING;
     }
 
     @Override
