@@ -7,7 +7,7 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Route;
 import com.buzzardparking.buzzard.models.Spot;
-import com.buzzardparking.buzzard.services.RouteService;
+import com.buzzardparking.buzzard.gateways.RouteGateway;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
@@ -51,7 +51,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
         LatLng userLoc = getCameraManager().getLastLocation();
 
-        RouteService.getRoute(userLoc, googlePlace.getLatLng(), new RouteService.RouteServiceListener() {
+        RouteGateway.getRoute(userLoc, googlePlace.getLatLng(), new RouteGateway.RouteGatewayListener() {
             @Override
             public void onReturn(Route returnedRoute) {
                 getContext().tvBottomSheetSubheadingRight.setText(returnedRoute.getDuration());
@@ -82,7 +82,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         getContext().tvBottomSheetSubheadingRight.setText("...");
 
         LatLng userLoc = getCameraManager().getLastLocation();
-        RouteService.getRoute(userLoc, spot.getLatLng(), new RouteService.RouteServiceListener() {
+        RouteGateway.getRoute(userLoc, spot.getLatLng(), new RouteGateway.RouteGatewayListener() {
             @Override
             public void onReturn(Route returnedRoute) {
                 getContext().tvBottomSheetSubheadingRight.setText(returnedRoute.getDuration());
@@ -164,13 +164,3 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         return true;
     }
 }
-
-/*
-    Roadmap:
-
-    - Load in data from a DB
-    - Display it on the map
-    - Allow users to add more pins with a longclick
-    - These pins will persist in the DB
-
- */

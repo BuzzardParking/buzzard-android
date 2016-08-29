@@ -15,6 +15,10 @@ import android.widget.ImageView;
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
 
+/**
+ * {@link OverlayService} is a service that can run in the background to overlay
+ * the app icon on top of other applications.
+ */
 public class OverlayService extends Service {
 
     private static final int OFFSET_TRIGGER_OPEN = 2;

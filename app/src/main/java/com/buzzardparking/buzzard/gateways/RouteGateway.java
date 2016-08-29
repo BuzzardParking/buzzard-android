@@ -1,4 +1,4 @@
-package com.buzzardparking.buzzard.services;
+package com.buzzardparking.buzzard.gateways;
 
 import android.util.Log;
 
@@ -13,12 +13,11 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
 /**
- * Created by nathansass on 8/28/16.
+ * {@link RouteGateway} is a gateway that talks to Google APIs to fetch route information.
  */
-public class RouteService {
-    private RouteServiceListener routeServiceListener;
+public class RouteGateway {
 
-    public static void getRoute(LatLng start, LatLng end, final RouteServiceListener routeServiceListener) {
+    public static void getRoute(LatLng start, LatLng end, final RouteGatewayListener routeGateWayListener) {
         String baseUrl = "https://maps.googleapis.com/maps/api/directions/json";
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
@@ -34,7 +33,7 @@ public class RouteService {
                 super.onSuccess(statusCode, headers, response);
                 Route route = new Route(response);
 
-                routeServiceListener.onReturn(route);
+                routeGateWayListener.onReturn(route);
             }
 
             @Override
@@ -46,7 +45,7 @@ public class RouteService {
 
     }
 
-    public interface RouteServiceListener {
+    public interface RouteGatewayListener {
         void onReturn(Route returnedRoute);
     }
 
