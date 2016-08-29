@@ -7,18 +7,20 @@ import android.view.View;
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
 
+import static android.support.design.widget.BottomSheetBehavior.STATE_COLLAPSED;
+import static android.support.design.widget.BottomSheetBehavior.STATE_DRAGGING;
+import static android.support.design.widget.BottomSheetBehavior.STATE_EXPANDED;
+import static android.support.design.widget.BottomSheetBehavior.STATE_HIDDEN;
+import static android.support.design.widget.BottomSheetBehavior.STATE_SETTLING;
+
 /**
- * {@link BottomSheetManager} manages the states of the bottomsheet.
- *
- *
- *
+ * {@link BottomSheetManager} manages the states of the bottom sheet.
  */
 public class BottomSheetManager {
-    public BottomSheetBehavior bottomSheet;
+    private BottomSheetBehavior bottomSheet;
     private MapActivity context;
-    BottomSheetListeners bottomSheetListeners;
-    FabListener fabListener;
-    FloatingActionButton fabAction;
+    private BottomSheetListeners bottomSheetListeners;
+    private FabListener fabListener;
 
     public interface FabListener {
         void onClick();
@@ -49,17 +51,17 @@ public class BottomSheetManager {
     }
 
     public void collapse() {
-        bottomSheet.setState(bottomSheet.STATE_COLLAPSED);
+        bottomSheet.setState(STATE_COLLAPSED);
     }
 
     public void hide() {
-        bottomSheet.setState(bottomSheet.STATE_HIDDEN);
+        bottomSheet.setState(STATE_HIDDEN);
     }
 
-    public void expand() {bottomSheet.setState(bottomSheet.STATE_EXPANDED);}
+    public void expand() {bottomSheet.setState(STATE_EXPANDED);}
 
     private void initListeners() {
-        fabAction = (FloatingActionButton) this.context.findViewById(R.id.fabAction);
+        FloatingActionButton fabAction = (FloatingActionButton) this.context.findViewById(R.id.fabAction);
 
         fabAction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,46 +75,32 @@ public class BottomSheetManager {
         bottomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(View bottomSheet, int newState) {
-
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-//                    bottomSheet.setText(getString(R.string.text_collapse_me));
-                } else {
-//                    bottomSheet.setText(getString(R.string.text_expand_me));
+                if (bottomSheetListeners == null) {
+                    return;
                 }
 
                 switch (newState) {
-                    case BottomSheetBehavior.STATE_COLLAPSED:
-                        if (bottomSheetListeners != null) {
-                            bottomSheetListeners.onCollapsed();
-                        }
+                    case STATE_COLLAPSED:
+                        bottomSheetListeners.onCollapsed();
                         break;
-                    case BottomSheetBehavior.STATE_DRAGGING:
-                        if (bottomSheetListeners != null) {
-                            bottomSheetListeners.onDragging();
-                        }
+                    case STATE_DRAGGING:
+                        bottomSheetListeners.onDragging();
                         break;
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                        if (bottomSheetListeners != null) {
-                            bottomSheetListeners.onExpanded();
-                        }
+                    case STATE_EXPANDED:
+                        bottomSheetListeners.onExpanded();
                         break;
-                    case BottomSheetBehavior.STATE_HIDDEN:
-                        if (bottomSheetListeners != null) {
-                            bottomSheetListeners.onHidden();
-                        }
+                    case STATE_HIDDEN:
+                        bottomSheetListeners.onHidden();
                         break;
-                    case BottomSheetBehavior.STATE_SETTLING:
-                        if (bottomSheetListeners != null) {
-                            bottomSheetListeners.onSettling();
-                        }
+                    case STATE_SETTLING:
+                        bottomSheetListeners.onSettling();
                         break;
                 }
             }
 
-
             @Override
             public void onSlide(View bottomSheet, float slideOffset) {
-
+                // TODO: Add slide behavior for ??
             }
         });
 
