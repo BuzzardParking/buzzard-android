@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
-import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -40,7 +39,6 @@ public class ParkedState extends UserState {
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_parked));
         getContext().tvBottomSheetSubHeading.setText(getContext().getString(R.string.tv_parked_subtitle));
-        getContext().tvBottomSheetSubHeading.setVisibility(View.VISIBLE);
 
         bottomSheet.expand();
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {

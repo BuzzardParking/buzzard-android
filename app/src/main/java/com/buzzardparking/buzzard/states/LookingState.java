@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
@@ -42,16 +41,13 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         super.stop();
         getPlaceManager().clearMap();
         getPlaceManager().removeDestinationMarker();
-        getContext().tvBottomSheetSubheadingRight.setVisibility(View.GONE);
     }
 
     public void showDestinationDetails(Place googlePlace) {
         getPlaceManager().removeDestinationMarker();
 
         getContext().tvBottomSheetHeading.setText(googlePlace.getName());
-        getContext().tvBottomSheetSubHeading.setVisibility(View.VISIBLE);
         getContext().tvBottomSheetSubHeading.setText(googlePlace.getAddress());
-        getContext().tvBottomSheetSubheadingRight.setVisibility(View.GONE);
 
         LatLng userLoc = getCameraManager().getLastLocation();
 
@@ -59,7 +55,6 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             @Override
             public void onReturn(Route returnedRoute) {
                 getContext().tvBottomSheetSubheadingRight.setText(returnedRoute.getDuration());
-                getContext().tvBottomSheetSubheadingRight.setVisibility(View.VISIBLE);
             }
         });
 
@@ -83,15 +78,13 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     public void showParkingSpaceDetails(Spot spot) {
         getContext().tvBottomSheetHeading.setText("User parking space");
-        getContext().tvBottomSheetSubHeading.setVisibility(View.VISIBLE);
         getContext().tvBottomSheetSubHeading.setText("details");
-        getContext().tvBottomSheetSubheadingRight.setVisibility(View.GONE);
+        getContext().tvBottomSheetSubheadingRight.setText("...");
 
         LatLng userLoc = getCameraManager().getLastLocation();
         RouteService.getRoute(userLoc, spot.getLatLng(), new RouteService.RouteServiceListener() {
             @Override
             public void onReturn(Route returnedRoute) {
-                getContext().tvBottomSheetSubheadingRight.setVisibility(View.VISIBLE);
                 getContext().tvBottomSheetSubheadingRight.setText(returnedRoute.getDuration());
             }
         });
@@ -104,8 +97,6 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         getCameraManager().moveToUserLocation();
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
-        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
-        getContext().tvBottomSheetSubheadingRight.setVisibility(View.GONE);
 
         bottomSheet.expand();
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {

@@ -53,6 +53,7 @@ public abstract class UserState implements OnMap.Listener {
     public void stop() {
         bottomSheet.setFabListener(null);
         bottomSheet.setBottomSheetStateListeners(null);
+        ((MapActivity) context).clearBottomSheetHeadings();
     }
 
     public MapActivity getContext() {

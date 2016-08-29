@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -326,5 +327,11 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         } else {
             startService(new Intent(this, OverlayService.class));
         }
+    }
+
+    public void clearBottomSheetHeadings() {
+        tvBottomSheetHeading.setText("");
+        tvBottomSheetSubHeading.setText("");
+        tvBottomSheetSubheadingRight.setText("");
     }
 }

@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
-import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -28,7 +27,6 @@ public class LeavingState extends UserState {
         // ...
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_reset));
-        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
 
         bottomSheet.expand();
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {

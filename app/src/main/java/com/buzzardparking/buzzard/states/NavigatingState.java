@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
-import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -39,7 +38,6 @@ public class NavigatingState extends UserState {
         // ...
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_optimizing_navigation));
-        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
         // Temporary marker to show the parking spot location
         getPlaceManager().addParkingSpotMarker(getContext().getMap(), spot.getLatLng());
 
