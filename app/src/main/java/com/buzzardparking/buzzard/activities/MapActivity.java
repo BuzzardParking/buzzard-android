@@ -296,20 +296,20 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         checkDrawOverlayPermission();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        stopService(new Intent(this, OverlayService.class));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopService(new Intent(this, OverlayService.class));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         stopService(new Intent(this, OverlayService.class));
     }
 
