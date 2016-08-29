@@ -35,6 +35,7 @@ import com.buzzardparking.buzzard.util.AddLocationLayer;
 import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
+import com.buzzardparking.buzzard.util.Foreground;
 import com.buzzardparking.buzzard.util.LogLocation;
 import com.buzzardparking.buzzard.util.MarkerManager;
 import com.buzzardparking.buzzard.util.OnActivity;
@@ -131,6 +132,8 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         OnPermission.Request location = new OnPermission.Request(requestCode, permission, layer, cameraManager, track);
         OnPermission onPermission = new OnPermission.Builder(this).build();
         onPermission.beginRequest(location);
+
+        checkDrawOverlayPermission();
     }
 
     private void setupToolbar() {
@@ -319,17 +322,17 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        stopService(new Intent(this, OverlayService.class));
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        checkDrawOverlayPermission();
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        stopService(new Intent(this, OverlayService.class));
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        checkDrawOverlayPermission();
+//    }
 
     @Override
     protected void onDestroy() {

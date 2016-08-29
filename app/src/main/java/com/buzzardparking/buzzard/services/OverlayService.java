@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
+import com.buzzardparking.buzzard.util.Foreground;
 
 /**
  * {@link OverlayService} is a service that can run in the background to overlay
@@ -49,6 +50,16 @@ public class OverlayService extends Service {
         setupIconImageView();
         mRootLayoutParams = getOverlayLayoutParams();
         mWindowManager.addView(mIconImageView, mRootLayoutParams);
+
+        Foreground.Listener myListener = new Foreground.Listener() {
+            public void onBecameForeground() {
+                mIconImageView.setVisibility(View.GONE);
+            }
+            public void onBecameBackground() {
+                mIconImageView.setVisibility(View.VISIBLE);
+            }
+        };
+        Foreground.get(this).addListener(myListener);
     }
 
     @Override
@@ -62,7 +73,7 @@ public class OverlayService extends Service {
     private void setupIconImageView() {
         mIconImageView = new ImageView(mApplication);
         mIconImageView.setImageResource(R.mipmap.ic_buzzard);
-        mIconImageView.setVisibility(View.VISIBLE);
+        mIconImageView.setVisibility(View.GONE);
         mIconImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

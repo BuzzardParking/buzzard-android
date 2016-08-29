@@ -2,10 +2,11 @@ package com.buzzardparking.buzzard;
 
 import android.content.Context;
 
+import com.buzzardparking.buzzard.util.Foreground;
 import com.parse.Parse;
 
 /**
- * Created by lee on 8/22/16.
+ * {@link BuzzardApplication} Application that configures global state.
  */
 public class BuzzardApplication extends com.activeandroid.app.Application {
     private static Context context;
@@ -15,6 +16,7 @@ public class BuzzardApplication extends com.activeandroid.app.Application {
     public void onCreate() {
         super.onCreate();
         BuzzardApplication.context = this;
+        Foreground.init(this);
         Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                 .applicationId(getString(R.string.parse_application_id))
                 .server("https://buzzard-parking.herokuapp.com/parse/")
