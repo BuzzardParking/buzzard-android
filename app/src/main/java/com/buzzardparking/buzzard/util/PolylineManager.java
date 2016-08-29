@@ -2,7 +2,9 @@ package com.buzzardparking.buzzard.util;
 
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.Route;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -24,6 +26,11 @@ import cz.msebera.android.httpclient.Header;
 public class PolylineManager {
     private ArrayList<Polyline> polylines = new ArrayList<>();
     private GoogleMap mGoogleMap;
+    private MapActivity context;
+
+    public PolylineManager(MapActivity context) {
+        this.context = context;
+    }
 
     public void remove() {
         for (Polyline line : polylines) {
@@ -58,6 +65,11 @@ public class PolylineManager {
         });
     }
 
+    public void notifyUser(Route route) {
+        String message = "You are " + route.getDuration() + " away (" + route.getDistance() + ")";
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
     public void displayOnMap(Route route) {
         ArrayList<LatLng> points = new ArrayList<>();
         PolylineOptions rectOptions;
@@ -77,6 +89,7 @@ public class PolylineManager {
         rectOptions.addAll(points);
         polyline = mGoogleMap.addPolyline(rectOptions);
         polylines.add(polyline);
+        notifyUser(route);
     }
 
 }

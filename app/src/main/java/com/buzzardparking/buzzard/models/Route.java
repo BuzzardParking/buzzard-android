@@ -18,7 +18,19 @@ public class Route {
         return steps;
     }
 
+    public String getDuration() {
+        return duration;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
     private ArrayList<Step> steps;
+
+    private String distance;
+
+    private String duration;
 
     public Route(JSONObject jsonObject) {
         try {
@@ -27,6 +39,8 @@ public class Route {
             JSONObject jsonRoute = (JSONObject) jsonRoutes.get(0);
             JSONArray jsonLegs = jsonRoute.getJSONArray("legs");
             JSONObject jsonLeg = (JSONObject) jsonLegs.get(0);
+            this.distance = jsonLeg.getJSONObject("distance").getString("text");
+            this.duration = jsonLeg.getJSONObject("duration").getString("text");
             JSONArray jsonSteps = jsonLeg.getJSONArray("steps");
             this.steps = Step.fromJSONArray(jsonSteps);
         } catch (JSONException e) {
