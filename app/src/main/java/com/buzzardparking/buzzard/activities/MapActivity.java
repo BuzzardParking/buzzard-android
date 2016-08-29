@@ -69,8 +69,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     private UserState currentState;
 
     private PlaceManager placeManager;
-
-    CameraManager cameraManager;
+    private CameraManager cameraManager;
 
     /* UI ELEMENTS */
     private DrawerLayout mDrawer;
@@ -78,6 +77,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
 
+    // TODO: public UI element doesn't smell good, maybe refactor later...
     public TextView tvBottomSheetHeading;
     public TextView tvBottomSheetSubHeading;
     public TextView tvBottomSheetSubheadingRight;
@@ -92,13 +92,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         setContentView(R.layout.activity_map);
         setupToolbar();
         setupDrawer();
-
-        bottomSheet = BottomSheetBehavior.from(findViewById(R.id.rlBottomSheet));
-
-        tvBottomSheetHeading = (TextView) findViewById(R.id.tvBottomSheetHeading);
-        tvBottomSheetSubHeading = (TextView) findViewById(R.id.tvBottomSheetSubheading);
-        tvBottomSheetSubheadingRight = (TextView) findViewById(R.id.tvBottomSheetSubheadingRight);
-        new BottomSheetManager(this, bottomSheet);
+        setupBottomSheet();
 
         if (savedInstanceState == null) {
             Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
@@ -149,8 +143,17 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
 
     private void setupDrawer() {
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerToggle = setupDrawerToggle();
+        drawerToggle = new ActionBarDrawerToggle(
+                this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         mDrawer.addDrawerListener(drawerToggle);
+    }
+
+    private void setupBottomSheet() {
+        bottomSheet = BottomSheetBehavior.from(findViewById(R.id.rlBottomSheet));
+        tvBottomSheetHeading = (TextView) findViewById(R.id.tvBottomSheetHeading);
+        tvBottomSheetSubHeading = (TextView) findViewById(R.id.tvBottomSheetSubheading);
+        tvBottomSheetSubheadingRight = (TextView) findViewById(R.id.tvBottomSheetSubheadingRight);
+        new BottomSheetManager(this, bottomSheet);
     }
 
     private IconGenerator getIconGenerator() {
@@ -234,14 +237,15 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
             return true;
         } else if (id == R.id.miSearch) {
             try {
-                Intent intent =
-                        new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                .build(this);
+                Intent intent = new PlaceAutocomplete
+                        .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                        .build(this);
                 startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
             } catch (GooglePlayServicesRepairableException e) {
                 // TODO: Handle the error.
             } catch (GooglePlayServicesNotAvailableException e) {
                 // TODO: Handle the error.
+                e.printStackTrace();
             }
             return true;
         }
@@ -259,8 +263,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
                     goTo(AppState.LOOKING);
                 }
 
-                LookingState lookingState = (LookingState) currentState;
-                lookingState.showDestinationDetails(googlePlace);
+                ((LookingState) currentState).showDestinationDetails(googlePlace);
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
@@ -287,20 +290,10 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         drawerToggle.syncState();
     }
 
-    private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        checkDrawOverlayPermission();
     }
 
     @Override
@@ -310,12 +303,18 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        checkDrawOverlayPermission();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         stopService(new Intent(this, OverlayService.class));
     }
 
-    public void checkDrawOverlayPermission() {
+    private void checkDrawOverlayPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,

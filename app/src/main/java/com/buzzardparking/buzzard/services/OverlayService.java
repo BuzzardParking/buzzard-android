@@ -29,8 +29,6 @@ public class OverlayService extends Service {
 	private int mPrevDragX;
 	private int mPrevDragY;
 
-	private boolean mIsAppForeground = true;
-
     public OverlayService() {
     }
 
