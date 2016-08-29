@@ -37,6 +37,9 @@ public class ParkedState extends UserState {
         getPlaceManager().addCarParkedMarker(getContext().getMap(), spot.getLatLng());
         getCameraManager().moveToLocation(getContext().getMap(), spot.getLatLng());
 
+        // TODO: use real user id, dedup,
+        getPlaceManager().addIntoParkingHistory("fake-user-id", spot);
+
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_parked));
         getContext().tvBottomSheetSubHeading.setText(getContext().getString(R.string.tv_parked_subtitle));
 

@@ -129,6 +129,10 @@ public class PlaceManager implements
         });
     }
 
+    public void addIntoParkingHistory(String userId, Spot spot) {
+        spot.saveParkedSpot(userId);
+    }
+
     public ClusterManager getClusterManager() {
         return mMarkerManager.getClusterManager();
     }

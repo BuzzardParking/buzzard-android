@@ -68,6 +68,21 @@ public class Spot extends Model implements ClusterItem {
         place.saveInBackground();
     }
 
+    public void saveParkedSpot(String userId) {
+        ParseObject place = new ParseObject("Spot");
+        place.put("userId", userId);
+        place.put("latitude", latitude);
+        place.put("longitude", longitude);
+        place.put("timestamp", timestamp);
+        ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+        place.put("location", point);
+        place.saveInBackground();
+    }
+
+    public String getTimestampStr() {
+        return timestamp;
+    }
+
     public long getAgeInMinutes() {
         DateTime d1 = formatter().parseDateTime(timestamp);
         DateTime d2 = DateTime.now();
