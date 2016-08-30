@@ -19,6 +19,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseGeoPoint;
 
+import java.util.ArrayList;
+
 /**
  * {@link LookingState}: a user is looking for a parking spot.
  */
@@ -66,11 +68,11 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         ParseGeoPoint googlePlaceParsePoint = new ParseGeoPoint(googlePlace.getLatLng().latitude, googlePlace.getLatLng().longitude);
 
 
-        getPlaceManager().getNearestSpot(googlePlaceParsePoint, new PlaceManager.NearestSpotListener() {
+        getPlaceManager().loadNearestSpots(googlePlaceParsePoint,1, new PlaceManager.NearestSpotListener() {
+
             @Override
-            public void onReturn(Spot nearestSpot) {
-                spotToNavTo = nearestSpot;
-                // TODO: Also pass along the google place
+            public void onReturn(ArrayList<Spot> nearestSpots) {
+                spotToNavTo = nearestSpots.get(0);
             }
         });
 
@@ -95,7 +97,10 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     private void updateUI() {
 
-        getPlaceManager().loadPlaces(getContext().getMap());
+        LatLng userLoc = getCameraManager().getLastLocation();
+        ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
+
+        getPlaceManager().loadNearestSpotsOnMap(userGeoPoint, getContext().getMap());
 
         getCameraManager().moveToUserLocation();
 
@@ -113,10 +118,10 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
                     LatLng userLoc = getCameraManager().getLastLocation();
                     ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
 
-                    getPlaceManager().getNearestSpot(userGeoPoint, new PlaceManager.NearestSpotListener() {
+                    getPlaceManager().loadNearestSpots(userGeoPoint, 10, new PlaceManager.NearestSpotListener() {
                         @Override
-                        public void onReturn(Spot nearestSpot) {
-                            spotToNavTo = nearestSpot;
+                        public void onReturn(ArrayList<Spot> nearestSpots) {
+                            spotToNavTo = nearestSpots.get(0);
                             startNavigating();
                         }
                     });

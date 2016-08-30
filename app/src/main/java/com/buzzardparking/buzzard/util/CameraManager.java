@@ -28,6 +28,8 @@ public class CameraManager implements
     private GoogleApiClient mClient;
     private GoogleMap mGoogleMap;
     private OnPermission.Result mPermissionResult;
+    private int defaultZoom = 17;
+    private int defaultTilt = 90;
 
     public CameraManager(@Nullable Bundle savedInstanceState) {
         mSavedInstanceState = savedInstanceState;
@@ -41,36 +43,51 @@ public class CameraManager implements
     }
 
     @SuppressWarnings("MissingPermission")
-    private void moveToUserLocation(GoogleApiClient client, GoogleMap map) {
+    private void moveToUserLocation(GoogleApiClient client, GoogleMap map, int zoom, int tilt) {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 client);
 
         if (lastLocation != null) {
             LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng)));
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, zoom, tilt)));
         } else {
             Log.v("DEBUG", "Location null");
         }
     }
 
     public void moveToLocation(GoogleMap map, LatLng latLng) {
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng)));
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, defaultZoom, defaultTilt)));
     }
 
-    // Set target, zoom, and tilt (for 3d effect).
-    private CameraPosition getCameraPosition(LatLng latLng) {
+
+    private CameraPosition getCameraPosition(LatLng latLng, int zoom, int tilt) {
         return new CameraPosition.Builder().target(latLng)
-                .tilt(90)
-                .zoom(18)
+                .tilt(tilt)
+                .zoom(zoom)
                 .build();
     }
+
+    public void moveToUserLocation(int zoom, int tilt) {
+        if (mSavedInstanceState == null &&
+                mClient != null && mClient.isConnected() &&
+                mGoogleMap != null &&
+                mPermissionResult == OnPermission.Result.GRANTED) {
+
+
+            moveToUserLocation(mClient, mGoogleMap, zoom, tilt);
+        }
+    }
+
 
     public void moveToUserLocation() {
         if (mSavedInstanceState == null &&
                 mClient != null && mClient.isConnected() &&
                 mGoogleMap != null &&
                 mPermissionResult == OnPermission.Result.GRANTED) {
-            moveToUserLocation(mClient, mGoogleMap);
+
+            int zoom = 17;
+            int tilt = 90;
+            moveToUserLocation(mClient, mGoogleMap, zoom, tilt);
         }
     }
 
@@ -81,19 +98,19 @@ public class CameraManager implements
     @Override
     public void onClient(@Nullable GoogleApiClient client) {
         mClient = client;
-        moveToUserLocation();
+        moveToUserLocation(12, 0);
     }
 
     @Override
     public void onMap(GoogleMap map) {
         mGoogleMap = map;
-        moveToUserLocation();
+        moveToUserLocation(12, 0);
     }
 
     @Override
     public void onResult(int requestCode, OnPermission.Result result) {
         mPermissionResult = result;
-        moveToUserLocation();
+        moveToUserLocation(12, 0);
     }
 
 }

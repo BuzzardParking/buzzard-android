@@ -74,22 +74,36 @@ public class PlaceManager implements
         mMarkerManager.addAll(mSpots);
     }
 
+    public void loadNearestSpotsOnMap(ParseGeoPoint point, GoogleMap map) {
+        loadNearestSpots(point, 3, new NearestSpotListener() {
+            @Override
+            public void onReturn(ArrayList<Spot> nearestSpots) {
+                mSpots.clear();
+                mMarkerManager.removeMarkers();
 
-    public void getNearestSpot(ParseGeoPoint geoPoint, final NearestSpotListener nearestSpotListener) {
+                mSpots.addAll(nearestSpots);
+                mMarkerManager.addAll(mSpots);
+            }
+        });
+
+    }
+
+    public void loadNearestSpots(ParseGeoPoint geoPoint, final int limit, final NearestSpotListener nearestSpotListener) {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Spot");
         query.whereNear("location", geoPoint);
-        query.setLimit(10);
+        query.setLimit(limit);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 ArrayList<Spot> spotsArray = Spot.fromParse(objects);
-                Spot nearestSpot = spotsArray.get(0);
-                nearestSpotListener.onReturn(nearestSpot);
+
+                nearestSpotListener.onReturn(spotsArray);
 
             }
         });
     }
+
 
     public void loadFromParse(final GoogleMap map) {
         ParseQuery query = new ParseQuery("Spot");
@@ -143,7 +157,7 @@ public class PlaceManager implements
     }
 
     public interface NearestSpotListener {
-        void onReturn(Spot nearestSpot);
+        void onReturn(ArrayList<Spot> nearestSpots);
     }
 
 }

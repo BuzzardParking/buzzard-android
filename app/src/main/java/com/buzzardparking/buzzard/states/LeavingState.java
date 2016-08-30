@@ -32,7 +32,7 @@ public class LeavingState extends UserState {
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {
-                getContext().goTo(AppState.LOOKING);
+                getContext().goTo(AppState.OVERVIEW);
             }
         });
 

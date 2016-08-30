@@ -30,6 +30,7 @@ import com.buzzardparking.buzzard.services.OverlayService;
 import com.buzzardparking.buzzard.states.LeavingState;
 import com.buzzardparking.buzzard.states.LookingState;
 import com.buzzardparking.buzzard.states.NavigatingState;
+import com.buzzardparking.buzzard.states.OverviewState;
 import com.buzzardparking.buzzard.states.ParkedState;
 import com.buzzardparking.buzzard.states.UserState;
 import com.buzzardparking.buzzard.util.AddLocationLayer;
@@ -120,7 +121,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         buzzardMap = new Map();
 
         // TODO: retrieve from DB or backend in the future
-        goTo(AppState.LOOKING);
+        goTo(AppState.OVERVIEW);
 
         // initialize the map system and view
         FragmentManager fm = getSupportFragmentManager();
@@ -241,6 +242,9 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         }
 
         switch (state) {
+            case OVERVIEW:
+                currentState = new OverviewState(this, placeManager, cameraManager);
+                break;
             case LOOKING:
                 currentState = new LookingState(this, placeManager, cameraManager);
                 break;
