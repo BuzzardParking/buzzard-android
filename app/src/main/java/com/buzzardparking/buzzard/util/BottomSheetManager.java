@@ -106,6 +106,18 @@ public class BottomSheetManager {
         });
     }
 
+    public void showFab() {
+        fabBtn.setVisibility(View.VISIBLE);
+    }
+
+    public FloatingActionButton getFabBtn() {
+        return fabBtn;
+    }
+
+    public void hideFab() {
+        fabBtn.setVisibility(View.GONE);
+    }
+
     public void setFabIcon(int resourceId) {
         fabBtn.setImageResource(resourceId);
     }

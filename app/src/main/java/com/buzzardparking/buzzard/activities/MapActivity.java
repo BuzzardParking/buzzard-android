@@ -17,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +90,8 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     public TextView tvBottomSheetHeading;
     public TextView tvBottomSheetSubHeading;
     public TextView tvBottomSheetSubheadingRight;
+    public RelativeLayout rlTopPieceContainer;
+    public Button btnFindParking;
 
     public BottomSheetBehavior bottomSheet;
 
@@ -198,6 +202,8 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         tvBottomSheetHeading = (TextView) findViewById(R.id.tvBottomSheetHeading);
         tvBottomSheetSubHeading = (TextView) findViewById(R.id.tvBottomSheetSubheading);
         tvBottomSheetSubheadingRight = (TextView) findViewById(R.id.tvBottomSheetSubheadingRight);
+        rlTopPieceContainer = (RelativeLayout) findViewById(R.id.rlTopPieceContainer);
+        btnFindParking = (Button) findViewById(R.id.btnFindParking);
         new BottomSheetManager(this, bottomSheet);
     }
 
