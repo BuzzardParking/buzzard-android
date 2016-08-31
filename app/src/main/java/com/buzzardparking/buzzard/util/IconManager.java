@@ -26,7 +26,47 @@ public class IconManager {
         // Define the size you want from dimensions file
         int shapeSize = context.getResources().getDimensionPixelSize(R.dimen.carmarker_size);
 
-        Drawable shapeDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.carmarker_svg, null);
+        Drawable shapeDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.parked_marker, null);
+        iconGen.setBackground(shapeDrawable);
+
+        // Create a view container to set the size
+        View view = new View(context);
+        view.setLayoutParams(new ViewGroup.LayoutParams(shapeSize, shapeSize));
+        iconGen.setContentView(view);
+
+        // Create the bitmap
+        Bitmap bitmap = iconGen.makeIcon();
+
+        return bitmap;
+    }
+
+    public Bitmap getDecoratedSpotIcon() {
+        IconGenerator iconGen = new IconGenerator(context);
+
+        // Define the size you want from dimensions file
+        int shapeSize = context.getResources().getDimensionPixelSize(R.dimen.carmarker_size);
+
+        Drawable shapeDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.spot_decorated, null);
+        iconGen.setBackground(shapeDrawable);
+
+        // Create a view container to set the size
+        View view = new View(context);
+        view.setLayoutParams(new ViewGroup.LayoutParams(shapeSize, shapeSize));
+        iconGen.setContentView(view);
+
+        // Create the bitmap
+        Bitmap bitmap = iconGen.makeIcon();
+
+        return bitmap;
+    }
+
+    public Bitmap getSpotIcon() {
+        IconGenerator iconGen = new IconGenerator(context);
+
+        // Define the size you want from dimensions file
+        int shapeSize = context.getResources().getDimensionPixelSize(R.dimen.carmarker_size);
+
+        Drawable shapeDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.spot_icon, null);
         iconGen.setBackground(shapeDrawable);
 
         // Create a view container to set the size

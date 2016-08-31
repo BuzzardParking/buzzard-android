@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.graphics.Point;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,7 +64,7 @@ public class MarkerManager {
     public void addParkingSpotMarker(GoogleMap map, LatLng latLng) {
         MarkerOptions opts = new MarkerOptions()
                 .position(latLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.spot_icon));
+                .icon(BitmapDescriptorFactory.fromBitmap(iconManager.getSpotIcon()));
         parkingSpotMarker = map.addMarker(opts);
 
         MarkerManager.animate(map, parkingSpotMarker, 1000);
@@ -118,7 +117,7 @@ public class MarkerManager {
     public void setUpClusterer(GoogleMap map, MapActivity context) {
 
         clusterManager = new com.google.maps.android.clustering.ClusterManager(context, map);
-        clusterManager.setRenderer(new ClusterPlaceManager(context, clusterManager));
+        clusterManager.setRenderer(new ClusterPlaceManager(context, clusterManager, iconManager));
         map.setOnMarkerClickListener(clusterManager); // This must be set so onClusterItemClick will work
         map.setOnCameraChangeListener(clusterManager);
     }

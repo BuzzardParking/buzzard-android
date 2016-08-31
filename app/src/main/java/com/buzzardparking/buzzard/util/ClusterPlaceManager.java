@@ -28,13 +28,16 @@ import com.google.maps.android.ui.SquareTextView;
 public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
     MapActivity context;
     private final IconGenerator iconGenerator;
+    private IconManager iconManager;
     private SparseArray<BitmapDescriptor> mIcons = new SparseArray();
     private final float density;
     private ShapeDrawable coloredCircleBackground;
 
-    public ClusterPlaceManager(MapActivity context, ClusterManager<Spot> clusterManager) {
+
+    public ClusterPlaceManager(MapActivity context, ClusterManager<Spot> clusterManager, IconManager iconManager) {
         super(context, context.getMap(), clusterManager);
         this.context = context;
+        this.iconManager = iconManager;
         this.density = context.getResources().getDisplayMetrics().density;
         this.iconGenerator =  new IconGenerator(context);
         this.iconGenerator.setContentView(this.makeSquareTextView(context));
@@ -48,11 +51,11 @@ public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
         if (isNew(spot)) {
             markerOptions
                     .position(spot.getLatLng())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.decorated_spot_icon));
+                    .icon(BitmapDescriptorFactory.fromBitmap(iconManager.getDecoratedSpotIcon()));
         } else {
             markerOptions
                     .position(spot.getLatLng())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.spot_icon));
+                    .icon(BitmapDescriptorFactory.fromBitmap(iconManager.getSpotIcon()));
         }
     }
 
