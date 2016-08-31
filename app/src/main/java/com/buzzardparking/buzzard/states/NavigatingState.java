@@ -52,7 +52,7 @@ public class NavigatingState extends UserState {
                 .build();
         getContext().getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
 
-        bottomSheet.expand();
+        bottomSheet.collapse();
         bottomSheet.setFabIcon(R.drawable.ic_parking);
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override

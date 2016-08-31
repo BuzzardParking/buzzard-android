@@ -17,7 +17,7 @@ import static android.support.design.widget.BottomSheetBehavior.STATE_SETTLING;
  * {@link BottomSheetManager} manages the states of the bottom sheet.
  */
 public class BottomSheetManager {
-    private BottomSheetBehavior bottomSheet;
+    private BottomSheetBehavior bottomSheetBehavior;
     private MapActivity context;
     private BottomSheetListeners bottomSheetListeners;
     private FabListener fabListener;
@@ -44,7 +44,7 @@ public class BottomSheetManager {
     }
 
     public BottomSheetManager(MapActivity context, BottomSheetBehavior bottomSheet) {
-        this.bottomSheet = bottomSheet;
+        this.bottomSheetBehavior = bottomSheet;
         this.context = context;
         this.bottomSheetListeners = null;
         this.fabListener = null;
@@ -52,14 +52,15 @@ public class BottomSheetManager {
     }
 
     public void collapse() {
-        bottomSheet.setState(STATE_COLLAPSED);
+        bottomSheetBehavior.setState(STATE_COLLAPSED);
     }
 
     public void hide() {
-        bottomSheet.setState(STATE_HIDDEN);
+        bottomSheetBehavior.setState(STATE_HIDDEN);
     }
 
-    public void expand() {bottomSheet.setState(STATE_EXPANDED);}
+    public void expand() {
+        bottomSheetBehavior.setState(STATE_EXPANDED);}
 
     private void initListeners() {
         fabBtn = (FloatingActionButton) this.context.findViewById(R.id.fabAction);
@@ -73,7 +74,7 @@ public class BottomSheetManager {
             }
         });
 
-        bottomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(View bottomSheet, int newState) {
                 if (bottomSheetListeners == null) {

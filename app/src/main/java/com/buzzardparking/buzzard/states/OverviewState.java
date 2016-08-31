@@ -48,8 +48,6 @@ public class OverviewState extends UserState {
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
 
-        bottomSheet.expand();
-
         getContext().btnFindParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

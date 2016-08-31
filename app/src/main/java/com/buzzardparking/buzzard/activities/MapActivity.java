@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.activities;
 
 import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -58,6 +59,9 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
+import com.google.android.gms.maps.StreetViewPanorama;
+import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.maps.android.ui.IconGenerator;
 
@@ -65,7 +69,8 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-public class MapActivity extends AppCompatActivity implements UIStateMachine {
+public class MapActivity extends AppCompatActivity
+        implements UIStateMachine, OnStreetViewPanoramaReadyCallback {
 
     public static final String TAG = MapActivity.class.getSimpleName();
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -95,9 +100,12 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     public Button btnFindParking;
     public ImageView ivAddMarkerIcon;
 
-    public BottomSheetBehavior bottomSheet;
+    public BottomSheetBehavior bottomSheetBehavior;
+    public StreetViewPanoramaFragment streetViewPanoramaFragment;
 
+    // TODO: refactor these public instance variables
     public Place googlePlace;
+    public Spot targetSpot;
     // TODO: scope user with sessions
     public User user;
 
@@ -157,6 +165,12 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         } else {
             user = users.get(0);
         }
+
+        streetViewPanoramaFragment = (StreetViewPanoramaFragment)getFragmentManager()
+                .findFragmentById(R.id.streetviewpanorama);
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.hide(streetViewPanoramaFragment);
+        ft.commit();
     }
 
     private void setupToolbar() {
@@ -205,13 +219,13 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     }
 
     private void setupBottomSheet() {
-        bottomSheet = BottomSheetBehavior.from(findViewById(R.id.rlBottomSheet));
+        bottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.rlBottomSheet));
         tvBottomSheetHeading = (TextView) findViewById(R.id.tvBottomSheetHeading);
         tvBottomSheetSubHeading = (TextView) findViewById(R.id.tvBottomSheetSubheading);
         tvBottomSheetSubheadingRight = (TextView) findViewById(R.id.tvBottomSheetSubheadingRight);
         rlTopPieceContainer = (RelativeLayout) findViewById(R.id.rlTopPieceContainer);
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
-        new BottomSheetManager(this, bottomSheet);
+        new BottomSheetManager(this, bottomSheetBehavior);
     }
 
     private IconGenerator getIconGenerator() {
@@ -244,8 +258,8 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         return buzzardMap.get();
     }
 
-    public BottomSheetBehavior getBottomSheet() {
-        return bottomSheet;
+    public BottomSheetBehavior getBottomSheetBehavior() {
+        return bottomSheetBehavior;
     }
 
     @Override
@@ -385,5 +399,10 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         tvBottomSheetHeading.setText("");
         tvBottomSheetSubHeading.setText("");
         tvBottomSheetSubheadingRight.setText("");
+    }
+
+    @Override
+    public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
+        streetViewPanorama.setPosition(targetSpot.getLatLng());
     }
 }

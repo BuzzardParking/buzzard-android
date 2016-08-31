@@ -26,7 +26,7 @@ public abstract class UserState implements OnMap.Listener {
         this.context = context;
         this.manager = manager;
         this.cameraManager = cameraManager;
-        this.bottomSheet = new BottomSheetManager(getContext(), getContext().getBottomSheet());
+        this.bottomSheet = new BottomSheetManager(getContext(), getContext().getBottomSheetBehavior());
         appState = null;
     }
 

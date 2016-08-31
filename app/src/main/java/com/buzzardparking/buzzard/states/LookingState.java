@@ -1,5 +1,6 @@
 package com.buzzardparking.buzzard.states;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -93,7 +94,13 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
                 getContext().tvBottomSheetSubheadingRight.setText(returnedRoute.getDuration());
             }
         });
-    }
+
+        getContext().targetSpot = spot;
+        getContext().streetViewPanoramaFragment.getStreetViewPanoramaAsync(getContext());
+        FragmentTransaction ft = getContext().getFragmentManager().beginTransaction();
+        ft.show(getContext().streetViewPanoramaFragment);
+        ft.commit();
+     }
 
     private void updateUI() {
 
@@ -106,7 +113,6 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
 
-        bottomSheet.expand();
         bottomSheet.setFabIcon(R.drawable.ic_navigation);
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
@@ -145,7 +151,6 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
             @Override
             public void onExpanded() {
-
             }
 
             @Override
@@ -182,6 +187,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
     @Override
     public boolean onClusterItemClick(Spot spot) {
         showParkingSpaceDetails(spot);
+        bottomSheet.expand();
         this.spotToNavTo = spot;
         return true;
     }

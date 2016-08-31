@@ -27,8 +27,6 @@ public class LeavingState extends UserState {
         // ...
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_reset));
-
-        bottomSheet.expand();
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {
