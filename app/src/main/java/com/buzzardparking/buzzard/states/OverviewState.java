@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,6 +53,32 @@ public class OverviewState extends UserState {
             @Override
             public void onClick(View view) {
                 getContext().goTo(AppState.LOOKING);
+            }
+        });
+
+        bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
+            @Override
+            public void onCollapsed() {
+
+            }
+
+            @Override
+            public void onDragging() {
+                bottomSheet.expand();
+            }
+
+            @Override
+            public void onExpanded() {
+            }
+
+            @Override
+            public void onHidden() {
+
+            }
+
+            @Override
+            public void onSettling() {
+
             }
         });
 

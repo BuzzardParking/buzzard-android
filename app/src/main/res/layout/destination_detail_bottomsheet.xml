@@ -11,12 +11,13 @@
     <Button
         android:id="@+id/btnFindParking"
         android:layout_width="match_parent"
-        android:padding="@dimen/activity_vertical_margin"
         android:layout_height="wrap_content"
         android:textColor="@color/textIconColor"
-        android:background="@color/colorPrimary"
         android:drawableLeft="@drawable/ic_parking_accent"
+        android:background="@drawable/button"
         android:text="@string/tap_to_park"/>
+    <!--android:background="@color/colorPrimary"-->
+
     <RelativeLayout
         android:id="@+id/rlTopPieceContainer"
         android:layout_width="match_parent"
