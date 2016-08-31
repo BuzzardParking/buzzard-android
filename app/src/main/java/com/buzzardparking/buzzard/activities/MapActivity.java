@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,6 +93,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
     public TextView tvBottomSheetSubheadingRight;
     public RelativeLayout rlTopPieceContainer;
     public Button btnFindParking;
+    public ImageView ivAddMarkerIcon;
 
     public BottomSheetBehavior bottomSheet;
 
@@ -106,6 +108,7 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         setupToolbar();
         setupDrawer();
         setupBottomSheet();
+        setUpAddMarkerLayer();
 
         if (savedInstanceState == null) {
             Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
@@ -114,9 +117,9 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
         MarkerManager markerManager = new MarkerManager(getIconGenerator()); // Icongenerator currently not being used
         placeManager = new PlaceManager(markerManager, this);
 
-        AddMarkerOnLongClick click = new AddMarkerOnLongClick(this, placeManager);
         AddLocationLayer layer = new AddLocationLayer();
         cameraManager = new CameraManager(savedInstanceState);
+        AddMarkerOnLongClick click = new AddMarkerOnLongClick(this, placeManager, cameraManager);
         TrackLocation track = new TrackLocation(getLocationRequest(), new LogLocation());
 
         new OnActivity.Builder(this, track).build();
@@ -195,6 +198,10 @@ public class MapActivity extends AppCompatActivity implements UIStateMachine {
                 break;
         }
         mDrawer.closeDrawers();
+    }
+
+    private void setUpAddMarkerLayer() {
+        ivAddMarkerIcon = (ImageView) findViewById(R.id.ivAddMarkerIcon);
     }
 
     private void setupBottomSheet() {

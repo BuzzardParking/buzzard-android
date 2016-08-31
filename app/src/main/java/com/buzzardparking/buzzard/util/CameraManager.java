@@ -59,6 +59,10 @@ public class CameraManager implements
         map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, defaultZoom, defaultTilt)));
     }
 
+    public LatLng getMapCenter() {
+        return mGoogleMap.getCameraPosition().target;
+    }
+
 
     private CameraPosition getCameraPosition(LatLng latLng, int zoom, int tilt) {
         return new CameraPosition.Builder().target(latLng)
