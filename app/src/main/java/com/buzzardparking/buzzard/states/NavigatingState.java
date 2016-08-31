@@ -50,7 +50,7 @@ public class NavigatingState extends UserState {
                 .include(currentLocation)
                 .include(spot.getLatLng())
                 .build();
-        getContext().getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
+        getContext().getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 400));
 
         bottomSheet.collapse();
         bottomSheet.setFabIcon(R.drawable.ic_parking);
@@ -91,8 +91,8 @@ public class NavigatingState extends UserState {
 
     @Override
     public void stop() {
-        super.stop();
         lineManager.remove();
+        super.stop();
         getPlaceManager().removeDestinationMarker();
     }
 }
