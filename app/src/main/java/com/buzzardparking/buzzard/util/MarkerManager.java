@@ -15,14 +15,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.ui.IconGenerator;
 
 import java.util.List;
 
 public class MarkerManager {
 
     private com.google.maps.android.clustering.ClusterManager clusterManager;
-    private MapActivity context;
+    private IconManager iconManager;
 
     Marker destinationMarker;
     Marker carParkedMarker;
@@ -30,9 +29,10 @@ public class MarkerManager {
 
     /**
      * MarkerManager: manage parking space markers on the map
-     * @param generator an {@link IconGenerator} used to generate parking space markers
+     * @param iconManager an {@link IconManager} used to generate parking space markers
      */
-    public MarkerManager(IconGenerator generator) {
+    public MarkerManager(IconManager iconManager) {
+        this.iconManager = iconManager;
     }
 
     /**
@@ -56,7 +56,7 @@ public class MarkerManager {
     public void addCarParkedMarker(GoogleMap map, LatLng latLng) {
         MarkerOptions opts = new MarkerOptions()
             .position(latLng)
-            .icon(BitmapDescriptorFactory.fromResource(R.drawable.carmarker));
+            .icon(BitmapDescriptorFactory.fromBitmap(iconManager.getCarmarker()));
         carParkedMarker = map.addMarker(opts);
 
         MarkerManager.animate(map, carParkedMarker, 1000);

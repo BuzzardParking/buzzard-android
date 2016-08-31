@@ -3,6 +3,7 @@ package com.buzzardparking.buzzard.util;
 import android.content.Context;
 import android.os.Vibrator;
 import android.view.View;
+import android.widget.Toast;
 
 import com.buzzardparking.buzzard.activities.MapActivity;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,6 +51,8 @@ public class AddMarkerOnLongClick implements OnMap.Listener {
                 getContext().ivAddMarkerIcon.setVisibility(View.VISIBLE);
 
                 getCameraManager().moveToLocation(getContext().getMap(), latLng);
+
+                Toast.makeText(getContext(), "Long tap again to save the space", Toast.LENGTH_LONG).show();
 
                 isLongPressed = true;
 

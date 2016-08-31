@@ -107,7 +107,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         LatLng userLoc = getCameraManager().getLastLocation();
         ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
 
-        getPlaceManager().loadNearestSpotsOnMap(userGeoPoint, getContext().getMap());
+        getPlaceManager().loadNearestSpotsOnMap(userGeoPoint, getContext().getMap()); // Loads 3 closest places
 
         getCameraManager().moveToUserLocation();
 

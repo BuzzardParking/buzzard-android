@@ -41,6 +41,7 @@ import com.buzzardparking.buzzard.util.AddLocationLayer;
 import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
+import com.buzzardparking.buzzard.util.IconManager;
 import com.buzzardparking.buzzard.util.LogLocation;
 import com.buzzardparking.buzzard.util.MarkerManager;
 import com.buzzardparking.buzzard.util.OnActivity;
@@ -63,7 +64,6 @@ import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.maps.android.ui.IconGenerator;
 
 import org.parceler.Parcels;
 
@@ -122,7 +122,9 @@ public class MapActivity extends AppCompatActivity
             Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
         }
 
-        MarkerManager markerManager = new MarkerManager(getIconGenerator()); // Icongenerator currently not being used
+        IconManager iconManager = new IconManager(this);
+        MarkerManager markerManager = new MarkerManager(iconManager);
+
         placeManager = new PlaceManager(markerManager, this);
 
         AddLocationLayer layer = new AddLocationLayer();
@@ -226,13 +228,6 @@ public class MapActivity extends AppCompatActivity
         rlTopPieceContainer = (RelativeLayout) findViewById(R.id.rlTopPieceContainer);
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
         new BottomSheetManager(this, bottomSheetBehavior);
-    }
-
-    private IconGenerator getIconGenerator() {
-        IconGenerator generator = new IconGenerator(this);
-        generator.setStyle(IconGenerator.STYLE_GREEN);
-        generator.setTextAppearance(R.style.MarkerFont);
-        return generator;
     }
 
     // Set priority, interval, and fastest interval of location updates
