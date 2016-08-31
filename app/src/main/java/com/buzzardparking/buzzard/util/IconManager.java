@@ -11,7 +11,7 @@ import com.buzzardparking.buzzard.activities.MapActivity;
 import com.google.maps.android.ui.IconGenerator;
 
 /**
- * Created by nathansass on 8/31/16.
+ * {@link IconManager}: Turns vectors into bitmaps. These bitmaps are consumed for map markers.
  */
 public class IconManager {
     private MapActivity context;
