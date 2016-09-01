@@ -146,7 +146,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
             @Override
             public void onDragging() {
-
+                bottomSheet.expand();
             }
 
             @Override

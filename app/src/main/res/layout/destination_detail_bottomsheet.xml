@@ -12,12 +12,13 @@
         android:id="@+id/fabActionSecondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/fabMini_marginB"
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fabMini_marginR"
         android:src="@drawable/ic_add"
         android:scaleType="center"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="mini" />
 
     <RelativeLayout

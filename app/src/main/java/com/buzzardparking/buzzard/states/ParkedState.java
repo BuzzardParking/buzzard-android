@@ -32,6 +32,7 @@ public class ParkedState extends UserState {
         // 5. able to set up an alarm clock to remind the parking duration
         // 6. able to fav the parking location, and revisit your parking history
 
+        bottomSheet.expand();
 
         // Temporary marker to show the car location
         getPlaceManager().addCarParkedMarker(getContext().getMap(), spot.getLatLng());

@@ -60,8 +60,8 @@ public class AddMarkerOnLongClick implements OnMap.Listener {
 
         placeManager.addPlace(cameraManager.getMapCenter());
 
-        bottomSheet.getFabBtnSecondaryBtn().setImageResource(R.drawable.ic_add);
-        bottomSheet.getFabBtnSecondaryBtn().setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorAccent)));
+        getContext().fabBtnSecondary.setImageResource(R.drawable.ic_add);
+        getContext().fabBtnSecondary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorPrimary)));
 
         addingMode = false;
     }
@@ -75,8 +75,8 @@ public class AddMarkerOnLongClick implements OnMap.Listener {
         }
 
 
-        bottomSheet.getFabBtnSecondaryBtn().setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorPrimary)));
-        bottomSheet.getFabBtnSecondaryBtn().setImageResource(R.drawable.ic_check);
+        getContext().fabBtnSecondary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorAccent)));
+        getContext().fabBtnSecondary.setImageResource(R.drawable.ic_check);
 
         Toast.makeText(getContext(), "Long tap again to save the space", Toast.LENGTH_LONG).show();
 

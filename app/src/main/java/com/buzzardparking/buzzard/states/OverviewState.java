@@ -63,6 +63,7 @@ public class OverviewState extends UserState {
 
             @Override
             public void onDragging() {
+                bottomSheet.expand();
             }
 
             @Override
