@@ -30,17 +30,16 @@ public class OverviewState extends UserState {
     public void stop() {
         super.stop();
         getPlaceManager().clearMap();
-        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
         getContext().btnFindParking.setOnClickListener(null);
-        getContext().btnFindParking.setVisibility(View.GONE);
-        bottomSheet.showFab();
     }
 
 
     private void updateUI() {
+        ///
         getContext().rlTopPieceContainer.setVisibility(View.GONE);
         getContext().btnFindParking.setVisibility(View.VISIBLE);
         bottomSheet.hideFab();
+        ///
 
         bottomSheet.expand();
         getPlaceManager().loadPlaces(getContext().getMap());

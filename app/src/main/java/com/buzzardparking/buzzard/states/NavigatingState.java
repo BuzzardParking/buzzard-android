@@ -18,7 +18,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
  */
 public class NavigatingState extends UserState {
 
-    private Spot spot;
     private PolylineManager lineManager = new PolylineManager(getContext());
 
     public NavigatingState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {

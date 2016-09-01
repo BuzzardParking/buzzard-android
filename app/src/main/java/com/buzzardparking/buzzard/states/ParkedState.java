@@ -14,8 +14,6 @@ import com.buzzardparking.buzzard.util.PlaceManager;
  */
 public class ParkedState extends UserState {
 
-    private Spot spot;
-
     public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
         super(context, placeManager, cameraManager);
         appState = AppState.PARKED;

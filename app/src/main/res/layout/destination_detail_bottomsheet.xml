@@ -43,7 +43,6 @@
             android:layout_width="match_parent"
             android:layout_marginTop="24dp"
             android:background="@android:color/white"
-            android:visibility="gone"
             android:layout_height="wrap_content">
 
             <android.support.v4.widget.NestedScrollView
@@ -95,7 +94,6 @@
         </RelativeLayout>
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAction"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"

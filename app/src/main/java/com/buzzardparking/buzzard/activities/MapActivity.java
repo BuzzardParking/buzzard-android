@@ -140,7 +140,22 @@ public class MapActivity extends AppCompatActivity
         buzzardMap = new Map();
 
         // TODO: retrieve from DB or backend in the future
-        goTo(AppState.OVERVIEW);
+        if (savedInstanceState == null) {
+            goTo(AppState.OVERVIEW);
+        } else {
+            int stateInt = savedInstanceState.getInt("state");
+            AppState restoredState = AppState.values()[stateInt];
+
+            Spot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("spot"));
+
+            Toast.makeText(getApplicationContext(), "State: " + restoredState, Toast.LENGTH_SHORT).show();
+
+            if (restoredSpot == null) {
+                goTo(restoredState);
+            } else {
+                goTo(restoredState, restoredSpot);
+            }
+        }
 
         // initialize the map system and view
         FragmentManager fm = getSupportFragmentManager();
@@ -175,6 +190,8 @@ public class MapActivity extends AppCompatActivity
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.hide(streetViewPanoramaFragment);
         ft.commit();
+
+
     }
 
     private void setupToolbar() {
@@ -251,6 +268,32 @@ public class MapActivity extends AppCompatActivity
                 .addApi(LocationServices.API)
                 .build();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        currentState.stop();
+        savedInstanceState.putInt("state", currentState.appState.ordinal());
+        savedInstanceState.putParcelable("spot", Parcels.wrap(currentState.getSpot()));
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        int stateInt = savedInstanceState.getInt("state");
+//        AppState restoredState = AppState.values()[stateInt];
+//
+//        Spot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("spot"));
+//
+//        Toast.makeText(getApplicationContext(), "State: " + restoredState, Toast.LENGTH_SHORT).show();
+//
+//        currentState = null;
+//        if (restoredSpot == null) {
+//            goTo(restoredState);
+//        } else {
+//            goTo(restoredState, restoredSpot);
+//        }
+//    }
 
     public GoogleMap getMap() {
         return buzzardMap.get();

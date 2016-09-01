@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.OnMap;
@@ -22,11 +23,14 @@ public abstract class UserState implements OnMap.Listener {
     public AppState appState;
     protected BottomSheetManager bottomSheet;
 
+    public Spot spot;
+
     public UserState(Context context, PlaceManager manager, CameraManager cameraManager) {
         this.context = context;
         this.manager = manager;
         this.cameraManager = cameraManager;
         this.bottomSheet = new BottomSheetManager(getContext(), getContext().getBottomSheetBehavior());
+        this.spot = null;
         appState = null;
     }
 
@@ -50,6 +54,15 @@ public abstract class UserState implements OnMap.Listener {
      *
      * Operation about this state should happen here, e.g. proper clean up.
      */
+
+
+    /**
+     * This is used by map activity to save the state
+     */
+    public Spot getSpot() {
+        return spot;
+    }
+
     public void stop() {
         bottomSheet.setFabListener(null);
         bottomSheet.setBottomSheetStateListeners(null);
