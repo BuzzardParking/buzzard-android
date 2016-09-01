@@ -141,12 +141,12 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
             public void onCollapsed() {
-
+                bottomSheet.expand();
             }
 
             @Override
             public void onDragging() {
-                bottomSheet.expand();
+
             }
 
             @Override
@@ -155,12 +155,11 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
             @Override
             public void onHidden() {
-
+                bottomSheet.expand();
             }
 
             @Override
             public void onSettling() {
-
             }
         });
     }

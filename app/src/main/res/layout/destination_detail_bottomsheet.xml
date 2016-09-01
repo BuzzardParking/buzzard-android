@@ -6,86 +6,108 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:behavior_hideable="true"
-    app:behavior_peekHeight="80dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
-    <Button
-        android:id="@+id/btnFindParking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textIconColor"
-        android:drawableLeft="@drawable/ic_parking_accent"
-        android:background="@drawable/button"
-        android:text="@string/tap_to_park"/>
-    <!--android:background="@color/colorPrimary"-->
-
-    <RelativeLayout
-        android:id="@+id/rlTopPieceContainer"
-        android:layout_width="match_parent"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/white"
-        android:visibility="gone"
-        android:layout_height="wrap_content">
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            >
-            <RelativeLayout
-                android:id="@+id/rlTopPiece"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tvBottomSheetHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"/>
-                <TextView
-                    android:id="@+id/tvBottomSheetSubheading"
-                    android:layout_below="@+id/tvBottomSheetHeading"
-                    android:layout_toLeftOf="@+id/tvBottomSheetSubheadingRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:gravity="left"/>
-                <TextView
-                    android:id="@+id/tvBottomSheetSubheadingRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvBottomSheetHeading"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right" />
-                <fragment
-                    android:name="com.google.android.gms.maps.StreetViewPanoramaFragment"
-                    android:id="@+id/streetviewpanorama"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_below="@+id/tvBottomSheetSubheading"/>
-
-            </RelativeLayout>
-        </android.support.v4.widget.NestedScrollView>
-
-
-   </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAction"
-        android:visibility="gone"
+        android:id="@+id/fabActionSecondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|right"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/fab_margin"
+        android:src="@drawable/ic_add"
         android:scaleType="center"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        app:fabSize="auto" />
+        app:fabSize="mini" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/fabActionSecondary"
+        android:id="@+id/rlMoveableContainer">
+
+        <Button
+            android:id="@+id/btnFindParking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textIconColor"
+            android:drawableLeft="@drawable/ic_parking_accent"
+            android:background="@drawable/button"
+            android:text="@string/tap_to_park"/>
+        <!--android:background="@color/colorPrimary"-->
+
+        <RelativeLayout
+            android:id="@+id/rlTopPieceContainer"
+            android:layout_width="match_parent"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/white"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                >
+                <RelativeLayout
+                    android:id="@+id/rlTopPiece"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvBottomSheetHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"/>
+                    <TextView
+                        android:id="@+id/tvBottomSheetSubheading"
+                        android:layout_below="@+id/tvBottomSheetHeading"
+                        android:layout_toLeftOf="@+id/tvBottomSheetSubheadingRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"/>
+                    <TextView
+                        android:id="@+id/tvBottomSheetSubheadingRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvBottomSheetHeading"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right" />
+                    <fragment
+                        android:name="com.google.android.gms.maps.StreetViewPanoramaFragment"
+                        android:id="@+id/streetviewpanorama"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:layout_below="@+id/tvBottomSheetSubheading"/>
+
+                </RelativeLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+
+        </RelativeLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabAction"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:scaleType="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            app:fabSize="normal" />
+    </RelativeLayout>
+
+
+
 
 </RelativeLayout>
 

@@ -69,7 +69,7 @@ public class ParkedState extends UserState {
 
             @Override
             public void onHidden() {
-
+                bottomSheet.expand();
             }
 
             @Override

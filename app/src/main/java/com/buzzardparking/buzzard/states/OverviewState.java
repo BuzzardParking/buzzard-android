@@ -42,7 +42,7 @@ public class OverviewState extends UserState {
         getContext().btnFindParking.setVisibility(View.VISIBLE);
         bottomSheet.hideFab();
 
-
+        bottomSheet.expand();
         getPlaceManager().loadPlaces(getContext().getMap());
 
         getCameraManager().moveToUserLocation(12, 0); // This must be coordinated with the callbacks at the bottom of cameraManager
@@ -59,21 +59,20 @@ public class OverviewState extends UserState {
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
             public void onCollapsed() {
-
             }
 
             @Override
             public void onDragging() {
-                bottomSheet.expand();
             }
 
             @Override
             public void onExpanded() {
+
             }
 
             @Override
             public void onHidden() {
-
+                bottomSheet.expand();
             }
 
             @Override

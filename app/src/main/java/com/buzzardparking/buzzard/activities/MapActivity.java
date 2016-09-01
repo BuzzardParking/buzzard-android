@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -98,6 +99,7 @@ public class MapActivity extends AppCompatActivity
     public TextView tvBottomSheetSubheadingRight;
     public RelativeLayout rlTopPieceContainer;
     public Button btnFindParking;
+    public FloatingActionButton fabBtnSecondary;
     public ImageView ivAddMarkerIcon;
 
     public BottomSheetBehavior bottomSheetBehavior;
@@ -227,6 +229,7 @@ public class MapActivity extends AppCompatActivity
         tvBottomSheetSubheadingRight = (TextView) findViewById(R.id.tvBottomSheetSubheadingRight);
         rlTopPieceContainer = (RelativeLayout) findViewById(R.id.rlTopPieceContainer);
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
+        fabBtnSecondary = (FloatingActionButton) findViewById(R.id.fabActionSecondary);
         new BottomSheetManager(this, bottomSheetBehavior);
     }
 
