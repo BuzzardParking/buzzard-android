@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
+import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -37,6 +38,9 @@ public class LeavingState extends UserState {
         bottomSheet.setFabIcon(R.drawable.ic_parked);
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_reset));
+
+        getContext().fabBack.setVisibility(View.INVISIBLE);
+
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {
@@ -78,4 +82,5 @@ public class LeavingState extends UserState {
     public void stop() {
         super.stop();
     }
+
 }

@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
+import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -49,7 +50,10 @@ public class NavigatingState extends UserState {
         // Temporary marker to show the parking spot location
         getPlaceManager().addParkingSpotMarker(getContext().getMap(), spot.getLatLng());
 
-        getCameraManager().moveToLocation(getContext().getMap(), spot.getLatLng()); // Maybe zoom out to show both
+        getCameraManager().moveToLocation(getContext().getMap(), spot.getLatLng());
+
+        setBackButtonListener();
+
         LatLng currentLocation = getCameraManager().getLastLocation();
 
         lineManager.createAndDisplay(getContext().getMap(), currentLocation, spot.getLatLng());
@@ -102,5 +106,14 @@ public class NavigatingState extends UserState {
         lineManager.remove();
         super.stop();
         getPlaceManager().removeDestinationMarker();
+    }
+
+    private void setBackButtonListener() {
+        getContext().fabBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getContext().goTo(appState.LOOKING);
+            }
+        });
     }
 }

@@ -29,6 +29,7 @@ public class OverviewState extends UserState {
     @Override
     public void stop() {
         super.stop();
+
         getPlaceManager().clearMap();
         getContext().btnFindParking.setOnClickListener(null);
     }
@@ -38,6 +39,7 @@ public class OverviewState extends UserState {
         ///
         getContext().rlTopPieceContainer.setVisibility(View.GONE);
         getContext().btnFindParking.setVisibility(View.VISIBLE);
+        getContext().fabBack.setVisibility(View.GONE);
         bottomSheet.hideFab();
         ///
 

@@ -75,7 +75,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             }
         });
 
-        Toast.makeText(getContext(), "Chose closest parking space to " + googlePlace.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Choose closest parking space to " + googlePlace.getName(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -113,8 +113,10 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
         getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
+
         bottomSheet.expand();
 
+        setBackButtonListener();
         bottomSheet.setFabIcon(R.drawable.ic_navigation);
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
@@ -162,6 +164,15 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
             @Override
             public void onSettling() {
+            }
+        });
+    }
+
+    private void setBackButtonListener() {
+        getContext().fabBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getContext().goTo(appState.OVERVIEW);
             }
         });
     }

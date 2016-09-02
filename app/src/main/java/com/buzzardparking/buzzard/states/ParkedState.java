@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
+import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -43,6 +44,8 @@ public class ParkedState extends UserState {
         // Temporary marker to show the car location
         getPlaceManager().addCarParkedMarker(getContext().getMap(), spot.getLatLng());
         getCameraManager().moveToLocation(getContext().getMap(), spot.getLatLng());
+
+        setBackButtonListener();
 
         // TODO: use real user id, dedup,
         getPlaceManager().addIntoParkingHistory("fake-user-id", spot);
@@ -90,5 +93,14 @@ public class ParkedState extends UserState {
     public void stop() {
         super.stop();
         getPlaceManager().removeDestinationMarker();
+    }
+
+    private void setBackButtonListener() {
+        getContext().fabBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getContext().goTo(appState.NAVIGATING, spot);
+            }
+        });
     }
 }

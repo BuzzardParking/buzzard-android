@@ -103,6 +103,7 @@ public class MapActivity extends AppCompatActivity
     public RelativeLayout rlTopPieceContainer;
     public Button btnFindParking;
     public FloatingActionButton fabBtnSecondary;
+    public FloatingActionButton fabBack;
     public ImageView ivAddMarkerIcon;
 
     public BottomSheetBehavior bottomSheetBehavior;
@@ -250,6 +251,8 @@ public class MapActivity extends AppCompatActivity
         rlTopPieceContainer = (RelativeLayout) findViewById(R.id.rlTopPieceContainer);
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
         fabBtnSecondary = (FloatingActionButton) findViewById(R.id.fabActionSecondary);
+        fabBack = (FloatingActionButton) findViewById(R.id.fabBack);
+
         bottomSheetManager = new BottomSheetManager(this, bottomSheetBehavior);
     }
 
