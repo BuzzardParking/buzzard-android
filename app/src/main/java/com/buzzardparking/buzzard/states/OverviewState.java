@@ -21,7 +21,7 @@ public class OverviewState extends UserState {
     }
     @Override
     public void start() {
-        if (getContext().buzzardMap.isLoaded()) {
+        if (isReady() || isReadyCache()) {
             updateUI();
         }
     }
@@ -31,19 +31,17 @@ public class OverviewState extends UserState {
         super.stop();
 
         getPlaceManager().clearMap();
-        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
         getContext().btnFindParking.setOnClickListener(null);
-        getContext().btnFindParking.setVisibility(View.GONE);
-        getContext().fabBack.setVisibility(View.VISIBLE);
-        bottomSheet.showFab();
     }
 
 
     private void updateUI() {
+        ///
         getContext().rlTopPieceContainer.setVisibility(View.GONE);
         getContext().btnFindParking.setVisibility(View.VISIBLE);
         getContext().fabBack.setVisibility(View.GONE);
         bottomSheet.hideFab();
+        ///
 
         bottomSheet.expand();
         getPlaceManager().loadPlaces(getContext().getMap());

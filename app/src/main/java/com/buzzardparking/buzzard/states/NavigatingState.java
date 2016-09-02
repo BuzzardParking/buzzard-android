@@ -19,7 +19,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
  */
 public class NavigatingState extends UserState {
 
-    private Spot spot;
     private PolylineManager lineManager = new PolylineManager(getContext());
 
     public NavigatingState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
@@ -30,6 +29,13 @@ public class NavigatingState extends UserState {
 
     @Override
     public void start() {
+        if (isReady() || isReadyCache()) {
+            updateUI();
+        }
+    }
+
+    public void updateUI() {
+
         // TODO:
         // 1. hide other unrelated parking spaces during navigation
         // 2. draw poly line of navigation path from current location to the destination parking spot
@@ -37,6 +43,8 @@ public class NavigatingState extends UserState {
         // 4. button to go to the parked state
         // 5. Show the parking space as well as the destination
         // ...
+
+        getContext().prepareView();
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_optimizing_navigation));
         // Temporary marker to show the parking spot location

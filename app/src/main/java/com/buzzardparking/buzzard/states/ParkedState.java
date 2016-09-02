@@ -15,8 +15,6 @@ import com.buzzardparking.buzzard.util.PlaceManager;
  */
 public class ParkedState extends UserState {
 
-    private Spot spot;
-
     public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
         super(context, placeManager, cameraManager);
         appState = AppState.PARKED;
@@ -25,6 +23,12 @@ public class ParkedState extends UserState {
 
     @Override
     public void start() {
+        if (isReady() || isReadyCache()) {
+            updateUI();
+        }
+    }
+
+    public void updateUI() {
         // TODO:
         // 1. show only your car location and your current location on the map
         // 2. a timer hovers above the car starting counting the time
@@ -32,6 +36,8 @@ public class ParkedState extends UserState {
         // 4. a evaluation modal to ask user to give a thumb up/down about its parking experience
         // 5. able to set up an alarm clock to remind the parking duration
         // 6. able to fav the parking location, and revisit your parking history
+
+        getContext().prepareView();
 
         bottomSheet.expand();
 

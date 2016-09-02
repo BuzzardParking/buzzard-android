@@ -19,16 +19,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.Client;
 import com.buzzardparking.buzzard.models.Map;
+import com.buzzardparking.buzzard.models.Permission;
 import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.models.User;
 import com.buzzardparking.buzzard.services.OverlayService;
@@ -78,9 +80,10 @@ public class MapActivity extends AppCompatActivity
     private static final int SETTING_REQUEST_CODE = 2;
     private static final int OVERLAY_REQUEST_CODE = 99;
 
-    // Singleton instance of map
+    // Singleton instance for permissions
     public Map buzzardMap;
-
+    public Permission permissions;
+    public Client googleClient;
     // states
     private UserState currentState;
 
@@ -104,6 +107,7 @@ public class MapActivity extends AppCompatActivity
     public ImageView ivAddMarkerIcon;
 
     public BottomSheetBehavior bottomSheetBehavior;
+    private  BottomSheetManager bottomSheetManager;
     public StreetViewPanoramaFragment streetViewPanoramaFragment;
 
     // TODO: refactor these public instance variables
@@ -121,10 +125,6 @@ public class MapActivity extends AppCompatActivity
         setupBottomSheet();
         setUpAddMarkerLayer();
 
-        if (savedInstanceState == null) {
-            Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
-        }
-
         IconManager iconManager = new IconManager(this);
         MarkerManager markerManager = new MarkerManager(iconManager);
 
@@ -137,11 +137,12 @@ public class MapActivity extends AppCompatActivity
 
         new OnActivity.Builder(this, track).build();
 
-        // save the map reference
+        // These are for kept for checking if resources are loaded
         buzzardMap = new Map();
+        permissions = new Permission();
+        googleClient = new Client();
 
-        // TODO: retrieve from DB or backend in the future
-        goTo(AppState.OVERVIEW);
+        initializeFirstState(savedInstanceState);
 
         // initialize the map system and view
         FragmentManager fm = getSupportFragmentManager();
@@ -152,12 +153,13 @@ public class MapActivity extends AppCompatActivity
 
         // connect the google client
         GoogleApiClient client = getGoogleApiClient();
-        client.registerConnectionCallbacks(new OnClient(client, cameraManager, track));
+        client.registerConnectionCallbacks(new OnClient(client, cameraManager, track, googleClient, currentState));
 
         // request permissions about current location
         int requestCode = 1001;
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
-        OnPermission.Request location = new OnPermission.Request(requestCode, permission, layer, cameraManager, track);
+        OnPermission.Request location = new OnPermission.Request(requestCode, permission, layer, cameraManager, track, permissions, currentState);
+
         OnPermission onPermission = new OnPermission.Builder(this).build();
         onPermission.beginRequest(location);
 
@@ -176,6 +178,24 @@ public class MapActivity extends AppCompatActivity
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.hide(streetViewPanoramaFragment);
         ft.commit();
+    }
+
+    public void initializeFirstState(Bundle savedInstanceState) {
+        // TODO: retrieve from DB or backend in the future
+        if (savedInstanceState == null) {
+            goTo(AppState.OVERVIEW);
+        } else {
+            int stateInt = savedInstanceState.getInt("state");
+            AppState restoredState = AppState.values()[stateInt];
+
+            Spot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("spot"));
+
+            if (restoredSpot == null) {
+                goTo(restoredState);
+            } else {
+                goTo(restoredState, restoredSpot);
+            }
+        }
     }
 
     private void setupToolbar() {
@@ -232,7 +252,8 @@ public class MapActivity extends AppCompatActivity
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
         fabBtnSecondary = (FloatingActionButton) findViewById(R.id.fabActionSecondary);
         fabBack = (FloatingActionButton) findViewById(R.id.fabBack);
-        new BottomSheetManager(this, bottomSheetBehavior);
+
+        bottomSheetManager = new BottomSheetManager(this, bottomSheetBehavior);
     }
 
     // Set priority, interval, and fastest interval of location updates
@@ -252,6 +273,14 @@ public class MapActivity extends AppCompatActivity
                 .enableAutoManage(this, null)
                 .addApi(LocationServices.API)
                 .build();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        currentState.stop();
+        savedInstanceState.putInt("state", currentState.appState.ordinal());
+        savedInstanceState.putParcelable("spot", Parcels.wrap(currentState.getSpot()));
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     public GoogleMap getMap() {
@@ -399,6 +428,14 @@ public class MapActivity extends AppCompatActivity
         tvBottomSheetHeading.setText("");
         tvBottomSheetSubHeading.setText("");
         tvBottomSheetSubheadingRight.setText("");
+    }
+
+    public void prepareView() {
+        // Shift the screen orientation after making changes here
+        this.clearBottomSheetHeadings();
+        this.rlTopPieceContainer.setVisibility(View.VISIBLE);
+        this.btnFindParking.setVisibility(View.GONE);
+        this.bottomSheetManager.showFab();
     }
 
     @Override

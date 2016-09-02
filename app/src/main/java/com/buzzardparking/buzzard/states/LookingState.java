@@ -16,7 +16,6 @@ import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseGeoPoint;
@@ -27,17 +26,15 @@ import java.util.ArrayList;
  * {@link LookingState}: a user is looking for a parking spot.
  */
 public class LookingState extends UserState implements ClusterManager.OnClusterItemClickListener<Spot>{
-    private Spot spotToNavTo;
 
     public LookingState(Context context, PlaceManager manager, CameraManager cameraManager) {
         super(context, manager, cameraManager);
-        this.spotToNavTo = null;
         appState = AppState.LOOKING;
     }
 
     @Override
     public void start() {
-        if (getContext().buzzardMap.isLoaded()) {
+        if (isReady() || isReadyCache()) {
             updateUI();
         }
     }
@@ -55,6 +52,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         getContext().tvBottomSheetHeading.setText(googlePlace.getName());
         getContext().tvBottomSheetSubHeading.setText(googlePlace.getAddress());
 
+
         LatLng userLoc = getCameraManager().getLastLocation();
 
         RouteGateway.getRoute(userLoc, googlePlace.getLatLng(), new RouteGateway.RouteGatewayListener() {
@@ -69,12 +67,11 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
         ParseGeoPoint googlePlaceParsePoint = new ParseGeoPoint(googlePlace.getLatLng().latitude, googlePlace.getLatLng().longitude);
 
-
         getPlaceManager().loadNearestSpots(googlePlaceParsePoint,1, new PlaceManager.NearestSpotListener() {
 
             @Override
             public void onReturn(ArrayList<Spot> nearestSpots) {
-                spotToNavTo = nearestSpots.get(0);
+                spot = nearestSpots.get(0);
             }
         });
 
@@ -105,6 +102,8 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     private void updateUI() {
 
+        getContext().prepareView();
+
         LatLng userLoc = getCameraManager().getLastLocation();
         ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
 
@@ -112,14 +111,18 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
         getCameraManager().moveToUserLocation();
 
+        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
+
+        bottomSheet.expand();
+
         setBackButtonListener();
         bottomSheet.setFabIcon(R.drawable.ic_navigation);
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {
 
-                if (spotToNavTo != null) {
+                if (spot != null) {
                     startNavigating();
                 } else {
                     LatLng userLoc = getCameraManager().getLastLocation();
@@ -128,7 +131,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
                     getPlaceManager().loadNearestSpots(userGeoPoint, 10, new PlaceManager.NearestSpotListener() {
                         @Override
                         public void onReturn(ArrayList<Spot> nearestSpots) {
-                            spotToNavTo = nearestSpots.get(0);
+                            spot = nearestSpots.get(0);
                             startNavigating();
                         }
                     });
@@ -176,11 +179,11 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     private void startNavigating() {
         // launch in-app navigation
-        getContext().goTo(AppState.NAVIGATING, spotToNavTo);
+        getContext().goTo(AppState.NAVIGATING, spot);
 
         if (getContext().user.doesPreferExternalNavigation()) {
             // launch external navigation as well
-            LatLng latLng = spotToNavTo.getLatLng();
+            LatLng latLng = spot.getLatLng();
             Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s", latLng.latitude, latLng.longitude));
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
@@ -189,15 +192,10 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
     }
 
     @Override
-    public void onMap(GoogleMap map) {
-        updateUI();
-    }
-
-    @Override
     public boolean onClusterItemClick(Spot spot) {
         showParkingSpaceDetails(spot);
         bottomSheet.expand();
-        this.spotToNavTo = spot;
+        this.spot = spot;
         return true;
     }
 }
