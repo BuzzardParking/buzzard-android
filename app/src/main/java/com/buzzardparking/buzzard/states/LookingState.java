@@ -34,6 +34,8 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     @Override
     public void start() {
+        getContext().showProgressBar();
+
         if (isReady() || isReadyCache()) {
             updateUI();
         }

@@ -100,6 +100,8 @@ public class PlaceManager implements
 
                 nearestSpotListener.onReturn(spotsArray);
 
+                context.hideProgressBar();
+
             }
         });
     }
@@ -116,6 +118,8 @@ public class PlaceManager implements
                 mSpots.addAll(Spot.fromParse(places));
 
                 mMarkerManager.addAll(mSpots);
+
+                context.hideProgressBar();
             }
 
             @Override
@@ -142,6 +146,7 @@ public class PlaceManager implements
             }
         });
     }
+
 
     public void addIntoParkingHistory(String userId, Spot spot) {
         spot.saveParkedSpot(userId);

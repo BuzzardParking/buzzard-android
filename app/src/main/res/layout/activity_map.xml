@@ -31,6 +31,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+                <ProgressBar
+                    android:id="@+id/pbLoading"
+                    android:background="#e23b3b3b"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_height="wrap_content" />
             <ImageView
                 android:id="@+id/ivAddMarkerIcon"
                 android:layout_centerHorizontal="true"

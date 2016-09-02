@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -94,8 +95,10 @@ public class MapActivity extends AppCompatActivity
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
-    private Toolbar toolbar;
+    private ProgressBar progressBar;
 
+
+    private Toolbar toolbar;
     // TODO: public UI element doesn't smell good, maybe refactor later...
     public TextView tvBottomSheetHeading;
     public TextView tvBottomSheetSubHeading;
@@ -122,6 +125,7 @@ public class MapActivity extends AppCompatActivity
         setContentView(R.layout.activity_map);
         setupToolbar();
         setupDrawer();
+        progressBar = (ProgressBar) findViewById(R.id.pbLoading);
         setupBottomSheet();
         setUpAddMarkerLayer();
 
@@ -436,6 +440,13 @@ public class MapActivity extends AppCompatActivity
         this.rlTopPieceContainer.setVisibility(View.VISIBLE);
         this.btnFindParking.setVisibility(View.GONE);
         this.bottomSheetManager.showFab();
+    }
+
+    public void hideProgressBar() {
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
+    }
+    public void showProgressBar() {
+        progressBar.setVisibility(ProgressBar.VISIBLE);
     }
 
     @Override
