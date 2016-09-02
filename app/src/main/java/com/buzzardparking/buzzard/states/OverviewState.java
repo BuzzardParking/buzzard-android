@@ -21,6 +21,7 @@ public class OverviewState extends UserState {
     }
     @Override
     public void start() {
+        getContext().showProgressBar();
         if (isReady() || isReadyCache()) {
             updateUI();
         }

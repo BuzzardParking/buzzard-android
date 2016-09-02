@@ -72,6 +72,8 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import cn.refactor.smileyloadingview.lib.SmileyLoadingView;
+
 public class MapActivity extends AppCompatActivity
         implements UIStateMachine, OnStreetViewPanoramaReadyCallback {
 
@@ -94,8 +96,11 @@ public class MapActivity extends AppCompatActivity
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
-    private Toolbar toolbar;
+    private SmileyLoadingView smileyLoadingView;
+    private RelativeLayout rlProgressBar;
 
+
+    private Toolbar toolbar;
     // TODO: public UI element doesn't smell good, maybe refactor later...
     public TextView tvBottomSheetHeading;
     public TextView tvBottomSheetSubHeading;
@@ -122,6 +127,7 @@ public class MapActivity extends AppCompatActivity
         setContentView(R.layout.activity_map);
         setupToolbar();
         setupDrawer();
+        setupProgressbar();
         setupBottomSheet();
         setUpAddMarkerLayer();
 
@@ -196,6 +202,11 @@ public class MapActivity extends AppCompatActivity
                 goTo(restoredState, restoredSpot);
             }
         }
+    }
+
+    private void setupProgressbar() {
+        smileyLoadingView = (SmileyLoadingView) findViewById(R.id.smileyLoadingView);
+        rlProgressBar = (RelativeLayout) findViewById(R.id.rlProgressBar);
     }
 
     private void setupToolbar() {
@@ -436,6 +447,15 @@ public class MapActivity extends AppCompatActivity
         this.rlTopPieceContainer.setVisibility(View.VISIBLE);
         this.btnFindParking.setVisibility(View.GONE);
         this.bottomSheetManager.showFab();
+    }
+
+    public void hideProgressBar() {
+        rlProgressBar.setVisibility(View.GONE);
+        smileyLoadingView.stop();
+    }
+    public void showProgressBar() {
+        rlProgressBar.setVisibility(View.VISIBLE);
+        smileyLoadingView.start();
     }
 
     @Override

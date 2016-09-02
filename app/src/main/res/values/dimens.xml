@@ -6,4 +6,11 @@
     <dimen name="fabMini_marginR">24dp</dimen>
     <dimen name="fabMini_marginB">20dp</dimen>
     <dimen name="carmarker_size">100dp</dimen>
+
+    <!--Dimen for progressBar-->
+    <dimen name="pbPadding">25dp</dimen>
+    <dimen name="pbRadius">6dp</dimen>
+    <dimen name="pbSize">55dp</dimen>
+    <dimen name="pbStroke">4dp</dimen>
 </resources>
+

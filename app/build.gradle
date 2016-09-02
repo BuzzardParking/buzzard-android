@@ -24,6 +24,8 @@ android {
 repositories {
     jcenter()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://jitpack.io" }
+
 }
 
 
@@ -41,6 +43,7 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'org.parceler:parceler-api:1.1.1'
+    compile 'com.github.andyxialm:SmileyLoadingView:c55864b06c'
     apt 'org.parceler:parceler:1.1.1'
     compile 'com.parse:parse-android:1.13.1'
     compile 'com.loopj.android:android-async-http:1.4.9'
