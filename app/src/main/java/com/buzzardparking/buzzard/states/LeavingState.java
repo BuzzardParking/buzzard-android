@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
+import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -20,11 +21,25 @@ public class LeavingState extends UserState {
 
     @Override
     public void start() {
+        if (isReady() || isReadyCache()) {
+            updateUI();
+        }
+    }
+
+    public void updateUI() {
         // TODO:
         // 1. Able to mark the space as to-be-available
         // 2. Able to mark the space as available when the device sensor detects the car is leaving
         // 3. Able to send time information to the server, so the server could keep track of the time elapsedA
         // ...
+
+        // These are needed to reset the view during screen orientation shift
+        getContext().clearBottomSheetHeadings();
+        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
+        getContext().btnFindParking.setVisibility(View.GONE);
+        //
+
+        bottomSheet.setFabIcon(R.drawable.ic_parked);
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_reset));
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {

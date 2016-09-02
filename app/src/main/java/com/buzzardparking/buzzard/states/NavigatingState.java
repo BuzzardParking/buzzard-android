@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
+import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -28,6 +29,13 @@ public class NavigatingState extends UserState {
 
     @Override
     public void start() {
+        if (isReady() || isReadyCache()) {
+            updateUI();
+        }
+    }
+
+    public void updateUI() {
+
         // TODO:
         // 1. hide other unrelated parking spaces during navigation
         // 2. draw poly line of navigation path from current location to the destination parking spot
@@ -35,6 +43,12 @@ public class NavigatingState extends UserState {
         // 4. button to go to the parked state
         // 5. Show the parking space as well as the destination
         // ...
+
+        // These are needed to reset the view during screen orientation shift
+        getContext().clearBottomSheetHeadings();
+        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
+        getContext().btnFindParking.setVisibility(View.GONE);
+        //
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_optimizing_navigation));
         // Temporary marker to show the parking spot location
