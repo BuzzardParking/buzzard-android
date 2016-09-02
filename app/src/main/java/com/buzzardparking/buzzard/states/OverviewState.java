@@ -29,10 +29,12 @@ public class OverviewState extends UserState {
     @Override
     public void stop() {
         super.stop();
+
         getPlaceManager().clearMap();
         getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
         getContext().btnFindParking.setOnClickListener(null);
         getContext().btnFindParking.setVisibility(View.GONE);
+        getContext().fabBack.setVisibility(View.VISIBLE);
         bottomSheet.showFab();
     }
 
@@ -40,6 +42,7 @@ public class OverviewState extends UserState {
     private void updateUI() {
         getContext().rlTopPieceContainer.setVisibility(View.GONE);
         getContext().btnFindParking.setVisibility(View.VISIBLE);
+        getContext().fabBack.setVisibility(View.GONE);
         bottomSheet.hideFab();
 
         bottomSheet.expand();

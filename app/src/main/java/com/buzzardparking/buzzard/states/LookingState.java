@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
 import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
@@ -77,7 +78,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             }
         });
 
-        Toast.makeText(getContext(), "Chose closest parking space to " + googlePlace.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Choose closest parking space to " + googlePlace.getName(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -112,7 +113,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         getCameraManager().moveToUserLocation();
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
-
+        setBackButtonListener();
         bottomSheet.setFabIcon(R.drawable.ic_navigation);
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
@@ -160,6 +161,15 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
             @Override
             public void onSettling() {
+            }
+        });
+    }
+
+    private void setBackButtonListener() {
+        getContext().fabBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getContext().goTo(appState.OVERVIEW);
             }
         });
     }
