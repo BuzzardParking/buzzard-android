@@ -79,7 +79,7 @@ public abstract class UserState implements OnMap.Listener, OnClient.Listener,  O
 
     /**
      * This is used for when the app loads.
-     *
+     * or when a screen orientation is changed and the state reloads
      */
     public boolean isReady() {
         return (googleMap != null) &&
@@ -90,7 +90,7 @@ public abstract class UserState implements OnMap.Listener, OnClient.Listener,  O
 
     /**
      * This is used for subsequent loads of state.
-     *
+     * ie. Navigating from one state to the next.
      */
     public boolean isReadyCache() {
         return getContext().buzzardMap.isLoaded() &&
