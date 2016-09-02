@@ -19,11 +19,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
@@ -106,6 +106,7 @@ public class MapActivity extends AppCompatActivity
     public ImageView ivAddMarkerIcon;
 
     public BottomSheetBehavior bottomSheetBehavior;
+    private  BottomSheetManager bottomSheetManager;
     public StreetViewPanoramaFragment streetViewPanoramaFragment;
 
     // TODO: refactor these public instance variables
@@ -122,10 +123,6 @@ public class MapActivity extends AppCompatActivity
         setupDrawer();
         setupBottomSheet();
         setUpAddMarkerLayer();
-
-        if (savedInstanceState == null) {
-            Toast.makeText(this, "Long tap on map to report parking space", Toast.LENGTH_LONG).show();
-        }
 
         IconManager iconManager = new IconManager(this);
         MarkerManager markerManager = new MarkerManager(iconManager);
@@ -144,24 +141,7 @@ public class MapActivity extends AppCompatActivity
         permissions = new Permission();
         googleClient = new Client();
 
-
-        // TODO: retrieve from DB or backend in the future
-        if (savedInstanceState == null) {
-            goTo(AppState.OVERVIEW);
-        } else {
-            int stateInt = savedInstanceState.getInt("state");
-            AppState restoredState = AppState.values()[stateInt];
-
-            Spot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("spot"));
-
-            Toast.makeText(getApplicationContext(), "State: " + restoredState, Toast.LENGTH_SHORT).show();
-
-            if (restoredSpot == null) {
-                goTo(restoredState);
-            } else {
-                goTo(restoredState, restoredSpot);
-            }
-        }
+        initializeFirstState(savedInstanceState);
 
         // initialize the map system and view
         FragmentManager fm = getSupportFragmentManager();
@@ -197,8 +177,24 @@ public class MapActivity extends AppCompatActivity
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.hide(streetViewPanoramaFragment);
         ft.commit();
+    }
 
+    public void initializeFirstState(Bundle savedInstanceState) {
+        // TODO: retrieve from DB or backend in the future
+        if (savedInstanceState == null) {
+            goTo(AppState.OVERVIEW);
+        } else {
+            int stateInt = savedInstanceState.getInt("state");
+            AppState restoredState = AppState.values()[stateInt];
 
+            Spot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("spot"));
+
+            if (restoredSpot == null) {
+                goTo(restoredState);
+            } else {
+                goTo(restoredState, restoredSpot);
+            }
+        }
     }
 
     private void setupToolbar() {
@@ -254,7 +250,7 @@ public class MapActivity extends AppCompatActivity
         rlTopPieceContainer = (RelativeLayout) findViewById(R.id.rlTopPieceContainer);
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
         fabBtnSecondary = (FloatingActionButton) findViewById(R.id.fabActionSecondary);
-        new BottomSheetManager(this, bottomSheetBehavior);
+        bottomSheetManager = new BottomSheetManager(this, bottomSheetBehavior);
     }
 
     // Set priority, interval, and fastest interval of location updates
@@ -429,6 +425,14 @@ public class MapActivity extends AppCompatActivity
         tvBottomSheetHeading.setText("");
         tvBottomSheetSubHeading.setText("");
         tvBottomSheetSubheadingRight.setText("");
+    }
+
+    public void prepareView() {
+        // Shift the screen orientation after making changes here
+        this.clearBottomSheetHeadings();
+        this.rlTopPieceContainer.setVisibility(View.VISIBLE);
+        this.btnFindParking.setVisibility(View.GONE);
+        this.bottomSheetManager.showFab();
     }
 
     @Override

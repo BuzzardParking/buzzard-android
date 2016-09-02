@@ -101,12 +101,8 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
      }
 
     private void updateUI() {
-        //
-        getContext().clearBottomSheetHeadings();
-        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
-        getContext().btnFindParking.setVisibility(View.GONE);
-        bottomSheet.showFab();
-        //
+
+        getContext().prepareView();
 
         LatLng userLoc = getCameraManager().getLastLocation();
         ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);

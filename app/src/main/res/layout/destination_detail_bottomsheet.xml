@@ -29,6 +29,7 @@
         android:id="@+id/rlMoveableContainer">
 
         <Button
+            android:visibility="gone"
             android:id="@+id/btnFindParking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +37,6 @@
             android:drawableLeft="@drawable/ic_parking_accent"
             android:background="@drawable/button"
             android:text="@string/tap_to_park"/>
-        <!--android:background="@color/colorPrimary"-->
 
         <RelativeLayout
             android:id="@+id/rlTopPieceContainer"

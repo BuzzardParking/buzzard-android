@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
-import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -37,11 +36,7 @@ public class ParkedState extends UserState {
         // 5. able to set up an alarm clock to remind the parking duration
         // 6. able to fav the parking location, and revisit your parking history
 
-        // These are needed to reset the view during screen orientation shift
-        getContext().clearBottomSheetHeadings();
-        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
-        getContext().btnFindParking.setVisibility(View.GONE);
-        //
+        getContext().prepareView();
 
         bottomSheet.expand();
 

@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
-import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -33,11 +32,7 @@ public class LeavingState extends UserState {
         // 3. Able to send time information to the server, so the server could keep track of the time elapsedA
         // ...
 
-        // These are needed to reset the view during screen orientation shift
-        getContext().clearBottomSheetHeadings();
-        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
-        getContext().btnFindParking.setVisibility(View.GONE);
-        //
+        getContext().prepareView();
 
         bottomSheet.setFabIcon(R.drawable.ic_parked);
 
