@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -73,6 +72,8 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import cn.refactor.smileyloadingview.lib.SmileyLoadingView;
+
 public class MapActivity extends AppCompatActivity
         implements UIStateMachine, OnStreetViewPanoramaReadyCallback {
 
@@ -95,7 +96,8 @@ public class MapActivity extends AppCompatActivity
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
-    private ProgressBar progressBar;
+    private SmileyLoadingView smileyLoadingView;
+    private RelativeLayout rlProgressBar;
 
 
     private Toolbar toolbar;
@@ -125,7 +127,7 @@ public class MapActivity extends AppCompatActivity
         setContentView(R.layout.activity_map);
         setupToolbar();
         setupDrawer();
-        progressBar = (ProgressBar) findViewById(R.id.pbLoading);
+        setupProgressbar();
         setupBottomSheet();
         setUpAddMarkerLayer();
 
@@ -200,6 +202,11 @@ public class MapActivity extends AppCompatActivity
                 goTo(restoredState, restoredSpot);
             }
         }
+    }
+
+    private void setupProgressbar() {
+        smileyLoadingView = (SmileyLoadingView) findViewById(R.id.smileyLoadingView);
+        rlProgressBar = (RelativeLayout) findViewById(R.id.rlProgressBar);
     }
 
     private void setupToolbar() {
@@ -443,10 +450,12 @@ public class MapActivity extends AppCompatActivity
     }
 
     public void hideProgressBar() {
-        progressBar.setVisibility(ProgressBar.INVISIBLE);
+        rlProgressBar.setVisibility(View.GONE);
+        smileyLoadingView.stop();
     }
     public void showProgressBar() {
-        progressBar.setVisibility(ProgressBar.VISIBLE);
+        rlProgressBar.setVisibility(View.VISIBLE);
+        smileyLoadingView.start();
     }
 
     @Override

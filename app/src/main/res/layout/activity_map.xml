@@ -31,15 +31,27 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-                <ProgressBar
-                    android:id="@+id/pbLoading"
-                    android:background="#e23b3b3b"
-                    android:padding="@dimen/activity_horizontal_margin"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:visibility="invisible"
-                    android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:id="@+id/rlProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/progress_bar_background"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:padding="@dimen/pbPadding">
+
+                <cn.refactor.smileyloadingview.lib.SmileyLoadingView
+                    android:id="@+id/smileyLoadingView"
+                    xmlns:slv="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="@dimen/pbSize"
+                    android:layout_height="@dimen/pbSize"
+                    slv:duration="2000"
+                    slv:strokeColor="@color/colorPrimary"
+                    slv:strokeWidth="@dimen/pbStroke"/>
+
+            </RelativeLayout>
+
             <ImageView
                 android:id="@+id/ivAddMarkerIcon"
                 android:layout_centerHorizontal="true"
