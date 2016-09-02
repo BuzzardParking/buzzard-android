@@ -28,7 +28,9 @@ import android.widget.Toast;
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.Client;
 import com.buzzardparking.buzzard.models.Map;
+import com.buzzardparking.buzzard.models.Permission;
 import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.models.User;
 import com.buzzardparking.buzzard.services.OverlayService;
@@ -78,9 +80,10 @@ public class MapActivity extends AppCompatActivity
     private static final int SETTING_REQUEST_CODE = 2;
     private static final int OVERLAY_REQUEST_CODE = 99;
 
-    // Singleton instance of map
+    // Singleton instance for permissions
     public Map buzzardMap;
-
+    public Permission permissions;
+    public Client googleClient;
     // states
     private UserState currentState;
 
@@ -136,8 +139,11 @@ public class MapActivity extends AppCompatActivity
 
         new OnActivity.Builder(this, track).build();
 
-        // save the map reference
+        // These are for kept for checking if resources are loaded
         buzzardMap = new Map();
+        permissions = new Permission();
+        googleClient = new Client();
+
 
         // TODO: retrieve from DB or backend in the future
         if (savedInstanceState == null) {
@@ -166,12 +172,13 @@ public class MapActivity extends AppCompatActivity
 
         // connect the google client
         GoogleApiClient client = getGoogleApiClient();
-        client.registerConnectionCallbacks(new OnClient(client, cameraManager, track));
+        client.registerConnectionCallbacks(new OnClient(client, cameraManager, track, googleClient, currentState));
 
         // request permissions about current location
         int requestCode = 1001;
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
-        OnPermission.Request location = new OnPermission.Request(requestCode, permission, layer, cameraManager, track);
+        OnPermission.Request location = new OnPermission.Request(requestCode, permission, layer, cameraManager, track, permissions, currentState);
+
         OnPermission onPermission = new OnPermission.Builder(this).build();
         onPermission.beginRequest(location);
 
@@ -276,24 +283,6 @@ public class MapActivity extends AppCompatActivity
         savedInstanceState.putParcelable("spot", Parcels.wrap(currentState.getSpot()));
         super.onSaveInstanceState(savedInstanceState);
     }
-
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        int stateInt = savedInstanceState.getInt("state");
-//        AppState restoredState = AppState.values()[stateInt];
-//
-//        Spot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("spot"));
-//
-//        Toast.makeText(getApplicationContext(), "State: " + restoredState, Toast.LENGTH_SHORT).show();
-//
-//        currentState = null;
-//        if (restoredSpot == null) {
-//            goTo(restoredState);
-//        } else {
-//            goTo(restoredState, restoredSpot);
-//        }
-//    }
 
     public GoogleMap getMap() {
         return buzzardMap.get();

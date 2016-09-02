@@ -16,7 +16,6 @@ import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseGeoPoint;
@@ -35,7 +34,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     @Override
     public void start() {
-        if (getContext().buzzardMap.isLoaded()) {
+        if (isReady() || isReadyCache()) {
             updateUI();
         }
     }
@@ -54,14 +53,14 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         getContext().tvBottomSheetSubHeading.setText(googlePlace.getAddress());
 
 
-//        LatLng userLoc = getCameraManager().getLastLocation();
+        LatLng userLoc = getCameraManager().getLastLocation();
 
-//        RouteGateway.getRoute(userLoc, googlePlace.getLatLng(), new RouteGateway.RouteGatewayListener() {
-//            @Override
-//            public void onReturn(Route returnedRoute) {
-//                getContext().tvBottomSheetSubheadingRight.setText(returnedRoute.getDuration());
-//            }
-//        });
+        RouteGateway.getRoute(userLoc, googlePlace.getLatLng(), new RouteGateway.RouteGatewayListener() {
+            @Override
+            public void onReturn(Route returnedRoute) {
+                getContext().tvBottomSheetSubheadingRight.setText(returnedRoute.getDuration());
+            }
+        });
 
         getPlaceManager().addDestinationMarker(getContext().getMap(), googlePlace.getLatLng());
         getCameraManager().moveToLocation(getContext().getMap(), googlePlace.getLatLng());
@@ -103,19 +102,18 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     private void updateUI() {
         //
-
         getContext().clearBottomSheetHeadings();
         getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
         getContext().btnFindParking.setVisibility(View.GONE);
-
+        bottomSheet.showFab();
         //
 
         LatLng userLoc = getCameraManager().getLastLocation();
-//        ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
+        ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
 
-//        getPlaceManager().loadNearestSpotsOnMap(userGeoPoint, getContext().getMap()); // Loads 3 closest places
+        getPlaceManager().loadNearestSpotsOnMap(userGeoPoint, getContext().getMap()); // Loads 3 closest places
 
-//        getCameraManager().moveToUserLocation();
+        getCameraManager().moveToUserLocation();
 
         getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
@@ -144,7 +142,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             }
         });
 
-//        getPlaceManager().getClusterManager().setOnClusterItemClickListener(this);
+        getPlaceManager().getClusterManager().setOnClusterItemClickListener(this);
 
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
@@ -184,11 +182,6 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             mapIntent.setPackage("com.google.android.apps.maps");
             getContext().startActivity(mapIntent);
         }
-    }
-
-    @Override
-    public void onMap(GoogleMap map) {
-        updateUI();
     }
 
     @Override

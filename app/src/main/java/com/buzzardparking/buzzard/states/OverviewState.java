@@ -21,7 +21,7 @@ public class OverviewState extends UserState {
     }
     @Override
     public void start() {
-        if (getContext().buzzardMap.isLoaded()) {
+        if (isReady() || isReadyCache()) {
             updateUI();
         }
     }
