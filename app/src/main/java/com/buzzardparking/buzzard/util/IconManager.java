@@ -26,7 +26,7 @@ public class IconManager {
         // Define the size you want from dimensions file
         int shapeSize = context.getResources().getDimensionPixelSize(R.dimen.carmarker_size);
 
-        Drawable shapeDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.parked_marker, null);
+        Drawable shapeDrawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.spot_parked_marker, null);
         iconGen.setBackground(shapeDrawable);
 
         // Create a view container to set the size

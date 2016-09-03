@@ -10,6 +10,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 import org.joda.time.DateTime;
+import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.parceler.Parcel;
@@ -86,8 +87,9 @@ public class Spot extends Model implements ClusterItem {
     public long getAgeInMinutes() {
         DateTime d1 = formatter().parseDateTime(timestamp);
         DateTime d2 = DateTime.now();
-        long diffInMillis = d2.getMillis() - d1.getMillis();
-        long diffMinutes = diffInMillis / (60 * 1000) % 60;
+
+        int diffMinutes = Minutes.minutesBetween(d1, d2).getMinutes();
+
         return diffMinutes;
     }
 

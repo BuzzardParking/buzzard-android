@@ -109,6 +109,7 @@ public class PlaceManager implements
 
     public void loadFromParse(final GoogleMap map) {
         ParseQuery query = new ParseQuery("Spot");
+        query.orderByDescending("updatedAt");
         query.findInBackground(new FindCallback() {
             @Override
             public void done(Object places, Throwable throwable) {

@@ -34,6 +34,16 @@
 
             <include layout="@layout/progress_bar" />
 
+            <!--<ImageView-->
+                <!--android:id="@+id/ivAddMarkerIcon"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:visibility="visible"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/spot_add"-->
+                <!--android:paddingBottom="50dp" />-->
+
             <ImageView
                 android:id="@+id/ivAddMarkerIcon"
                 android:layout_centerHorizontal="true"
@@ -41,8 +51,8 @@
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/spot_add"
-                android:paddingBottom="50dp" />
+                android:src="@drawable/spot_add_modal"
+                android:paddingTop="30dp"/>
 
         </RelativeLayout>
 
