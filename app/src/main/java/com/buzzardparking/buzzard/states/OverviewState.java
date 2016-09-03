@@ -33,6 +33,7 @@ public class OverviewState extends UserState {
 
         getPlaceManager().clearMap();
         getContext().btnFindParking.setOnClickListener(null);
+        getContext().fabBack.setVisibility(View.VISIBLE);
     }
 
 
