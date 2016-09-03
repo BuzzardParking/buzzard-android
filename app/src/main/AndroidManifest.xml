@@ -44,6 +44,7 @@
 
         <activity android:name=".activities.HistoryActivity" />
         <activity android:name=".activities.SettingsActivity"></activity>
+        <service android:name=".services.GeofenceTransitionsIntentService"/>
     </application>
 
 </manifest>

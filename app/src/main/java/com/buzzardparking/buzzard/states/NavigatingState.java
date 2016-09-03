@@ -8,6 +8,7 @@ import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
+import com.buzzardparking.buzzard.util.GeofenceController;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.buzzardparking.buzzard.util.PolylineManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,6 +33,8 @@ public class NavigatingState extends UserState {
         getContext().showProgressBar();
         if (isReady() || isReadyCache()) {
             updateUI();
+            GeofenceController.getInstance().init(getContext(), getCameraManager().getClient());
+            GeofenceController.getInstance().addGeofence(spot.getLatLng());
         }
     }
 
@@ -107,6 +110,7 @@ public class NavigatingState extends UserState {
         lineManager.remove();
         super.stop();
         getPlaceManager().removeDestinationMarker();
+        GeofenceController.getInstance().removeGeofence();
     }
 
     private void setBackButtonListener() {
