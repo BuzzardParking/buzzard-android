@@ -285,7 +285,6 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
-        currentState.stop();
         savedInstanceState.putInt("state", currentState.appState.ordinal());
         savedInstanceState.putParcelable("spot", Parcels.wrap(currentState.getSpot()));
         super.onSaveInstanceState(savedInstanceState);
@@ -475,5 +474,10 @@ public class MapActivity extends AppCompatActivity
         };
 
         getMap().snapshot(callback);
+    }
+
+    @Override
+    public void onBackPressed() {
+        fabBack.performClick();
     }
 }

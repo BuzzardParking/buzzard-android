@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
@@ -77,8 +76,6 @@ public class AddMarkerOnLongClick implements OnMap.Listener {
 
         getContext().fabBtnSecondary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorAccent)));
         getContext().fabBtnSecondary.setImageResource(R.drawable.ic_check);
-
-        Toast.makeText(getContext(), "Long tap again to save the space", Toast.LENGTH_LONG).show();
 
         addingMode = true;
     }
