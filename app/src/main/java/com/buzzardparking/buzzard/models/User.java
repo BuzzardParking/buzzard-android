@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.models;
 
 import com.facebook.Profile;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -34,26 +33,22 @@ public class User {
 
     public static User getInstance() {
         if (instance == null) {
-            synchronized (User.class) {
-                if (instance == null) {
-                    final Profile profile = Profile.getCurrentProfile();
-                    String userId = profile.getId();
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-                    // TODO: potential bug here.. may get null user if the response hasn't come back yet
-                    query.whereEqualTo("userId", userId);
-                    query.setLimit(1);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> objects, ParseException e) {
-                            if (!objects.isEmpty()) {
-                                instance = new User(objects.get(0));
-                            } else {
-                                instance = new User(profile.getId(), profile.getName());
-                                instance.save();
-                            }
-                        }
-                    });
+            final Profile profile = Profile.getCurrentProfile();
+            String userId = profile.getId();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+            query.whereEqualTo("userId", userId);
+            query.setLimit(1);
+            try {
+                // TODO: better to use the findInBackground, but how to wire up the background job?
+                List<ParseObject> objects = query.find();
+                if (!objects.isEmpty()) {
+                    instance = new User(objects.get(0));
+                } else {
+                    instance = new User(profile.getId(), profile.getName());
+                    instance.save();
                 }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
 

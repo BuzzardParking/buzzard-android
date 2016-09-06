@@ -240,8 +240,6 @@ public class MapActivity extends AppCompatActivity
                 break;
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
-//                intent.putExtra("user", Parcels.wrap(user));
-//                startActivityForResult(intent, SETTING_REQUEST_CODE);
                 break;
             default:
                 break;
@@ -389,10 +387,6 @@ public class MapActivity extends AppCompatActivity
             }
         } else if (requestCode == OVERLAY_REQUEST_CODE) {
             startService(new Intent(this, OverlayService.class));
-        } else if (requestCode == SETTING_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                user = Parcels.unwrap(data.getExtras().getParcelable("user"));
-            }
         }
     }
 
