@@ -5,20 +5,20 @@ import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
-import com.buzzardparking.buzzard.models.Spot;
+import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 
 /**
- * {@link ParkedState}: a user's car is parked at a parking spot.
+ * {@link ParkedState}: a user's car is parked at a parking dynamicSpot.
  */
 public class ParkedState extends UserState {
 
-    public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager, Spot spot) {
+    public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager, DynamicSpot spot) {
         super(context, placeManager, cameraManager);
         appState = AppState.PARKED;
-        this.spot = spot;
+        this.dynamicSpot = spot;
     }
 
     @Override
@@ -42,13 +42,12 @@ public class ParkedState extends UserState {
         bottomSheet.expand();
 
         // Temporary marker to show the car location
-        getPlaceManager().addCarParkedMarker(getContext().getMap(), spot.getLatLng());
-        getCameraManager().moveToLocation(getContext().getMap(), spot.getLatLng());
+        getPlaceManager().addCarParkedMarker(getContext().getMap(), dynamicSpot.getLatLng());
+        getCameraManager().moveToLocation(getContext().getMap(), dynamicSpot.getLatLng());
 
         setBackButtonListener();
 
-        // TODO: use real user id, dedup,
-        getPlaceManager().addIntoParkingHistory("fake-user-id", spot);
+        dynamicSpot.takenBy(getContext().user);
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_parked));
         getContext().tvBottomSheetSubHeading.setText(getContext().getString(R.string.tv_parked_subtitle));
@@ -57,7 +56,7 @@ public class ParkedState extends UserState {
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {
-                getContext().captureMapScreen(spot);
+                getContext().captureMapScreen(dynamicSpot);
                 getContext().goTo(AppState.LEAVING);
             }
         });
@@ -100,7 +99,7 @@ public class ParkedState extends UserState {
         getContext().fabBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getContext().goTo(appState.NAVIGATING, spot);
+                getContext().goTo(appState.NAVIGATING, dynamicSpot);
             }
         });
     }

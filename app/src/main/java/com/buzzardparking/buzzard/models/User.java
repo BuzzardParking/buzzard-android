@@ -4,28 +4,42 @@ import com.facebook.Profile;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
+
+import org.parceler.Parcel;
+import org.parceler.Transient;
 
 import java.util.List;
 
 /**
  * User model
  */
+@Parcel(analyze={User.class})
 public class User {
 
-    private String userId;
-    private String name;
+    String userId;
+    String name;
     boolean preferExternalNavigation;
 
+    @Transient
     private static User instance;
-    private ParseObject parseUser;
+
+    @Transient
+    public ParseObject parseUser;
+
+    // empty constructor required by Parcel
+    public User() {
+
+    }
 
     public User(String userId, String name) {
         this.userId = userId;
         this.name = name;
+        this.parseUser = new ParseObject("User");
     }
 
     public User(ParseObject parseUser) {
-        this.userId = parseUser.getObjectId();
+        this.userId = parseUser.getString("userId");
         this.name = parseUser.getString("name");
         this.preferExternalNavigation = parseUser.getBoolean("preferExternalNavigation");
         this.parseUser = parseUser;
@@ -45,7 +59,7 @@ public class User {
                     instance = new User(objects.get(0));
                 } else {
                     instance = new User(profile.getId(), profile.getName());
-                    instance.save();
+                    instance.saveParse(null);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -63,14 +77,10 @@ public class User {
         this.preferExternalNavigation = preferExternalNavigation;
     }
 
-    public void save() {
-        if (parseUser == null) {
-            parseUser = new ParseObject("User");
-        }
-
+    public void saveParse(SaveCallback saveCallback) {
         parseUser.put("userId", userId);
         parseUser.put("name", name);
         parseUser.put("preferExternalNavigation", preferExternalNavigation);
-        parseUser.saveInBackground();
+        parseUser.saveInBackground(saveCallback);
     }
 }

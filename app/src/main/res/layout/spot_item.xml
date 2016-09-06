@@ -3,6 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/bg_no_data"
+        android:id="@+id/ivParkingSpot" />
     <TextView
         android:id="@+id/tvParkingSpot"
         android:layout_width="match_parent"

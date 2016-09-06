@@ -3,7 +3,8 @@ package com.buzzardparking.buzzard.util;
 import android.util.Log;
 
 import com.buzzardparking.buzzard.activities.MapActivity;
-import com.buzzardparking.buzzard.models.Spot;
+import com.buzzardparking.buzzard.models.DynamicSpot;
+import com.buzzardparking.buzzard.models.User;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * {@link PlaceManager} listens for the activity's saved instance state, to save and restore
+ * {@link PlaceManager} listens for the activity's saved instance state, to saveParse and restore
  * any places on rotation.
  */
 public class PlaceManager implements
@@ -25,7 +26,7 @@ public class PlaceManager implements
 
     private static final String KEY = "places";
     private final MarkerManager mMarkerManager;
-    private ArrayList<Spot> mSpots; // May not need this. Need to know more about screen rotation
+    private ArrayList<DynamicSpot> mSpots; // May not need this. Need to know more about screen rotation
     private MapActivity context;
 
     public PlaceManager(MarkerManager markerManager, MapActivity context) {
@@ -35,8 +36,7 @@ public class PlaceManager implements
     }
 
     public void addPlace(LatLng latLng) {
-        Spot newSpot = new Spot(latLng);
-        newSpot.save();
+        DynamicSpot newSpot = new DynamicSpot(latLng, User.getInstance());
         newSpot.saveParse();
         mSpots.add(newSpot);
 
@@ -69,15 +69,15 @@ public class PlaceManager implements
 //        deleteFromParse();
     }
 
-    public void loadFromLocal(GoogleMap map) {
-        mSpots.addAll(Spot.getAll());
-        mMarkerManager.addAll(mSpots);
-    }
+//    public void loadFromLocal(GoogleMap map) {
+//        mSpots.addAll(Spot.getAll());
+//        mMarkerManager.addAll(mSpots);
+//    }
 
     public void loadNearestSpotsOnMap(ParseGeoPoint point, GoogleMap map) {
         loadNearestSpots(point, 3, new NearestSpotListener() {
             @Override
-            public void onReturn(ArrayList<Spot> nearestSpots) {
+            public void onReturn(ArrayList<DynamicSpot> nearestSpots) {
                 mSpots.clear();
                 mMarkerManager.removeMarkers();
 
@@ -90,38 +90,45 @@ public class PlaceManager implements
 
     public void loadNearestSpots(ParseGeoPoint geoPoint, final int limit, final NearestSpotListener nearestSpotListener) {
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Spot");
-        query.whereNear("location", geoPoint);
-        query.setLimit(limit);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                ArrayList<Spot> spotsArray = Spot.fromParse(objects);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("DynamicSpot");
+        query
+                .include("staticSpot")
+                .include("producer")
+                .include("consumer")
+                .whereNear("location", geoPoint)
+                .setLimit(limit)
+                .findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        ArrayList<DynamicSpot> spotsArray = DynamicSpot.fromParseDynamicSpots(objects);
+                        nearestSpotListener.onReturn(spotsArray);
 
-                nearestSpotListener.onReturn(spotsArray);
+                        context.hideProgressBar();
 
-                context.hideProgressBar();
-
-            }
-        });
+                    }
+                });
     }
 
 
     public void loadFromParse(final GoogleMap map) {
-        ParseQuery query = new ParseQuery("Spot");
+        ParseQuery query = new ParseQuery("DynamicSpot");
         query.orderByDescending("updatedAt");
-        query.findInBackground(new FindCallback() {
-            @Override
-            public void done(Object places, Throwable throwable) {
-                mSpots.clear();
-                mMarkerManager.removeMarkers();
+        query
+                .include("producer")
+                .include("staticSpot")
+                .include("consumer")
+                .findInBackground(new FindCallback() {
+                    @Override
+                    public void done(Object places, Throwable throwable) {
+                        mSpots.clear();
+                        mMarkerManager.removeMarkers();
 
-                mSpots.addAll(Spot.fromParse(places));
+                        mSpots.addAll(DynamicSpot.fromParseDynamicSpots(places));
 
-                mMarkerManager.addAll(mSpots);
+                        mMarkerManager.addAll(mSpots);
 
-                context.hideProgressBar();
-            }
+                        context.hideProgressBar();
+                    }
 
             @Override
             public void done(List objects, ParseException e) {
@@ -131,7 +138,7 @@ public class PlaceManager implements
     }
 
     public void deleteFromParse(){
-        ParseQuery query = new ParseQuery("Spot");
+        ParseQuery query = new ParseQuery("DynamicSpot");
         query.findInBackground(new FindCallback() {
             @Override
             public void done(List objects, ParseException e) {
@@ -148,11 +155,6 @@ public class PlaceManager implements
         });
     }
 
-
-    public void addIntoParkingHistory(String userId, Spot spot) {
-        spot.saveParkedSpot(userId);
-    }
-
     public ClusterManager getClusterManager() {
         return mMarkerManager.getClusterManager();
     }
@@ -163,7 +165,7 @@ public class PlaceManager implements
     }
 
     public interface NearestSpotListener {
-        void onReturn(ArrayList<Spot> nearestSpots);
+        void onReturn(ArrayList<DynamicSpot> nearestSpots);
     }
 
 }

@@ -15,6 +15,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,6 +31,7 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Client;
+import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.models.Map;
 import com.buzzardparking.buzzard.models.Permission;
 import com.buzzardparking.buzzard.models.Spot;
@@ -76,8 +78,6 @@ import com.parse.SaveCallback;
 import org.parceler.Parcels;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.util.List;
 
 import cn.refactor.smileyloadingview.lib.SmileyLoadingView;
 
@@ -123,7 +123,7 @@ public class MapActivity extends AppCompatActivity
 
     // TODO: refactor these public instance variables
     public Place googlePlace;
-    public Spot targetSpot;
+    public DynamicSpot targetSpot;
     // TODO: scope user with sessions
     public User user;
 
@@ -193,7 +193,7 @@ public class MapActivity extends AppCompatActivity
             int stateInt = savedInstanceState.getInt("state");
             AppState restoredState = AppState.values()[stateInt];
 
-            Spot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("spot"));
+            DynamicSpot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("dynamicSpot"));
 
             if (restoredSpot == null) {
                 goTo(restoredState);
@@ -286,7 +286,7 @@ public class MapActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("state", currentState.appState.ordinal());
-        savedInstanceState.putParcelable("spot", Parcels.wrap(currentState.getSpot()));
+        savedInstanceState.putParcelable("dynamicSpot", Parcels.wrap(currentState.getDynamicSpot()));
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -321,7 +321,7 @@ public class MapActivity extends AppCompatActivity
         currentState.start();
     }
 
-    public void goTo(AppState state, Spot spot) {
+    public void goTo(AppState state, DynamicSpot spot) {
         if (currentState != null) {
             currentState.stop();
         }
@@ -455,7 +455,7 @@ public class MapActivity extends AppCompatActivity
         streetViewPanorama.setPosition(targetSpot.getLatLng());
     }
 
-    public void captureMapScreen(final Spot spot) {
+    public void captureMapScreen(final DynamicSpot spot) {
         SnapshotReadyCallback callback = new SnapshotReadyCallback() {
             Bitmap bitmap;
 
@@ -466,7 +466,12 @@ public class MapActivity extends AppCompatActivity
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
                     final ParseFile snapShotFile = new ParseFile(System.currentTimeMillis() + ".png", stream.toByteArray());
-                    snapShotFile.saveInBackground();
+                    snapShotFile.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            DynamicSpot.linkSnapshot(spot, snapShotFile);
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

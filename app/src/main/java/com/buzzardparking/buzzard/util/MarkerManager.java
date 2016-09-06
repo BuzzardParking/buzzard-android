@@ -5,7 +5,7 @@ import android.graphics.Point;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.buzzardparking.buzzard.activities.MapActivity;
-import com.buzzardparking.buzzard.models.Spot;
+import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -37,10 +37,10 @@ public class MarkerManager {
     /**
      * Add a parking space marker to the map
      *
-     * @param spot all the details will be used the onBeforeItemClustered method
+     * @param dynamicSpot all the details will be used the onBeforeItemClustered method
      */
-    public void addMarker(Spot spot) {
-        clusterManager.addItem(spot);
+    public void addMarker(DynamicSpot dynamicSpot) {
+        clusterManager.addItem(dynamicSpot);
         clusterManager.cluster();
     }
 
@@ -82,7 +82,7 @@ public class MarkerManager {
         }
     }
 
-    public void addAll(List<Spot> spots) {
+    public void addAll(List<DynamicSpot> spots) {
         clusterManager.addItems(spots);
         clusterManager.cluster();
     }
