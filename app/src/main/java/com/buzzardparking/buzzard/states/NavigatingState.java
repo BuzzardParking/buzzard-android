@@ -80,7 +80,7 @@ public class NavigatingState extends UserState {
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
             public void onCollapsed() {
-
+                bottomSheet.expand();
             }
 
             @Override

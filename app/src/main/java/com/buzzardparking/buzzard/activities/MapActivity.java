@@ -69,15 +69,11 @@ import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.util.List;
 
 import cn.refactor.smileyloadingview.lib.SmileyLoadingView;
 
@@ -479,5 +475,9 @@ public class MapActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         fabBack.performClick();
+    }
+
+    public BottomSheetManager getBottomSheetManager() {
+        return bottomSheetManager;
     }
 }
