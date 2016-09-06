@@ -16,4 +16,11 @@
         android:text="@string/setting_navigation"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_logout"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/swExternalNavigation"
+        android:onClick="logout"/>
 </RelativeLayout>

@@ -39,4 +39,7 @@
     <string name="unknown_geofence_error">
         Unknown error: the Geofence service is not available now
     </string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="facebook_app_id">301068803594692</string>
+    <string name="btn_logout">Log Out</string>
 </resources>

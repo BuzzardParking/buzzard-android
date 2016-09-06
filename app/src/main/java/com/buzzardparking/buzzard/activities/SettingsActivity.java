@@ -3,11 +3,13 @@ package com.buzzardparking.buzzard.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.User;
+import com.facebook.login.LoginManager;
 
 import org.parceler.Parcels;
 
@@ -34,5 +36,11 @@ public class SettingsActivity extends AppCompatActivity {
                 setResult(RESULT_OK, result);
             }
         });
+    }
+
+    public void logout(View view) {
+        LoginManager.getInstance().logOut();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }

@@ -1,35 +1,34 @@
 package com.buzzardparking.buzzard.models;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
+import com.parse.ParseObject;
 
 import org.parceler.Parcel;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * User model
  */
-@Table(name = "Users")
 @Parcel(analyze={User.class})
-public class User extends Model {
-    @Column(name = "userId")
-    public String userId;
+public class User {
 
-    @Column(name = "name")
-    public String name;
+    String userId;
+    String name;
+    boolean preferExternalNavigation;
 
-   @Column(name = "preferExternalNavigation")
-    public boolean preferExternalNavigation;
-
+    // empty constructor required by Parcel
     public User() {
-        super();
-    }
 
+    }
     public User(String name) {
         this.name = name;
+    }
+
+    public User(ParseObject parseUser) {
+        this.userId = parseUser.getObjectId();
+        this.name = parseUser.getString("name");
+        this.preferExternalNavigation = parseUser.getBoolean("preferExternalNavigation");
     }
 
     public boolean doesPreferExternalNavigation() {
@@ -41,9 +40,6 @@ public class User extends Model {
     }
 
     public static List<User> getAll() {
-        return new Select()
-                .from(User.class)
-                .execute();
+        return Collections.emptyList();
     }
-
 }

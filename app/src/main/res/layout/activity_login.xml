@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.buzzardparking.buzzard.activities.LoginActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_login"
+        android:id="@+id/backgroundImage"
+        android:scaleType="fitXY" />
+
+    <cn.refactor.smileyloadingview.lib.SmileyLoadingView
+        android:id="@+id/smileyLoadingView"
+        xmlns:slv="http://schemas.android.com/apk/res-auto"
+        android:layout_width="@dimen/pbSize"
+        android:layout_height="@dimen/pbSize"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        slv:duration="2000"
+        slv:strokeColor="@color/colorPrimary"
+        slv:strokeWidth="@dimen/pbStroke"/>
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
