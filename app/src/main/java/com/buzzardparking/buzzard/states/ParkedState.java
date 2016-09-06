@@ -57,6 +57,7 @@ public class ParkedState extends UserState {
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {
+                getContext().captureMapScreen(spot);
                 getContext().goTo(AppState.LEAVING);
             }
         });

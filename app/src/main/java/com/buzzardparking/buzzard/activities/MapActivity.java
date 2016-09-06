@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,13 +64,19 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import cn.refactor.smileyloadingview.lib.SmileyLoadingView;
@@ -94,7 +101,6 @@ public class MapActivity extends AppCompatActivity
 
     /* UI ELEMENTS */
     private DrawerLayout mDrawer;
-    private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
     private SmileyLoadingView smileyLoadingView;
     private RelativeLayout rlProgressBar;
@@ -461,5 +467,26 @@ public class MapActivity extends AppCompatActivity
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
         streetViewPanorama.setPosition(targetSpot.getLatLng());
+    }
+
+    public void captureMapScreen(final Spot spot) {
+        SnapshotReadyCallback callback = new SnapshotReadyCallback() {
+            Bitmap bitmap;
+
+            @Override
+            public void onSnapshotReady(final Bitmap snapshot) {
+                bitmap = snapshot;
+                try {
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
+                    final ParseFile snapShotFile = new ParseFile(System.currentTimeMillis() + ".png", stream.toByteArray());
+                    snapShotFile.saveInBackground();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        getMap().snapshot(callback);
     }
 }
