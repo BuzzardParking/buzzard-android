@@ -11,20 +11,16 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.User;
 import com.facebook.login.LoginManager;
 
-import org.parceler.Parcels;
-
 public class SettingsActivity extends AppCompatActivity {
 
     private User user;
     private Switch swNavigationSetting;
-    private Intent result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        user = Parcels.unwrap(getIntent().getParcelableExtra("user"));
-        result = new Intent();
+        user = User.getInstance();
 
         swNavigationSetting = (Switch) findViewById(R.id.swExternalNavigation);
         swNavigationSetting.setChecked(user.doesPreferExternalNavigation());
@@ -32,8 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 user.setPreferExternalNavigation(isChecked);
-                result.putExtra("user", Parcels.wrap(user));
-                setResult(RESULT_OK, result);
+                user.save();
             }
         });
     }

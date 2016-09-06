@@ -130,6 +130,7 @@ public class MapActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        user = User.getInstance();
         setContentView(R.layout.activity_map);
         setupToolbar();
         setupDrawer();
@@ -176,14 +177,6 @@ public class MapActivity extends AppCompatActivity
         onPermission.beginRequest(location);
 
         checkDrawOverlayPermission();
-
-        // TODO: fetch real user based on session from Parse
-        List<User> users = User.getAll();
-        if (users.isEmpty()) {
-            user = new User("buzzard-admin");
-        } else {
-            user = users.get(0);
-        }
 
         streetViewPanoramaFragment = (StreetViewPanoramaFragment)getFragmentManager()
                 .findFragmentById(R.id.streetviewpanorama);
@@ -246,9 +239,9 @@ public class MapActivity extends AppCompatActivity
                 startActivity(new Intent(this, HistoryActivity.class));
                 break;
             case R.id.nav_settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                intent.putExtra("user", Parcels.wrap(user));
-                startActivityForResult(intent, SETTING_REQUEST_CODE);
+                startActivity(new Intent(this, SettingsActivity.class));
+//                intent.putExtra("user", Parcels.wrap(user));
+//                startActivityForResult(intent, SETTING_REQUEST_CODE);
                 break;
             default:
                 break;
