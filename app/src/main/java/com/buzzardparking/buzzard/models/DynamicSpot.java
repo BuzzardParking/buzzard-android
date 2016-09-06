@@ -6,6 +6,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcel;
@@ -37,6 +38,7 @@ public class DynamicSpot implements ClusterItem {
 
     // Parceler requires that fields must be at least package public
     Date createdAt;
+    Date lockedAt;
     Date takenAt;
     Date expiredAt;
     Date leftAt;
@@ -78,6 +80,7 @@ public class DynamicSpot implements ClusterItem {
 
         this.staticSpot = new Spot(parseSpot.getParseObject("staticSpot"));
         this.createdAt = parseSpot.getCreatedAt();
+        this.lockedAt = parseSpot.getDate("lockedAt");
         this.takenAt = parseSpot.getDate("takenAt");
         this.expiredAt = parseSpot.getDate("expiredAt");
         this.leftAt = parseSpot.getDate("leftAt");
@@ -104,42 +107,57 @@ public class DynamicSpot implements ClusterItem {
                 producer.saveParse(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        parseSpot.put("staticSpot", staticSpot.parseSpot);
-                        parseSpot.put("producer", producer.parseUser);
-                        parseSpot.put("createdAt", createdAt);
-
-                        // replicate the location for easy query in Parse
-                        ParseGeoPoint point = new ParseGeoPoint(staticSpot.latitude, staticSpot.longitude);
-                        parseSpot.put("location", point);
-
-                        // Note: parse doesn't expect any null value
-                        if (takenAt != null) {
-                            parseSpot.put("takenAt", takenAt);
-                        }
-
-                        if (expiredAt != null) {
-                            parseSpot.put("expiredAt", expiredAt);
-                        }
-
-                        if (leftAt != null) {
-                            parseSpot.put("leftAt", leftAt);
-                        }
-
                         if (consumer != null) {
-                            parseSpot.put("consumer", consumer.parseUser);
+                            consumer.saveParse(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    saveOnlySpot();
+                               }
+                            });
+                        } else {
+                            saveOnlySpot();
                         }
-
-                        if (durationInMill > 0) {
-                            parseSpot.put("duration", durationInMill);
-                        }
-
-                        parseSpot.saveInBackground();
-                    }
+                   }
                 });
             }
         });
+    }
 
+    private void saveOnlySpot() {
+        parseSpot.put("staticSpot", staticSpot.parseSpot);
+        parseSpot.put("producer", producer.parseUser);
+        parseSpot.put("createdAt", createdAt);
 
+        // replicate the location for easy query in Parse
+        ParseGeoPoint point = new ParseGeoPoint(staticSpot.latitude, staticSpot.longitude);
+        parseSpot.put("location", point);
+
+        // Note: parse doesn't expect any null value
+        if (lockedAt != null) {
+            parseSpot.put("lockedAt", lockedAt);
+        }
+
+        if (takenAt != null) {
+            parseSpot.put("takenAt", takenAt);
+        }
+
+       if (expiredAt != null) {
+            parseSpot.put("expiredAt", expiredAt);
+        }
+
+        if (leftAt != null) {
+            parseSpot.put("leftAt", leftAt);
+        }
+
+        if (consumer != null) {
+            parseSpot.put("consumer", consumer.parseUser);
+        }
+
+        if (durationInMill > 0) {
+            parseSpot.put("duration", durationInMill);
+        }
+
+        parseSpot.saveInBackground();
     }
 
     public static ArrayList<DynamicSpot> fromParseDynamicSpots(Object parseSpots) {
@@ -156,6 +174,12 @@ public class DynamicSpot implements ClusterItem {
         this.durationInMill = durationInMin * 60 * 1000;
     }
 
+    public void lockedBy(User consumer) {
+        this.consumer = consumer;
+        this.lockedAt = new Date();
+        saveParse();
+    }
+
     public void takenBy(User consumer) {
         this.consumer = consumer;
         this.takenAt = new Date();
@@ -163,7 +187,7 @@ public class DynamicSpot implements ClusterItem {
     }
 
     public String getTakenAtTimestamp() {
-        return takenAt.toString();
+        return takenAt == null ? "" : takenAt.toString();
     }
 
     /**
@@ -172,8 +196,12 @@ public class DynamicSpot implements ClusterItem {
      * @return  a new {@link DynamicSpot}
      */
     public DynamicSpot leaveSpot() {
-        this.leftAt = new Date();
-        return new DynamicSpot(staticSpot, this.consumer);
+        leftAt = new Date();
+        DynamicSpot newSpot = new DynamicSpot(staticSpot, consumer);
+
+        saveParse();
+        newSpot.saveParse();
+        return newSpot;
     }
 
     public void expireSpot() {
@@ -221,5 +249,42 @@ public class DynamicSpot implements ClusterItem {
     public static void linkSnapshot(DynamicSpot dynamicSpot, ParseFile screenshotFile) {
         dynamicSpot.parseSpot.put("snapshot", screenshotFile);
         dynamicSpot.parseSpot.saveInBackground();
+    }
+
+    public static DynamicSpot loadLockedSpot(User user) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("DynamicSpot");
+        try {
+            // any time, there could only exist one locked spot for a particular user
+            ParseObject parseSpot = query
+                    .include("staticSpot")
+                    .include("producer")
+                    .include("consumer")
+                    .whereNotEqualTo("lockedAt", null)
+                    .whereEqualTo("takenAt", null)
+                    .whereEqualTo("consumer", user.parseUser)
+                    .getFirst();
+            return new DynamicSpot(parseSpot);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static DynamicSpot loadTakenSpot(User user) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("DynamicSpot");
+        try {
+            ParseObject parseSpot = query
+                    .include("staticSpot")
+                    .include("producer")
+                    .include("consumer")
+                    .whereNotEqualTo("takenAt", null)
+                    .whereEqualTo("consumer", user.parseUser)
+                    .orderByDescending("takenAt")
+                    .getFirst();
+            return new DynamicSpot(parseSpot);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
@@ -17,10 +18,14 @@ public class LeavingState extends UserState {
     public LeavingState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
         super(context, placeManager, cameraManager);
         appState = AppState.LEAVING;
+        dynamicSpot = DynamicSpot.loadTakenSpot(getContext().user);
     }
 
     @Override
     public void start() {
+        getContext().user.setCurrentState(AppState.LEAVING);
+        dynamicSpot.leaveSpot();
+
         if (isReady() || isReadyCache()) {
             updateUI();
         }

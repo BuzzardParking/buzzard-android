@@ -25,6 +25,15 @@ public class NavigatingState extends UserState {
     public NavigatingState(
             Context context,
             PlaceManager placeManager,
+            CameraManager cameraManager) {
+        super(context, placeManager, cameraManager);
+        this.dynamicSpot = DynamicSpot.loadLockedSpot(getContext().user);
+        appState = AppState.NAVIGATING;
+    }
+
+    public NavigatingState(
+            Context context,
+            PlaceManager placeManager,
             CameraManager cameraManager,
             DynamicSpot spot) {
         super(context, placeManager, cameraManager);
@@ -34,6 +43,9 @@ public class NavigatingState extends UserState {
 
     @Override
     public void start() {
+        getContext().user.setCurrentState(AppState.NAVIGATING);
+        dynamicSpot.lockedBy(getContext().user);
+
         getContext().showProgressBar();
         if (isReady() || isReadyCache()) {
             updateUI();

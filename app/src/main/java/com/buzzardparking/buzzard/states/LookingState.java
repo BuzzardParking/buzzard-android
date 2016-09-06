@@ -35,6 +35,7 @@ public class LookingState extends UserState
 
     @Override
     public void start() {
+        getContext().user.setCurrentState(AppState.LOOKING);
         getContext().showProgressBar();
 
         if (isReady() || isReadyCache()) {
@@ -184,7 +185,11 @@ public class LookingState extends UserState
 
     private void startNavigating() {
         // launch in-app navigation
-        getContext().goTo(AppState.NAVIGATING, dynamicSpot);
+        if (dynamicSpot != null) {
+            getContext().goTo(AppState.NAVIGATING, dynamicSpot);
+        } else {
+            getContext().goTo(AppState.NAVIGATING);
+        }
 
         if (getContext().user.doesPreferExternalNavigation()) {
             // launch external navigation as well

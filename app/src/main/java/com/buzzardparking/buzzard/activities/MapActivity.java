@@ -155,7 +155,8 @@ public class MapActivity extends AppCompatActivity
         permissions = new Permission();
         googleClient = new Client();
 
-        initializeFirstState(savedInstanceState);
+        // initial state fetched from the server
+        goTo(user.getCurrentState());
 
         // initialize the map system and view
         FragmentManager fm = getSupportFragmentManager();
@@ -183,24 +184,6 @@ public class MapActivity extends AppCompatActivity
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.hide(streetViewPanoramaFragment);
         ft.commit();
-    }
-
-    public void initializeFirstState(Bundle savedInstanceState) {
-        // TODO: retrieve from DB or backend in the future
-        if (savedInstanceState == null) {
-            goTo(AppState.OVERVIEW);
-        } else {
-            int stateInt = savedInstanceState.getInt("state");
-            AppState restoredState = AppState.values()[stateInt];
-
-            DynamicSpot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("dynamicSpot"));
-
-            if (restoredSpot == null) {
-                goTo(restoredState);
-            } else {
-                goTo(restoredState, restoredSpot);
-            }
-        }
     }
 
     private void setupProgressbar() {
@@ -285,7 +268,6 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putInt("state", currentState.appState.ordinal());
         savedInstanceState.putParcelable("dynamicSpot", Parcels.wrap(currentState.getDynamicSpot()));
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -310,6 +292,12 @@ public class MapActivity extends AppCompatActivity
                 break;
             case LOOKING:
                 currentState = new LookingState(this, placeManager, cameraManager);
+                break;
+            case NAVIGATING:
+                currentState = new NavigatingState(this, placeManager, cameraManager);
+                break;
+            case PARKED:
+                currentState = new ParkedState(this, placeManager, cameraManager);
                 break;
             case LEAVING:
                 currentState = new LeavingState(this, placeManager, cameraManager);

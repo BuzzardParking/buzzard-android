@@ -20,6 +20,7 @@ public class User {
     String userId;
     String name;
     boolean preferExternalNavigation;
+    AppState currentState;
 
     @Transient
     private static User instance;
@@ -35,6 +36,7 @@ public class User {
     public User(String userId, String name) {
         this.userId = userId;
         this.name = name;
+        this.currentState = AppState.OVERVIEW;
         this.parseUser = new ParseObject("User");
     }
 
@@ -42,6 +44,7 @@ public class User {
         this.userId = parseUser.getString("userId");
         this.name = parseUser.getString("name");
         this.preferExternalNavigation = parseUser.getBoolean("preferExternalNavigation");
+        this.currentState = AppState.values()[parseUser.getInt("currentState")];
         this.parseUser = parseUser;
     }
 
@@ -81,6 +84,17 @@ public class User {
         parseUser.put("userId", userId);
         parseUser.put("name", name);
         parseUser.put("preferExternalNavigation", preferExternalNavigation);
+        parseUser.put("currentState", currentState.ordinal());
         parseUser.saveInBackground(saveCallback);
     }
+
+    public void setCurrentState(AppState state) {
+        currentState = state;
+        saveParse(null);
+    }
+
+    public AppState getCurrentState() {
+        return currentState;
+    }
+
 }

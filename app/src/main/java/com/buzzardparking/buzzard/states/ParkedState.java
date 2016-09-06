@@ -15,6 +15,12 @@ import com.buzzardparking.buzzard.util.PlaceManager;
  */
 public class ParkedState extends UserState {
 
+    public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
+        super(context, placeManager, cameraManager);
+        appState = AppState.PARKED;
+        this.dynamicSpot = DynamicSpot.loadTakenSpot(getContext().user);
+    }
+
     public ParkedState(Context context, PlaceManager placeManager, CameraManager cameraManager, DynamicSpot spot) {
         super(context, placeManager, cameraManager);
         appState = AppState.PARKED;
@@ -23,6 +29,9 @@ public class ParkedState extends UserState {
 
     @Override
     public void start() {
+        getContext().user.setCurrentState(AppState.PARKED);
+        dynamicSpot.takenBy(getContext().user);
+
         if (isReady() || isReadyCache()) {
             updateUI();
         }
@@ -46,8 +55,6 @@ public class ParkedState extends UserState {
         getCameraManager().moveToLocation(getContext().getMap(), dynamicSpot.getLatLng());
 
         setBackButtonListener();
-
-        dynamicSpot.takenBy(getContext().user);
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_parked));
         getContext().tvBottomSheetSubHeading.setText(getContext().getString(R.string.tv_parked_subtitle));
@@ -99,7 +106,7 @@ public class ParkedState extends UserState {
         getContext().fabBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getContext().goTo(appState.NAVIGATING, dynamicSpot);
+                getContext().goTo(appState.NAVIGATING);
             }
         });
     }

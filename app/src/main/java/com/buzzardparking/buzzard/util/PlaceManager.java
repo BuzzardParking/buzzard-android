@@ -88,6 +88,12 @@ public class PlaceManager implements
 
     }
 
+    /**
+     * Only load open spots -- exclude locked and taken spots
+     * @param geoPoint
+     * @param limit
+     * @param nearestSpotListener
+     */
     public void loadNearestSpots(ParseGeoPoint geoPoint, final int limit, final NearestSpotListener nearestSpotListener) {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DynamicSpot");
@@ -95,6 +101,8 @@ public class PlaceManager implements
                 .include("staticSpot")
                 .include("producer")
                 .include("consumer")
+                .whereEqualTo("takenAt", null)
+                .whereEqualTo("lockedAt", null)
                 .whereNear("location", geoPoint)
                 .setLimit(limit)
                 .findInBackground(new FindCallback<ParseObject>() {
@@ -110,13 +118,19 @@ public class PlaceManager implements
     }
 
 
+    /**
+     * Only load open spots -- exclude locked and taken spots
+     * @param map
+     */
     public void loadFromParse(final GoogleMap map) {
         ParseQuery query = new ParseQuery("DynamicSpot");
-        query.orderByDescending("updatedAt");
         query
                 .include("producer")
                 .include("staticSpot")
                 .include("consumer")
+                .whereEqualTo("takenAt", null)
+                .whereEqualTo("lockedAt", null)
+                .orderByDescending("updatedAt")
                 .findInBackground(new FindCallback() {
                     @Override
                     public void done(Object places, Throwable throwable) {
