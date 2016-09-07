@@ -104,6 +104,7 @@ public class MapActivity extends AppCompatActivity
     public TextView tvBottomSheetHeading;
     public TextView tvBottomSheetSubHeading;
     public TextView tvBottomSheetSubheadingRight;
+    public TextView tvBottomSheetReporter;
     public RelativeLayout rlTopPieceContainer;
     public Button btnFindParking;
     public FloatingActionButton fabBtnSecondary;
@@ -234,6 +235,7 @@ public class MapActivity extends AppCompatActivity
         tvBottomSheetHeading = (TextView) findViewById(R.id.tvBottomSheetHeading);
         tvBottomSheetSubHeading = (TextView) findViewById(R.id.tvBottomSheetSubheading);
         tvBottomSheetSubheadingRight = (TextView) findViewById(R.id.tvBottomSheetSubheadingRight);
+        tvBottomSheetReporter = (TextView) findViewById(R.id.tvBottomSheetReporter);
         rlTopPieceContainer = (RelativeLayout) findViewById(R.id.rlTopPieceContainer);
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
         fabBtnSecondary = (FloatingActionButton) findViewById(R.id.fabActionSecondary);
@@ -416,6 +418,7 @@ public class MapActivity extends AppCompatActivity
         tvBottomSheetHeading.setText("");
         tvBottomSheetSubHeading.setText("");
         tvBottomSheetSubheadingRight.setText("");
+        tvBottomSheetReporter.setText("");
     }
 
     public void prepareView() {

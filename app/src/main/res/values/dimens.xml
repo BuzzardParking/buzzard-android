@@ -10,6 +10,7 @@
     <!--Text -->
     <dimen name="primary_text">18sp</dimen>
     <dimen name="secondary_text">16sp</dimen>
+    <dimen name="body_text">14sp</dimen>
     <dimen name="mbText">8dp</dimen>
     <dimen name="mrHeading">50dp</dimen>
     <dimen name="imageMargin">4dp</dimen>

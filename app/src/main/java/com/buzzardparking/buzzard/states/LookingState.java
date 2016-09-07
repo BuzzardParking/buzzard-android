@@ -132,6 +132,8 @@ public class LookingState extends UserState
         getContext().tvBottomSheetHeading.setText(getContext().getResources().getString(R.string.default_address));
         getContext().tvBottomSheetSubHeading.setText("Right Here, USA");
         getContext().tvBottomSheetSubheadingRight.setText("...");
+        getContext().tvBottomSheetReporter.setText(
+                "Reported by: " + spot.getReporterFirstName() + "\nReported at: " + spot.getCreatedAtTimestamp());
 
         displayAddress(spot.getLatLng());
 

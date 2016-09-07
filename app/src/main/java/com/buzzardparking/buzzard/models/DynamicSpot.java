@@ -1,5 +1,6 @@
 package com.buzzardparking.buzzard.models;
 
+import com.buzzardparking.buzzard.util.Utils;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 import com.parse.ParseException;
@@ -34,7 +35,7 @@ import java.util.Date;
 @Parcel(analyze={DynamicSpot.class})
 public class DynamicSpot implements ClusterItem {
 
-    private static final long DEFAULT_EXPIRATION_DURATION_IN_MILL = 10 * 60 * 1000;
+    private static final long DEFAULT_EXPIRATION_DURATION_IN_MILL = 15 * 60 * 1000;
     private static final long DEFAULT_NEW_SPOT_REMAINING_IN_MILL = 5 * 60 * 1000;
 
     // Parceler requires that fields must be at least package public
@@ -254,6 +255,14 @@ public class DynamicSpot implements ClusterItem {
 
     public LatLng getLatLng() {
         return this.staticSpot.getLatLng();
+    }
+
+    public String getReporterFirstName() {
+        return producer.getName().split(" ")[0];
+    }
+
+    public String getCreatedAtTimestamp() {
+        return Utils.getRelativeTimeAgo(String.valueOf(createdAt));
     }
 
     public Spot getStaticSpot() {
