@@ -85,6 +85,7 @@ public class LookingState extends UserState
         super.stop();
         getPlaceManager().clearMap();
         getPlaceManager().removeDestinationMarker();
+        handler.removeCallbacks(loadPlacesRunnable);
     }
 
     public void showDestinationDetails(Place googlePlace) {
