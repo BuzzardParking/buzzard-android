@@ -85,7 +85,7 @@ public class NavigatingState extends UserState {
 
             @Override
             public void onDragging() {
-                bottomSheet.expand();
+//                bottomSheet.expand();
             }
 
             @Override

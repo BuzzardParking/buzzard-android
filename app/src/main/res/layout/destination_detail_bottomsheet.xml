@@ -94,12 +94,20 @@
                         android:layout_below="@+id/tvBottomSheetHeading"
                         android:layout_alignParentRight="true"
                         android:gravity="right" />
-                    <fragment
-                        android:name="com.google.android.gms.maps.StreetViewPanoramaFragment"
-                        android:id="@+id/streetviewpanorama"
-                        android:layout_width="match_parent"
-                        android:layout_height="400dp"
-                        android:layout_below="@+id/tvBottomSheetSubheading"/>
+
+                    <ImageView
+                        android:id="@+id/ivStreetView"
+                        android:layout_below="@id/tvBottomSheetSubheadingRight"
+                        android:layout_width="200dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true" />
+                    <!--<fragment-->
+                        <!--android:name="com.google.android.gms.maps.StreetViewPanoramaFragment"-->
+                        <!--android:id="@+id/streetviewpanorama"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="400dp"-->
+                        <!--android:layout_below="@+id/tvBottomSheetSubheading"/>-->
 
                 </RelativeLayout>
             </android.support.v4.widget.NestedScrollView>

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Buzzard</string>
     <string name="secret_maps_api_key">AIzaSyBk013iHWhhcgJ_uMc4PaY8rpeleoqoutk</string>
+    <string name="secret_streetView_api_key">AIzaSyAni2Vr0DPzCNu6YDE4_AFP2ZVZSxBx_us</string>
     <string name="marker_title">Marker title</string>
     <string name="btn_leaving">I\'m leaving</string>
     <string name="btn_looking">park now</string>

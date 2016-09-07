@@ -1,13 +1,15 @@
 package com.buzzardparking.buzzard.states;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.buzzardparking.buzzard.R;
+import com.buzzardparking.buzzard.gateways.ImageGateway;
 import com.buzzardparking.buzzard.gateways.RouteGateway;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Route;
@@ -26,6 +28,8 @@ import java.util.ArrayList;
  * {@link LookingState}: a user is looking for a parking spot.
  */
 public class LookingState extends UserState implements ClusterManager.OnClusterItemClickListener<Spot>{
+
+    private boolean isDestinationDetails;
 
     public LookingState(Context context, PlaceManager manager, CameraManager cameraManager) {
         super(context, manager, cameraManager);
@@ -49,6 +53,8 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
     }
 
     public void showDestinationDetails(Place googlePlace) {
+        isDestinationDetails = true;
+
         getPlaceManager().removeDestinationMarker();
 
         getContext().tvBottomSheetHeading.setText(googlePlace.getName());
@@ -77,12 +83,15 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             }
         });
 
+        displayPlaceImage(googlePlace.getLatLng());
+
         Toast.makeText(getContext(), "Choose closest parking space to " + googlePlace.getName(), Toast.LENGTH_SHORT).show();
 
     }
 
     public void showParkingSpaceDetails(Spot spot) {
-        // TODO: load google map street view as part of the details
+        isDestinationDetails = true;
+
         getContext().tvBottomSheetHeading.setText("User parking space");
         getContext().tvBottomSheetSubHeading.setText("details");
         getContext().tvBottomSheetSubheadingRight.setText("...");
@@ -95,16 +104,20 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             }
         });
 
-        getContext().targetSpot = spot;
-        getContext().streetViewPanoramaFragment.getStreetViewPanoramaAsync(getContext());
-        FragmentTransaction ft = getContext().getFragmentManager().beginTransaction();
-        ft.show(getContext().streetViewPanoramaFragment);
-        ft.commit();
-     }
+        displayPlaceImage(spot.getLatLng());
+
+    }
+
+    private void displayPlaceImage(LatLng latLng) {
+        String imageUrl = ImageGateway.getPlaceImage(getContext(), latLng);
+        Glide.with(getContext())
+                .load(imageUrl)
+                .into(getContext().ivStreetView);
+        getContext().ivStreetView.setVisibility(View.VISIBLE);
+    }
 
     private void updateUI() {
-
-        getContext().prepareView();
+        initialUI();
 
         LatLng userLoc = getCameraManager().getLastLocation();
         ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
@@ -113,8 +126,6 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
         getCameraManager().moveToUserLocation();
 
-        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
-        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
 
         bottomSheet.expand();
 
@@ -147,12 +158,26 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
             public void onCollapsed() {
+                if (isDestinationDetails) {
+                    initialUI();
+                    final View myBottomSheet = getContext().findViewById(R.id.rlBottomSheet);
+
+                    myBottomSheet.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        public void onGlobalLayout() {
+                            myBottomSheet.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                            bottomSheet.expand();
+                        }
+                    });
+                }
                 bottomSheet.expand();
             }
 
             @Override
             public void onDragging() {
-                bottomSheet.expand();
+
+
+
             }
 
             @Override
@@ -161,13 +186,21 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
             @Override
             public void onHidden() {
-                bottomSheet.expand();
+
             }
 
             @Override
             public void onSettling() {
             }
         });
+    }
+
+    private void initialUI() {
+        isDestinationDetails = false;
+        getContext().prepareView();
+        getContext().rlTopPieceContainer.setVisibility(View.VISIBLE);
+        getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.btn_navigating));
+
     }
 
     private void setBackButtonListener() {

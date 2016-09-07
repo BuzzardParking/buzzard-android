@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.activities;
 
 import android.Manifest;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -65,9 +64,6 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
-import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
-import com.google.android.gms.maps.StreetViewPanorama;
-import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.parse.ParseFile;
 
@@ -78,7 +74,7 @@ import java.io.ByteArrayOutputStream;
 import cn.refactor.smileyloadingview.lib.SmileyLoadingView;
 
 public class MapActivity extends AppCompatActivity
-        implements UIStateMachine, OnStreetViewPanoramaReadyCallback {
+        implements UIStateMachine {
 
     public static final String TAG = MapActivity.class.getSimpleName();
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -112,14 +108,14 @@ public class MapActivity extends AppCompatActivity
     public FloatingActionButton fabBtnSecondary;
     public FloatingActionButton fabBack;
     public ImageView ivAddMarkerIcon;
+    public ImageView ivStreetView;
 
     public BottomSheetBehavior bottomSheetBehavior;
     private  BottomSheetManager bottomSheetManager;
-    public StreetViewPanoramaFragment streetViewPanoramaFragment;
+//    public StreetViewPanoramaFragment streetViewPanoramaFragment;
 
     // TODO: refactor these public instance variables
     public Place googlePlace;
-    public Spot targetSpot;
     // TODO: scope user with sessions
     public User user;
 
@@ -174,11 +170,11 @@ public class MapActivity extends AppCompatActivity
 
         checkDrawOverlayPermission();
 
-        streetViewPanoramaFragment = (StreetViewPanoramaFragment)getFragmentManager()
-                .findFragmentById(R.id.streetviewpanorama);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.hide(streetViewPanoramaFragment);
-        ft.commit();
+//        streetViewPanoramaFragment = (StreetViewPanoramaFragment)getFragmentManager()
+//                .findFragmentById(R.id.streetviewpanorama);
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.hide(streetViewPanoramaFragment);
+//        ft.commit();
     }
 
     public void initializeFirstState(Bundle savedInstanceState) {
@@ -190,6 +186,9 @@ public class MapActivity extends AppCompatActivity
             AppState restoredState = AppState.values()[stateInt];
 
             Spot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("spot"));
+            if (restoredState == AppState.LOOKING) {
+                restoredSpot = null;
+            }
 
             if (restoredSpot == null) {
                 goTo(restoredState);
@@ -256,6 +255,7 @@ public class MapActivity extends AppCompatActivity
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
         fabBtnSecondary = (FloatingActionButton) findViewById(R.id.fabActionSecondary);
         fabBack = (FloatingActionButton) findViewById(R.id.fabBack);
+        ivStreetView = (ImageView) findViewById(R.id.ivStreetView);
 
         bottomSheetManager = new BottomSheetManager(this, bottomSheetBehavior);
     }
@@ -435,6 +435,7 @@ public class MapActivity extends AppCompatActivity
         this.rlTopPieceContainer.setVisibility(View.VISIBLE);
         this.btnFindParking.setVisibility(View.GONE);
         this.bottomSheetManager.showFab();
+        this.ivStreetView.setVisibility(View.GONE);
     }
 
     public void hideProgressBar() {
@@ -444,11 +445,6 @@ public class MapActivity extends AppCompatActivity
     public void showProgressBar() {
         rlProgressBar.setVisibility(View.VISIBLE);
         smileyLoadingView.start();
-    }
-
-    @Override
-    public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
-        streetViewPanorama.setPosition(targetSpot.getLatLng());
     }
 
     public void captureMapScreen(final Spot spot) {
