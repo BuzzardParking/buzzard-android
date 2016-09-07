@@ -43,4 +43,9 @@
     <string name="facebook_app_id">301068803594692</string>
     <string name="btn_logout">Log Out</string>
     <string name="geofenceNotification">You\'re almost there. Please remember to mark the spot as parked!</string>
+    <string name="set_parking_duration">Please set a timer (in minutes). When your timer is about to expire, we\'ll send you a push notification.</string>
+    <string name="set_parking_duration_title">Want a timer?</string>
+    <string name="parking_duration_hint">60 min</string>
+    <string name="parking_duration_prefill">60</string>
+    <string name="no">No</string>
 </resources>

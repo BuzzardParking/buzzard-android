@@ -33,9 +33,25 @@ public class LookingState extends UserState
         appState = AppState.LOOKING;
     }
 
+    public LookingState(Context context,
+                        PlaceManager manager,
+                        CameraManager cameraManager,
+                        DynamicSpot dynamicSpot) {
+        super(context, manager, cameraManager);
+        appState = AppState.LOOKING;
+        this.dynamicSpot = dynamicSpot;
+    }
+
+
     @Override
     public void start() {
         getContext().user.setCurrentState(AppState.LOOKING);
+
+        // for back button
+        if (dynamicSpot != null) {
+            dynamicSpot.unlock();
+        }
+
         getContext().showProgressBar();
 
         if (isReady() || isReadyCache()) {
