@@ -21,9 +21,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfilePic"
-        android:text="User Name"
         android:layout_centerHorizontal="true"
+        tools:text="User Name"
         android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/tvCreatedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Buzzing since September 1, 2016"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tvUserName"/>
 
     <Switch
         android:id="@+id/swExternalNavigation"

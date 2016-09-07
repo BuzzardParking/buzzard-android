@@ -9,6 +9,7 @@ import com.parse.SaveCallback;
 import org.parceler.Parcel;
 import org.parceler.Transient;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ public class User {
     String userId;
     String name;
     boolean preferExternalNavigation;
+    Date createdAt;
+
     AppState currentState;
 
     public String getUserId() {
@@ -33,6 +36,11 @@ public class User {
     public String getName() {
         return name;
     }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
 
     @Transient
     private static User instance;
@@ -49,12 +57,14 @@ public class User {
         this.userId = userId;
         this.name = name;
         this.currentState = AppState.OVERVIEW;
+        this.createdAt = new Date();
         this.parseUser = new ParseObject("User");
     }
 
     public User(ParseObject parseUser) {
         this.userId = parseUser.getString("userId");
         this.name = parseUser.getString("name");
+        this.createdAt = parseUser.getCreatedAt();
         this.preferExternalNavigation = parseUser.getBoolean("preferExternalNavigation");
         this.currentState = AppState.values()[parseUser.getInt("currentState")];
         this.parseUser = parseUser;

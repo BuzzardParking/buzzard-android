@@ -20,12 +20,15 @@ import com.facebook.login.widget.ProfilePictureView;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private User user;
     private Switch swNavigationSetting;
     private Toolbar toolbar;
     private TextView tvUserName;
+    private TextView tvCreatedAt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         tvUserName.setText(user.getName());
+
+        tvCreatedAt = (TextView) findViewById(R.id.tvCreatedAt);
+        tvCreatedAt.setText("Buzzing since " + DateFormat.getDateInstance(DateFormat.LONG).format(user.getCreatedAt()));
 
         swNavigationSetting = (Switch) findViewById(R.id.swExternalNavigation);
         swNavigationSetting.setChecked(user.doesPreferExternalNavigation());

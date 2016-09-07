@@ -201,7 +201,6 @@ public class DynamicSpot implements ClusterItem {
         if(takenAt == null) {
             return "";
         } else {
-//            DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
             return DateFormat.getDateInstance(DateFormat.LONG).format(takenAt);
         }
     }
