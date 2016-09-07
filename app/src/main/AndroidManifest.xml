@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.buzzardparking.buzzard">
+          package="com.buzzardparking.buzzard">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:name=".BuzzardApplication"
@@ -17,47 +17,75 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="RestClient.db" />
+            android:value="RestClient.db"/>
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="1" />
+            android:value="1"/>
         <!-- Have to explicit about models to solve the instant run issue with gradle 2.0 -->
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.buzzardparking.buzzard.models.Spot, com.buzzardparking.buzzard.models.User" />
+            android:value="com.buzzardparking.buzzard.models.Spot, com.buzzardparking.buzzard.models.User"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/secret_maps_api_key" />
+            android:value="@string/secret_maps_api_key"/>
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
 
         <activity android:name=".activities.MapActivity"/>
-        <service
-            android:name=".services.OverlayService"
-            android:enabled="true"
-            android:exported="true" />
 
-        <activity android:name=".activities.HistoryActivity" />
-        <activity android:name=".activities.SettingsActivity" />
+        <activity
+            android:name=".activities.HistoryActivity"
+            android:parentActivityName="com.buzzardparking.buzzard.activities.MapActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MapActivity"/>
+        </activity>
 
-        <service android:name=".services.GeofenceTransitionsIntentService" />
+
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:parentActivityName="com.buzzardparking.buzzard.activities.MapActivity">
+            <!-- Parent activity meta-data to support API level 7+ -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MapActivity"/>
+
+        </activity>
 
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name="com.facebook.FacebookActivity"
+        <activity
+            android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+        <service
+            android:name=".services.OverlayService"
+            android:enabled="true"
+            android:exported="true"/>
+
+        <service android:name=".services.GeofenceTransitionsIntentService"/>
+        <service
+            android:name=".services.TimerService"
+            android:exported="false"/>
+
+        <receiver
+            android:name=".receivers.AlarmReceiver"
+            android:process=":remote"/>
     </application>
 
 </manifest>

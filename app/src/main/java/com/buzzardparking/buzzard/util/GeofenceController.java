@@ -106,7 +106,7 @@ public class GeofenceController implements ResultCallback<Status> {
      */
     public void onResult(Status status) {
         if (status.isSuccess()) {
-            Log.e(TAG, "success");
+            Log.v(TAG, "success");
         } else {
             Log.e(TAG, Integer.toString(status.getStatusCode()));
         }

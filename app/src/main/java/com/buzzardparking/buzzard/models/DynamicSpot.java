@@ -43,7 +43,7 @@ public class DynamicSpot implements ClusterItem {
     Date expiredAt;
     Date leftAt;
 
-    long durationInMill;
+    public long durationInMill;
     User producer;
     User consumer;
     Spot staticSpot;
@@ -172,11 +172,21 @@ public class DynamicSpot implements ClusterItem {
 
     public void setDuration(int durationInMin) {
         this.durationInMill = durationInMin * 60 * 1000;
+        saveParse();
+    }
+
+    public void unlock() {
+        this.consumer = null;
+        this.lockedAt = null;
+        saveParse();
     }
 
     public void lockedBy(User consumer) {
         this.consumer = consumer;
         this.lockedAt = new Date();
+        // have to explicitly set it to null for the back transition from PARKED to NAVIGATION
+        // TODO: figure out a better way to do this
+        this.takenAt = null;
         saveParse();
     }
 

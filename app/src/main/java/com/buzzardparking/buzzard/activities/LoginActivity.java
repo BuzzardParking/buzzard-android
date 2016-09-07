@@ -12,6 +12,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -31,7 +33,6 @@ public class LoginActivity extends FragmentActivity {
 
         smileyLoadingView = (SmileyLoadingView) findViewById(R.id.smileyLoadingView);
         loginButton = (LoginButton) findViewById(R.id.login_button);
-
         if (isLoggedIn()) {
             startMapActivity();
         } else {
@@ -39,6 +40,15 @@ public class LoginActivity extends FragmentActivity {
             loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
+                    ProfileTracker profileTracker = new ProfileTracker() {
+                        @Override
+                        protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                            this.stopTracking();
+                            Profile.setCurrentProfile(currentProfile);
+
+                        }
+                    };
+                    profileTracker.startTracking();
                     startMapActivity();
                 }
 
@@ -70,6 +80,8 @@ public class LoginActivity extends FragmentActivity {
         loginButton.setVisibility(View.GONE);
         smileyLoadingView.setVisibility(View.VISIBLE);
         smileyLoadingView.start();
+
+
 
         Profile profile = Profile.getCurrentProfile();
         Intent intent = new Intent(getApplicationContext(), MapActivity.class);

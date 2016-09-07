@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 public class NavigatingState extends UserState {
 
     private PolylineManager lineManager = new PolylineManager(getContext());
+    private boolean isFromTransition;
 
     public NavigatingState(
             Context context,
@@ -29,6 +30,7 @@ public class NavigatingState extends UserState {
         super(context, placeManager, cameraManager);
         this.dynamicSpot = DynamicSpot.loadLockedSpot(getContext().user);
         appState = AppState.NAVIGATING;
+        isFromTransition = false;
     }
 
     public NavigatingState(
@@ -39,12 +41,23 @@ public class NavigatingState extends UserState {
         super(context, placeManager, cameraManager);
         this.dynamicSpot = spot;
         appState = AppState.NAVIGATING;
+        isFromTransition = true;
     }
 
     @Override
     public void start() {
-        getContext().user.setCurrentState(AppState.NAVIGATING);
-        dynamicSpot.lockedBy(getContext().user);
+        // this should never happen, but just add this additional protection for now to avoid crash :(
+        // really hacky...
+        if (dynamicSpot == null) {
+            getContext().currentState = null;
+            getContext().goTo(AppState.OVERVIEW);
+            return;
+        }
+
+        if (isFromTransition) {
+            getContext().user.setCurrentState(AppState.NAVIGATING);
+            dynamicSpot.lockedBy(getContext().user);
+        }
 
         getContext().showProgressBar();
         if (isReady() || isReadyCache()) {
@@ -133,7 +146,7 @@ public class NavigatingState extends UserState {
         getContext().fabBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getContext().goTo(appState.LOOKING);
+                getContext().goTo(appState.LOOKING, dynamicSpot);
             }
         });
     }

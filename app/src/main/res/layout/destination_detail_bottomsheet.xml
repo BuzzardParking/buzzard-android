@@ -94,7 +94,6 @@
                         android:layout_below="@+id/tvBottomSheetHeading"
                         android:layout_alignParentRight="true"
                         android:gravity="right" />
-
                     <ImageView
                         android:id="@+id/ivStreetView"
                         android:layout_below="@id/tvBottomSheetSubheadingRight"
@@ -102,6 +101,12 @@
                         android:layout_height="150dp"
                         android:scaleType="centerCrop"
                         android:adjustViewBounds="true" />
+                    <TextView
+                        android:id="@+id/tvParkingTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/fontH1"
+                        android:layout_below="@+id/tvBottomSheetSubheading"/>
                     <!--<fragment-->
                         <!--android:name="com.google.android.gms.maps.StreetViewPanoramaFragment"-->
                         <!--android:id="@+id/streetviewpanorama"-->

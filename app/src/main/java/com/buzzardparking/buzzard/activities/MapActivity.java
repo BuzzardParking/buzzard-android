@@ -88,7 +88,7 @@ public class MapActivity extends AppCompatActivity
     public Permission permissions;
     public Client googleClient;
     // states
-    private UserState currentState;
+    public UserState currentState;
 
     private PlaceManager placeManager;
     private CameraManager cameraManager;
@@ -105,6 +105,7 @@ public class MapActivity extends AppCompatActivity
     public TextView tvBottomSheetHeading;
     public TextView tvBottomSheetSubHeading;
     public TextView tvBottomSheetSubheadingRight;
+    public TextView tvParkingTimer;
     public RelativeLayout rlTopPieceContainer;
     public Button btnFindParking;
     public FloatingActionButton fabBtnSecondary;
@@ -114,7 +115,6 @@ public class MapActivity extends AppCompatActivity
 
     public BottomSheetBehavior bottomSheetBehavior;
     private  BottomSheetManager bottomSheetManager;
-//    public StreetViewPanoramaFragment streetViewPanoramaFragment;
 
     // TODO: refactor these public instance variables
     public Place googlePlace;
@@ -236,6 +236,7 @@ public class MapActivity extends AppCompatActivity
         tvBottomSheetHeading = (TextView) findViewById(R.id.tvBottomSheetHeading);
         tvBottomSheetSubHeading = (TextView) findViewById(R.id.tvBottomSheetSubheading);
         tvBottomSheetSubheadingRight = (TextView) findViewById(R.id.tvBottomSheetSubheadingRight);
+        tvParkingTimer = (TextView) findViewById(R.id.tvParkingTimer);
         rlTopPieceContainer = (RelativeLayout) findViewById(R.id.rlTopPieceContainer);
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
         fabBtnSecondary = (FloatingActionButton) findViewById(R.id.fabActionSecondary);
@@ -313,6 +314,9 @@ public class MapActivity extends AppCompatActivity
         }
 
         switch (state) {
+            case LOOKING:
+                currentState = new LookingState(this, placeManager, cameraManager, spot);
+                break;
             case NAVIGATING:
                 currentState = new NavigatingState(this, placeManager, cameraManager, spot);
                 break;
