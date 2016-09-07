@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -120,28 +119,7 @@ public class LookingState extends UserState
         getContext().tvBottomSheetSubHeading.setText("details");
         getContext().tvBottomSheetSubheadingRight.setText("...");
 
-        ReverseGeocodingGateway geocodingGateway = new ReverseGeocodingGateway();
-
-        geocodingGateway.FetchAddressInBackground(spot.getLatLng(), new ReverseGeocodingGateway.GetAddressCallback() {
-            @Override
-            public void done(JSONObject jsonObject) throws JSONException {
-                try {
-                    JSONArray resultsArr = jsonObject.getJSONArray("results");
-                    JSONObject first = resultsArr.getJSONObject(0);
-                    JSONArray addressComponents = first.getJSONArray("address_components");
-                    String streetNum = addressComponents.getJSONObject(0).getString("long_name");
-                    String streetName = addressComponents.getJSONObject(1).getString("short_name");
-
-                    String address = streetNum + " " + streetName;
-                    getContext().tvBottomSheetHeading.setText(address);
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        displayAddress(spot.getLatLng());
 
         LatLng userLoc = getCameraManager().getLastLocation();
         RouteGateway.getRoute(userLoc, spot.getLatLng(), new RouteGateway.RouteGatewayListener() {
@@ -153,6 +131,32 @@ public class LookingState extends UserState
 
         displayPlaceImage(spot.getLatLng());
 
+    }
+
+    public void displayAddress(LatLng latLng) {
+        ReverseGeocodingGateway geocodingGateway = new ReverseGeocodingGateway();
+        geocodingGateway.FetchAddressInBackground(latLng, new ReverseGeocodingGateway.GetAddressCallback() {
+            @Override
+            public void done(JSONObject jsonObject) throws JSONException {
+                try {
+                    JSONArray resultsArr = jsonObject.getJSONArray("results");
+                    JSONObject first = resultsArr.getJSONObject(0);
+                    JSONArray addressComponents = first.getJSONArray("address_components");
+
+                    String streetNum = addressComponents.getJSONObject(0).getString("long_name");
+                    String streetName = addressComponents.getJSONObject(1).getString("short_name");
+                    String city = addressComponents.getJSONObject(3).getString("long_name");
+                    String state = addressComponents.getJSONObject(5).getString("short_name");
+
+                    getContext().tvBottomSheetHeading.setText(streetNum + " " + streetName);
+                    getContext().tvBottomSheetSubHeading.setText(city + ", " + state);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void displayPlaceImage(LatLng latLng) {
@@ -175,6 +179,12 @@ public class LookingState extends UserState
 
 
         bottomSheet.expand();
+        bottomSheet.viewRendered(new BottomSheetManager.SheetRendering() {
+            @Override
+            public void done() {
+                bottomSheet.expand();
+            }
+        });
 
         setBackButtonListener();
         bottomSheet.setFabIcon(R.drawable.ic_navigation);
@@ -209,12 +219,10 @@ public class LookingState extends UserState
             public void onCollapsed() {
                 if (isDestinationDetails) {
                     initialUI();
-                    final View myBottomSheet = getContext().findViewById(R.id.rlBottomSheet);
 
-                    myBottomSheet.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        public void onGlobalLayout() {
-                            myBottomSheet.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
+                    bottomSheet.viewRendered(new BottomSheetManager.SheetRendering() {
+                        @Override
+                        public void done() {
                             bottomSheet.expand();
                         }
                     });

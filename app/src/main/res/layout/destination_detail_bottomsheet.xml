@@ -56,25 +56,26 @@
             android:id="@+id/rlTopPieceContainer"
             android:layout_width="match_parent"
             android:layout_marginTop="24dp"
-            android:background="@android:color/white"
+            android:background="@drawable/bottom_sheet_background"
             android:layout_height="wrap_content">
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                >
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" >
                 <RelativeLayout
                     android:id="@+id/rlTopPiece"
                     android:layout_width="match_parent"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tvBottomSheetHeading"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/primary_text"
+                        android:layout_marginBottom="@dimen/mbText"
+                        android:layout_marginRight="@dimen/mrHeading"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -82,13 +83,21 @@
                     <TextView
                         android:id="@+id/tvBottomSheetSubheading"
                         android:layout_below="@+id/tvBottomSheetHeading"
+                        android:textSize="@dimen/secondary_text"
+                        android:textColor="@color/secondary_text"
                         android:layout_toLeftOf="@+id/tvBottomSheetSubheadingRight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mbText"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_alignParentLeft="true"
                         android:gravity="left"/>
                     <TextView
                         android:id="@+id/tvBottomSheetSubheadingRight"
+                        android:textSize="@dimen/secondary_text"
+                        android:textColor="@color/secondary_text"
+                        android:layout_marginBottom="@dimen/mbText"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvBottomSheetHeading"
@@ -96,9 +105,12 @@
                         android:gravity="right" />
                     <ImageView
                         android:id="@+id/ivStreetView"
+                        android:layout_marginTop="@dimen/mbText"
                         android:layout_below="@id/tvBottomSheetSubheadingRight"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
+                        android:layout_marginLeft="@dimen/imageMargin"
+                        android:layout_marginRight="@dimen/imageMargin"
                         android:scaleType="centerCrop"
                         android:adjustViewBounds="true" />
                     <TextView

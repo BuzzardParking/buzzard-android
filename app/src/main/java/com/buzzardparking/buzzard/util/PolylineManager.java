@@ -1,8 +1,9 @@
 package com.buzzardparking.buzzard.util;
 
-import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.Route;
 import com.google.android.gms.maps.GoogleMap;
@@ -76,7 +77,8 @@ public class PolylineManager {
         PolylineOptions rectOptions;
         Polyline polyline;
         rectOptions = new PolylineOptions();
-        rectOptions.color(Color.BLUE);
+        int lineColor = ContextCompat.getColor(context, R.color.nav_line_color);
+        rectOptions.color(lineColor);
         rectOptions.width(12);
 
 

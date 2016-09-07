@@ -68,6 +68,7 @@ public class ParkedState extends UserState {
         // 1. a evaluation modal to ask user to give a thumb up/down about its parking experience
 
         getContext().prepareView();
+        // show parking timer here
 
         bottomSheet.expand();
 
