@@ -45,13 +45,15 @@
     <string name="facebook_app_id">301068803594692</string>
     <string name="btn_logout">Log Out</string>
     <string name="geofenceNotification">You\'re almost there. Please remember to mark the spot as parked!</string>
-    <string name="set_parking_duration">Please set a timer (in minutes). When your timer is about to expire, we\'ll send you a push notification.</string>
-    <string name="set_parking_duration_title">Want a timer?</string>
+    <string name="set_parking_duration">Please tell us how long you intend to park here(in minutes). When your timer is about to expire, we\'ll send you a reminder.</string>
+    <string name="set_parking_duration_title">Woot, you are parked!</string>
     <string name="parking_duration_hint">60 min</string>
     <string name="parking_duration_prefill">60</string>
-    <string name="no">No</string>
+    <string name="no_set_timer">No timer please</string>
     <string name="confirm_leaving_title">Are you sure to leave?</string>
     <string name="confirm_leaving_instruction">By clicking confirm button, your current parking spot will be marked as open for others. Thanks for using buzzard and contributing to the community!</string>
     <string name="confirm_agree_leaving">Yes, I\'m leaving</string>
     <string name="confirm_cancel">Cancel</string>
+    <string name="tv_navigating_subtitle">Tap park button when you get parked successfully.</string>
+    <string name="yes_set_timer">Yes, set it up!</string>
 </resources>

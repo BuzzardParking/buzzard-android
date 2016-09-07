@@ -12,6 +12,7 @@ import com.parse.SaveCallback;
 import org.parceler.Parcel;
 import org.parceler.Transient;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -197,7 +198,12 @@ public class DynamicSpot implements ClusterItem {
     }
 
     public String getTakenAtTimestamp() {
-        return takenAt == null ? "" : takenAt.toString();
+        if(takenAt == null) {
+            return "";
+        } else {
+//            DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+            return DateFormat.getDateInstance(DateFormat.LONG).format(takenAt);
+        }
     }
 
     /**

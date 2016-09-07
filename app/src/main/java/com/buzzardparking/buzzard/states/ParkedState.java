@@ -141,7 +141,8 @@ public class ParkedState extends UserState {
                         startTimer(dynamicSpot.timeRemaining());
                     }
                 })
-                .negativeText(R.string.no)
+                .positiveText(R.string.yes_set_timer)
+                .negativeText(R.string.no_set_timer)
                 .cancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {

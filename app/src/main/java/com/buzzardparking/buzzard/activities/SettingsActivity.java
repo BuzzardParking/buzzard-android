@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.User;
@@ -46,6 +47,8 @@ public class SettingsActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(R.string.settingsToolbarTitle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
