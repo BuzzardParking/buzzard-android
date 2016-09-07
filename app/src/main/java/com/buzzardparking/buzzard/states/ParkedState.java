@@ -61,12 +61,7 @@ public class ParkedState extends UserState {
 
     public void updateUI() {
         // TODO:
-        // 1. show only your car location and your current location on the map
-        // 2. a timer hovers above the car starting counting the time
-        // 3. a button to switch to leaving state
-        // 4. a evaluation modal to ask user to give a thumb up/down about its parking experience
-        // 5. able to set up an alarm clock to remind the parking duration
-        // 6. able to fav the parking location, and revisit your parking history
+        // 1. a evaluation modal to ask user to give a thumb up/down about its parking experience
 
         getContext().prepareView();
 
@@ -86,7 +81,7 @@ public class ParkedState extends UserState {
             @Override
             public void onClick() {
                 getContext().captureMapScreen(dynamicSpot);
-                getContext().goTo(AppState.LEAVING);
+                getContext().goTo(AppState.OVERVIEW);
             }
         });
 
