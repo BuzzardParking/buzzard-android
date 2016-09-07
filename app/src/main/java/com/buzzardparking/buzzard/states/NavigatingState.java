@@ -109,12 +109,12 @@ public class NavigatingState extends UserState {
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
             public void onCollapsed() {
-
+                bottomSheet.expand();
             }
 
             @Override
             public void onDragging() {
-                bottomSheet.expand();
+//                bottomSheet.expand();
             }
 
             @Override

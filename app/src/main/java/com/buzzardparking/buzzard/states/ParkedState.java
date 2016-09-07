@@ -86,10 +86,12 @@ public class ParkedState extends UserState {
             }
         });
 
+        bottomSheet.expand();
+
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
             public void onCollapsed() {
-
+                bottomSheet.expand();
             }
 
             @Override
