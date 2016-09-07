@@ -47,7 +47,7 @@ public class SpotsArrayAdapter extends ArrayAdapter<DynamicSpot> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        String displayLocation =  String.format("Parking Location: %s, %s", spot.getLatLng().latitude, spot.getLatLng().longitude);
+        String displayLocation =  String.format("%s, %s", String.format("%.4f", spot.getLatLng().latitude), String.format("%.4f", spot.getLatLng().longitude));
         viewHolder.tvParkingSpot.setText(displayLocation);
         viewHolder.tvParkingTime.setText(spot.getTakenAtTimestamp());
 
@@ -59,6 +59,8 @@ public class SpotsArrayAdapter extends ArrayAdapter<DynamicSpot> {
                     .resize(500, 200)
                     .centerCrop()
                     .into(viewHolder.ivParkingSpot);
+        } else {
+            viewHolder.ivParkingSpot.setMaxHeight(100);
         }
 
         return convertView;

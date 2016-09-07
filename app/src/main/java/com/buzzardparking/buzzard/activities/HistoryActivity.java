@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.adapters.SpotsArrayAdapter;
@@ -63,6 +64,8 @@ public class HistoryActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(R.string.parkingHistoryToolbarTitle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
