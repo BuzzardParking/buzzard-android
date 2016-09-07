@@ -129,8 +129,8 @@ public class LookingState extends UserState
     public void showParkingSpaceDetails(DynamicSpot spot) {
         // TODO: load google map street view as part of the details
         isDestinationDetails = true;
-        getContext().tvBottomSheetHeading.setText("User parking space");
-        getContext().tvBottomSheetSubHeading.setText("details");
+        getContext().tvBottomSheetHeading.setText(getContext().getResources().getString(R.string.default_address));
+        getContext().tvBottomSheetSubHeading.setText("Right Here, USA");
         getContext().tvBottomSheetSubheadingRight.setText("...");
 
         displayAddress(spot.getLatLng());
@@ -162,9 +162,19 @@ public class LookingState extends UserState
                     String city = addressComponents.getJSONObject(3).getString("long_name");
                     String state = addressComponents.getJSONObject(5).getString("short_name");
 
-                    getContext().tvBottomSheetHeading.setText(streetNum + " " + streetName);
-                    getContext().tvBottomSheetSubHeading.setText(city + ", " + state);
+                    String address = streetNum + " " + streetName;
 
+                    if (streetName == "null") {
+                        address = getContext().getResources().getString(R.string.default_address);
+                    }
+
+                    if (city == "null") {
+                        city = getContext().getResources().getString(R.string.default_city);
+                        state = "USA";
+                    }
+
+                    getContext().tvBottomSheetHeading.setText(address);
+                    getContext().tvBottomSheetSubHeading.setText(city + ", " + state);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -174,7 +184,7 @@ public class LookingState extends UserState
     }
 
     private void displayPlaceImage(LatLng latLng) {
-        String imageUrl = ImageGateway.getPlaceImage(getContext(), latLng);
+        String imageUrl = ImageGateway.getPlaceImage(latLng);
         Glide.with(getContext())
                 .load(imageUrl)
                 .into(getContext().ivStreetView);

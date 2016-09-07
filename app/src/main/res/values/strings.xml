@@ -61,5 +61,7 @@
     <string name="parking_alert">Buzzard Parking Alert</string>
     <string name="parking_time_is_up">Your parking timer is up.</string>
     <string name="buzzard">Buzzard</string>
+    <string name="default_address">User Reported Space</string>
+    <string name="default_city">Right Here</string>
 
 </resources>
