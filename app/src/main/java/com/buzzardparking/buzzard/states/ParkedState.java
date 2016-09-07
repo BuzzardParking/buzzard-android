@@ -8,10 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.AppState;
@@ -49,6 +51,8 @@ public class ParkedState extends UserState {
 
     @Override
     public void start() {
+        getContext().user.setCurrentState(AppState.OVERVIEW);
+
         if (isFromTransition) {
             getContext().user.setCurrentState(AppState.PARKED);
             dynamicSpot.takenBy(getContext().user);
@@ -73,16 +77,15 @@ public class ParkedState extends UserState {
         getCameraManager().moveToLocation(getContext().getMap(), dynamicSpot.getLatLng());
 
         setBackButtonListener();
+        bottomSheet.setFabIcon(R.drawable.ic_leave);
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_parked));
         getContext().tvBottomSheetSubHeading.setText(getContext().getString(R.string.tv_parked_subtitle));
 
-        bottomSheet.setFabIcon(R.drawable.ic_parked);
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {
-                getContext().captureMapScreen(dynamicSpot);
-                getContext().goTo(AppState.OVERVIEW);
+                showConfirmLeavingDialog();
             }
         });
 
@@ -118,30 +121,50 @@ public class ParkedState extends UserState {
         if (!isFromTransition) {
             startTimer(dynamicSpot.timeRemaining());
         } else {
-            new MaterialDialog.Builder(getContext())
-                    .title(R.string.set_parking_duration_title)
-                    .content(R.string.set_parking_duration)
-                    .inputType(InputType.TYPE_CLASS_TEXT)
-                    .input(R.string.parking_duration_hint, R.string.parking_duration_prefill, new MaterialDialog.InputCallback() {
-                        @Override
-                        public void onInput(MaterialDialog dialog, CharSequence input) {
-                            // TODO: temporarily replay the takenBy to here so that we can reset
-                            // the takenAt to now, and start counting from now
-                            dynamicSpot.takenBy(getContext().user);
-                            dynamicSpot.setDuration(Integer.parseInt(String.valueOf(input)));
-                            startAlarmService(dynamicSpot.durationInMill);
-                            startTimer(dynamicSpot.timeRemaining());
-                        }
-                    })
-                    .negativeText(R.string.no)
-                    .cancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            Log.d("DEBUG", "cancel the button");
-                        }
-                    })
-                    .show();
+            showSetTimerDialog();
         }
+    }
+
+    private void showSetTimerDialog() {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.set_parking_duration_title)
+                .content(R.string.set_parking_duration)
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input(R.string.parking_duration_hint, R.string.parking_duration_prefill, new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        // TODO: temporarily replay the takenBy to here so that we can reset
+                        // the takenAt to now, and start counting from now
+                        dynamicSpot.takenBy(getContext().user);
+                        dynamicSpot.setDuration(Integer.parseInt(String.valueOf(input)));
+                        startAlarmService(dynamicSpot.durationInMill);
+                        startTimer(dynamicSpot.timeRemaining());
+                    }
+                })
+                .negativeText(R.string.no)
+                .cancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        Log.d("DEBUG", "cancel the button");
+                    }
+                })
+                .show();
+    }
+
+    private void showConfirmLeavingDialog() {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.confirm_leaving_title)
+                .content(R.string.confirm_leaving_instruction)
+                .positiveText(R.string.confirm_agree_leaving)
+                .negativeText(R.string.confirm_cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        getContext().captureMapScreen(dynamicSpot);
+                        getContext().goTo(AppState.OVERVIEW);
+                    }
+                })
+                .show();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
