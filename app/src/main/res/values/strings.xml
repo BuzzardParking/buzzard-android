@@ -42,4 +42,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="facebook_app_id">301068803594692</string>
     <string name="btn_logout">Log Out</string>
+    <string name="geofenceNotification">You\'re almost there. Please remember to mark the spot as parked!</string>
 </resources>
