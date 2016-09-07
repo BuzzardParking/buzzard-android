@@ -89,7 +89,7 @@ public class CameraManager implements
                 mGoogleMap != null &&
                 mPermissionResult == OnPermission.Result.GRANTED) {
 
-            int zoom = 17;
+            int zoom = 15;
             int tilt = 0;
             moveToUserLocation(mClient, mGoogleMap, zoom, tilt);
         }

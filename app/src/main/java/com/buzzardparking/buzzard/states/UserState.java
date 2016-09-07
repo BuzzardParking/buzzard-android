@@ -20,6 +20,8 @@ import com.google.android.gms.maps.GoogleMap;
  * TODO: revisit whether it's a good idea to implement the OnMap listener here
  */
 public abstract class UserState implements OnMap.Listener, OnClient.Listener,  OnPermission.Listener {
+
+    protected static final int POLLING_INTERVAL = 4000;
     private Context context;
     private PlaceManager manager;
     private CameraManager cameraManager;
