@@ -65,6 +65,7 @@ public class ParkedState extends UserState {
         // 6. able to fav the parking location, and revisit your parking history
 
         getContext().prepareView();
+        // show parking timer here
 
         bottomSheet.expand();
 

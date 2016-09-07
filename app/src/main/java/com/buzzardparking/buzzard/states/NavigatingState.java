@@ -78,6 +78,8 @@ public class NavigatingState extends UserState {
         // ...
 
         getContext().prepareView();
+        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
+        getContext().tvBottomSheetSubheadingRight.setVisibility(View.GONE);
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_optimizing_navigation));
         // Temporary marker to show the parking dynamicSpot location

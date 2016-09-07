@@ -6,7 +6,7 @@
     <string name="marker_title">Marker title</string>
     <string name="btn_leaving">I\'m leaving</string>
     <string name="btn_looking">park now</string>
-    <string name="btn_navigating">Tap navigation button to the closest spot</string>
+    <string name="btn_navigating">Tap To Navigate</string>
     <string name="btn_reset">Start Over</string>
     <string name="parse_application_id">buzzard</string>
     <string name="toolbarTitle">Buzzard</string>

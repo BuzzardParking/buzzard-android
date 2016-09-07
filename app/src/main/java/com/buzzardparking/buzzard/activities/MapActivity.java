@@ -428,6 +428,7 @@ public class MapActivity extends AppCompatActivity
         this.clearBottomSheetHeadings();
         this.rlTopPieceContainer.setVisibility(View.VISIBLE);
         this.btnFindParking.setVisibility(View.GONE);
+        this.tvParkingTimer.setVisibility(View.GONE);
         this.bottomSheetManager.showFab();
         this.ivStreetView.setVisibility(View.GONE);
     }

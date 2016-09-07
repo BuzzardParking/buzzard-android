@@ -6,6 +6,8 @@
     <color name="colorAccent">#FFC107</color>
     <color name="textIconColor">#FFFFFF</color>
     <color name="ripple">#e0e7e9</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
 
     <!--Progress Bar-->
     <color name="pbBackground">#d0ffffff</color>
