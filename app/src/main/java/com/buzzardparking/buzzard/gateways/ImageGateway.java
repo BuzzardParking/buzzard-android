@@ -8,8 +8,8 @@ import com.google.android.gms.maps.model.LatLng;
 public class ImageGateway {
     public static String getPlaceImage(MapActivity context, LatLng latLng) {
 
-        int height = 100;
-        int width = 200;
+        int height = 300;
+        int width = 400;
         String url = "https://maps.googleapis.com/maps/api/streetview?size="
                 + width + "x" + height + "&location=" +
                 latLng.latitude + "," + latLng.longitude +

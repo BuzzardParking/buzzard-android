@@ -10,11 +10,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.gateways.ImageGateway;
+import com.buzzardparking.buzzard.gateways.ReverseGeocodingGateway;
 import com.buzzardparking.buzzard.gateways.RouteGateway;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.models.Route;
-import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
@@ -22,6 +22,10 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseGeoPoint;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -99,6 +103,29 @@ public class LookingState extends UserState
         getContext().tvBottomSheetHeading.setText("User parking space");
         getContext().tvBottomSheetSubHeading.setText("details");
         getContext().tvBottomSheetSubheadingRight.setText("...");
+
+        ReverseGeocodingGateway geocodingGateway = new ReverseGeocodingGateway();
+
+        geocodingGateway.FetchAddressInBackground(spot.getLatLng(), new ReverseGeocodingGateway.GetAddressCallback() {
+            @Override
+            public void done(JSONObject jsonObject) throws JSONException {
+                try {
+                    JSONArray resultsArr = jsonObject.getJSONArray("results");
+                    JSONObject first = resultsArr.getJSONObject(0);
+                    JSONArray addressComponents = first.getJSONArray("address_components");
+                    String streetNum = addressComponents.getJSONObject(0).getString("long_name");
+                    String streetName = addressComponents.getJSONObject(1).getString("short_name");
+
+                    String address = streetNum + " " + streetName;
+                    getContext().tvBottomSheetHeading.setText(address);
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         LatLng userLoc = getCameraManager().getLastLocation();
         RouteGateway.getRoute(userLoc, spot.getLatLng(), new RouteGateway.RouteGatewayListener() {
