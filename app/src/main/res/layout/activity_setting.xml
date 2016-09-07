@@ -7,6 +7,32 @@
 
     <include layout="@layout/toolbar"/>
 
+    <com.facebook.login.widget.ProfilePictureView
+        android:id="@+id/ivProfilePic"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfilePic"
+        android:layout_centerHorizontal="true"
+        tools:text="User Name"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/tvCreatedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Buzzing since September 1, 2016"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tvUserName"/>
+
     <Switch
         android:id="@+id/swExternalNavigation"
         android:layout_width="wrap_content"
@@ -24,15 +50,4 @@
         android:onClick="logout"
         android:text="@string/btn_logout"/>
 
-    <ImageView
-        android:id="@+id/ivProfileImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/button"
-        android:layout_marginTop="65dp"
-        android:minHeight="100dp"
-        android:minWidth="100dp"
-        android:src="@drawable/ic_person_black_24dp"
-        tools:src="@drawable/ic_person_black_24dp"/>
 </RelativeLayout>

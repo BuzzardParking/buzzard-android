@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class SpotsArrayAdapter extends ArrayAdapter<DynamicSpot> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final DynamicSpot spot = getItem(position);
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.spot_item, parent, false);
@@ -47,20 +48,20 @@ public class SpotsArrayAdapter extends ArrayAdapter<DynamicSpot> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        String displayLocation =  String.format("%s, %s", String.format("%.4f", spot.getLatLng().latitude), String.format("%.4f", spot.getLatLng().longitude));
+        String displayLocation = String.format("%s, %s", String.format("%.4f", spot.getLatLng().latitude), String.format("%.4f", spot.getLatLng().longitude));
         viewHolder.tvParkingSpot.setText(displayLocation);
         viewHolder.tvParkingTime.setText(spot.getTakenAtTimestamp());
 
         if (spot.snapshot != null) {
             Picasso.with(getContext())
                     .load(spot.snapshot.getUrl())
-                    .placeholder(R.drawable.bg_loading)
+                    .placeholder(R.drawable.spot_parked_marker)
                     .transform(new RoundedCornersTransformation(2, 2))
-                    .resize(500, 200)
+                    .resize(1050, 400)
                     .centerCrop()
                     .into(viewHolder.ivParkingSpot);
         } else {
-            viewHolder.ivParkingSpot.setMaxHeight(100);
+            viewHolder.ivParkingSpot.setMinimumHeight(100);
         }
 
         return convertView;

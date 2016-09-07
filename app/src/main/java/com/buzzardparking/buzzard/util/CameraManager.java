@@ -39,6 +39,9 @@ public class CameraManager implements
     public LatLng getLastLocation() {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
 
+        if (lastLocation == null) {
+            return null;
+        }
         return new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
     }
 
@@ -89,7 +92,7 @@ public class CameraManager implements
                 mGoogleMap != null &&
                 mPermissionResult == OnPermission.Result.GRANTED) {
 
-            int zoom = 17;
+            int zoom = 15;
             int tilt = 0;
             moveToUserLocation(mClient, mGoogleMap, zoom, tilt);
         }

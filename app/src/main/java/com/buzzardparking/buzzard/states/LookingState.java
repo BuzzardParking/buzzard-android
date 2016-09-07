@@ -3,6 +3,7 @@ package com.buzzardparking.buzzard.states;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +35,22 @@ public class LookingState extends UserState
         implements ClusterManager.OnClusterItemClickListener<DynamicSpot>{
 
     private boolean isDestinationDetails;
+    private Handler handler = new Handler();
+    private Runnable loadPlacesRunnable = new Runnable() {
+        @Override
+        public void run() {
+            LatLng userLoc = getCameraManager().getLastLocation();
+            if (userLoc == null) {
+                return;
+            }
+
+            ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
+            getPlaceManager().loadNearestSpotsOnMap(userGeoPoint, getContext().getMap()); // Loads 3 closest places
+            getPlaceManager().loadPlaces(getContext().getMap());
+
+            handler.postDelayed(loadPlacesRunnable, POLLING_INTERVAL);
+        }
+    };
 
     public LookingState(Context context, PlaceManager manager, CameraManager cameraManager) {
         super(context, manager, cameraManager);
@@ -71,6 +88,7 @@ public class LookingState extends UserState
         super.stop();
         getPlaceManager().clearMap();
         getPlaceManager().removeDestinationMarker();
+        handler.removeCallbacks(loadPlacesRunnable);
     }
 
     public void showDestinationDetails(Place googlePlace) {
@@ -166,10 +184,7 @@ public class LookingState extends UserState
     private void updateUI() {
         initialUI();
 
-        LatLng userLoc = getCameraManager().getLastLocation();
-        ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
-
-        getPlaceManager().loadNearestSpotsOnMap(userGeoPoint, getContext().getMap()); // Loads 3 closest places
+        handler.post(loadPlacesRunnable);
 
         getCameraManager().moveToUserLocation();
 

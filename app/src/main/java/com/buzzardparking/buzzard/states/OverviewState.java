@@ -1,6 +1,7 @@
 package com.buzzardparking.buzzard.states;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.View;
 
 import com.buzzardparking.buzzard.R;
@@ -11,9 +12,18 @@ import com.buzzardparking.buzzard.util.PlaceManager;
 import com.google.android.gms.maps.GoogleMap;
 
 /**
- * Created by nathansass on 8/30/16.
+ * {@link OverviewState}: a user is overviewing over a range.
  */
 public class OverviewState extends UserState {
+
+    private Handler handler = new Handler();
+    private Runnable loadPlacesRunnable = new Runnable() {
+        @Override
+        public void run() {
+            getPlaceManager().loadPlaces(getContext().getMap());
+            handler.postDelayed(loadPlacesRunnable, POLLING_INTERVAL);
+        }
+    };
 
     public OverviewState(Context context, PlaceManager placeManager, CameraManager cameraManager) {
         super(context, placeManager, cameraManager);
@@ -33,10 +43,10 @@ public class OverviewState extends UserState {
         super.stop();
 
         getPlaceManager().clearMap();
+        handler.removeCallbacks(loadPlacesRunnable);
         getContext().btnFindParking.setOnClickListener(null);
         getContext().fabBack.setVisibility(View.VISIBLE);
     }
-
 
     private void updateUI() {
         ///
@@ -55,8 +65,8 @@ public class OverviewState extends UserState {
             }
         });
 
-
-        getPlaceManager().loadPlaces(getContext().getMap());
+        // start periodically polling
+        handler.post(loadPlacesRunnable);
 
         getCameraManager().moveToUserLocation(12, 0); // This must be coordinated with the callbacks at the bottom of cameraManager
 

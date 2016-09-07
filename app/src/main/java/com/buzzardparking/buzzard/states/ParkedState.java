@@ -2,12 +2,14 @@ package com.buzzardparking.buzzard.states;
 
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.buzzardparking.buzzard.R;
+import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.receivers.AlarmReceiver;
@@ -133,7 +136,7 @@ public class ParkedState extends UserState {
                 .input(R.string.parking_duration_hint, R.string.parking_duration_prefill, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        // TODO: temporarily replay the takenBy to here so that we can reset
+                        // TODO: temporarily replay the takenBy here so that we can reset
                         // the takenAt to now, and start counting from now
                         dynamicSpot.takenBy(getContext().user);
                         dynamicSpot.setDuration(Integer.parseInt(String.valueOf(input)));
@@ -162,20 +165,43 @@ public class ParkedState extends UserState {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         getContext().captureMapScreen(dynamicSpot);
+                        dynamicSpot.leaveSpot();
                         getContext().goTo(AppState.OVERVIEW);
                     }
                 })
                 .show();
     }
 
+    private Notification getNotification() {
+        Notification.Builder builder = new Notification.Builder(getContext());
+
+        Intent intent = new Intent(getContext(), MapActivity.class);
+        int requestID = (int) System.currentTimeMillis();
+        PendingIntent pIntent = PendingIntent.getActivity(
+                getContext(), requestID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        return builder
+                .setContentTitle(getContext().getString(R.string.parking_alert))
+                .setContentText(getContext().getString(R.string.parking_time_is_up))
+                .setSmallIcon(R.drawable.ic_parking)
+                .setContentIntent(pIntent)
+                .build();
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void startAlarmService(long durationInMill) {
-        Intent intent = new Intent(getContext().getApplicationContext(), AlarmReceiver.class);
+        Intent alarmIntent = new Intent(getContext().getApplicationContext(), AlarmReceiver.class);
+
+        Notification notification = getNotification();
+        alarmIntent.putExtra(AlarmReceiver.NOTIFICATION_ID, 1);
+        alarmIntent.putExtra(AlarmReceiver.NOTIFICATION, notification);
+
+
         final PendingIntent pIntent = PendingIntent.getBroadcast(getContext(), AlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarm = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        alarm.setExact(AlarmManager.RTC_WAKEUP, durationInMill, pIntent);
+        alarm.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + durationInMill, pIntent);
     }
 
     private void startTimer(long timeRemaining) {
@@ -215,11 +241,20 @@ public class ParkedState extends UserState {
         getContext().tvParkingTimer.setText("");
     }
 
+    private void cancelAlarm() {
+        Intent intent = new Intent(getContext().getApplicationContext(), AlarmReceiver.class);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(getContext(), AlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarm = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        alarm.cancel(pIntent);
+    }
+
     @Override
     public void stop() {
         super.stop();
         getPlaceManager().removeDestinationMarker();
         stopTimer();
+        cancelAlarm();
     }
 
     private void setBackButtonListener() {
