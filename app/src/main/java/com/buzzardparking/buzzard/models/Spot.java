@@ -16,7 +16,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.parceler.Parcel;
 import org.parceler.Transient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -100,16 +99,6 @@ public class Spot extends Model {
         int diffMinutes = Minutes.minutesBetween(d1, d2).getMinutes();
 
         return diffMinutes;
-    }
-
-    public static ArrayList<Spot> fromParse(Object parsePlaces) {
-        ArrayList<ParseObject> placesToConvert = (ArrayList<ParseObject>) parsePlaces;
-        ArrayList<Spot> placesArr = new ArrayList<>();
-
-        for (ParseObject place: placesToConvert) {
-            placesArr.add(new Spot(place));
-        }
-        return placesArr;
     }
 
     private DateTimeFormatter formatter() {
