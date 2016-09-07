@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.buzzardparking.buzzard.activities.MapActivity;
 import com.buzzardparking.buzzard.models.AppState;
-import com.buzzardparking.buzzard.models.Spot;
+import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.OnClient;
@@ -36,14 +36,14 @@ public abstract class UserState implements OnMap.Listener, OnClient.Listener,  O
     private OnPermission.Result permissionResult;
     //////
 
-    public Spot spot;
+    public DynamicSpot dynamicSpot;
 
     public UserState(Context context, PlaceManager manager, CameraManager cameraManager) {
         this.context = context;
         this.manager = manager;
         this.cameraManager = cameraManager;
         this.bottomSheet = new BottomSheetManager(getContext(), getContext().getBottomSheetBehavior());
-        this.spot = null;
+        this.dynamicSpot = null;
         appState = null;
         this.googleMap = null;
         this.googleApiClient = null;
@@ -113,10 +113,10 @@ public abstract class UserState implements OnMap.Listener, OnClient.Listener,  O
 
 
     /**
-     * This is used by map activity to save the state
+     * This is used by map activity to saveParse the state
      */
-    public Spot getSpot() {
-        return spot;
+    public DynamicSpot getDynamicSpot() {
+        return dynamicSpot;
     }
 
     public void stop() {

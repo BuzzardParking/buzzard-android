@@ -29,9 +29,9 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.Client;
+import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.models.Map;
 import com.buzzardparking.buzzard.models.Permission;
-import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.models.User;
 import com.buzzardparking.buzzard.services.OverlayService;
 import com.buzzardparking.buzzard.states.LeavingState;
@@ -65,7 +65,9 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -116,6 +118,8 @@ public class MapActivity extends AppCompatActivity
 
     // TODO: refactor these public instance variables
     public Place googlePlace;
+
+    public DynamicSpot targetSpot;
     // TODO: scope user with sessions
     public User user;
 
@@ -147,7 +151,8 @@ public class MapActivity extends AppCompatActivity
         permissions = new Permission();
         googleClient = new Client();
 
-        initializeFirstState(savedInstanceState);
+        // initial state fetched from the server
+        goTo(user.getCurrentState());
 
         // initialize the map system and view
         FragmentManager fm = getSupportFragmentManager();
@@ -177,26 +182,6 @@ public class MapActivity extends AppCompatActivity
 //        ft.commit();
     }
 
-    public void initializeFirstState(Bundle savedInstanceState) {
-        // TODO: retrieve from DB or backend in the future
-        if (savedInstanceState == null) {
-            goTo(AppState.OVERVIEW);
-        } else {
-            int stateInt = savedInstanceState.getInt("state");
-            AppState restoredState = AppState.values()[stateInt];
-
-            Spot restoredSpot = Parcels.unwrap(savedInstanceState.getParcelable("spot"));
-            if (restoredState == AppState.LOOKING) {
-                restoredSpot = null;
-            }
-
-            if (restoredSpot == null) {
-                goTo(restoredState);
-            } else {
-                goTo(restoredState, restoredSpot);
-            }
-        }
-    }
 
     private void setupProgressbar() {
         smileyLoadingView = (SmileyLoadingView) findViewById(R.id.smileyLoadingView);
@@ -281,8 +266,7 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putInt("state", currentState.appState.ordinal());
-        savedInstanceState.putParcelable("spot", Parcels.wrap(currentState.getSpot()));
+        savedInstanceState.putParcelable("dynamicSpot", Parcels.wrap(currentState.getDynamicSpot()));
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -307,6 +291,12 @@ public class MapActivity extends AppCompatActivity
             case LOOKING:
                 currentState = new LookingState(this, placeManager, cameraManager);
                 break;
+            case NAVIGATING:
+                currentState = new NavigatingState(this, placeManager, cameraManager);
+                break;
+            case PARKED:
+                currentState = new ParkedState(this, placeManager, cameraManager);
+                break;
             case LEAVING:
                 currentState = new LeavingState(this, placeManager, cameraManager);
                 break;
@@ -317,7 +307,7 @@ public class MapActivity extends AppCompatActivity
         currentState.start();
     }
 
-    public void goTo(AppState state, Spot spot) {
+    public void goTo(AppState state, DynamicSpot spot) {
         if (currentState != null) {
             currentState.stop();
         }
@@ -447,7 +437,9 @@ public class MapActivity extends AppCompatActivity
         smileyLoadingView.start();
     }
 
-    public void captureMapScreen(final Spot spot) {
+
+
+    public void captureMapScreen(final DynamicSpot spot) {
         SnapshotReadyCallback callback = new SnapshotReadyCallback() {
             Bitmap bitmap;
 
@@ -458,7 +450,12 @@ public class MapActivity extends AppCompatActivity
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
                     final ParseFile snapShotFile = new ParseFile(System.currentTimeMillis() + ".png", stream.toByteArray());
-                    snapShotFile.saveInBackground();
+                    snapShotFile.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            DynamicSpot.linkSnapshot(spot, snapShotFile);
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

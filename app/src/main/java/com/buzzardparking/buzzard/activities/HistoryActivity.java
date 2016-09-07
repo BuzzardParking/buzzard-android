@@ -6,7 +6,8 @@ import android.widget.ListView;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.adapters.SpotsArrayAdapter;
-import com.buzzardparking.buzzard.models.Spot;
+import com.buzzardparking.buzzard.models.DynamicSpot;
+import com.buzzardparking.buzzard.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    private ArrayList<Spot> spotsArray;
+    private ArrayList<DynamicSpot> spotsArray;
     private SpotsArrayAdapter spotsArrayAdapter;
     private ListView lvSpots;
 
@@ -34,12 +35,18 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void loadParkingHistory() {
-        ParseQuery query = new ParseQuery("Spot");
-        query.findInBackground(new FindCallback() {
+        ParseQuery query = new ParseQuery("DynamicSpot");
+        query
+                .include("staticSpot")
+                .include("producer")
+                .include("consumer")
+                .include("snapshot")
+                .whereEqualTo("consumer", User.getInstance().parseUser)
+                .findInBackground(new FindCallback() {
             @Override
             public void done(Object spots, Throwable throwable) {
                 spotsArray.clear();
-                spotsArrayAdapter.addAll(Spot.fromParse(spots));
+                spotsArrayAdapter.addAll(DynamicSpot.fromParseDynamicSpots(spots));
             }
 
             @Override

@@ -12,6 +12,7 @@ import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.gateways.ImageGateway;
 import com.buzzardparking.buzzard.gateways.RouteGateway;
 import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.models.Route;
 import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
@@ -25,9 +26,10 @@ import com.parse.ParseGeoPoint;
 import java.util.ArrayList;
 
 /**
- * {@link LookingState}: a user is looking for a parking spot.
+ * {@link LookingState}: a user is looking for a parking dynamicSpot.
  */
-public class LookingState extends UserState implements ClusterManager.OnClusterItemClickListener<Spot>{
+public class LookingState extends UserState
+        implements ClusterManager.OnClusterItemClickListener<DynamicSpot>{
 
     private boolean isDestinationDetails;
 
@@ -38,6 +40,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     @Override
     public void start() {
+        getContext().user.setCurrentState(AppState.LOOKING);
         getContext().showProgressBar();
 
         if (isReady() || isReadyCache()) {
@@ -78,8 +81,8 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
         getPlaceManager().loadNearestSpots(googlePlaceParsePoint,1, new PlaceManager.NearestSpotListener() {
 
             @Override
-            public void onReturn(ArrayList<Spot> nearestSpots) {
-                spot = nearestSpots.get(0);
+            public void onReturn(ArrayList<DynamicSpot> nearestSpots) {
+                dynamicSpot = nearestSpots.get(0);
             }
         });
 
@@ -89,9 +92,10 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     }
 
-    public void showParkingSpaceDetails(Spot spot) {
-        isDestinationDetails = true;
 
+    public void showParkingSpaceDetails(DynamicSpot spot) {
+        // TODO: load google map street view as part of the details
+        isDestinationDetails = true;
         getContext().tvBottomSheetHeading.setText("User parking space");
         getContext().tvBottomSheetSubHeading.setText("details");
         getContext().tvBottomSheetSubheadingRight.setText("...");
@@ -135,7 +139,7 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
             @Override
             public void onClick() {
 
-                if (spot != null) {
+                if (dynamicSpot != null) {
                     startNavigating();
                 } else {
                     LatLng userLoc = getCameraManager().getLastLocation();
@@ -143,9 +147,11 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
                     getPlaceManager().loadNearestSpots(userGeoPoint, 10, new PlaceManager.NearestSpotListener() {
                         @Override
-                        public void onReturn(ArrayList<Spot> nearestSpots) {
-                            spot = nearestSpots.get(0);
-                            startNavigating();
+                        public void onReturn(ArrayList<DynamicSpot> nearestSpots) {
+                            if (!nearestSpots.isEmpty()) {
+                                dynamicSpot = nearestSpots.get(0);
+                                startNavigating();
+                            }
                         }
                     });
 
@@ -214,11 +220,15 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
 
     private void startNavigating() {
         // launch in-app navigation
-        getContext().goTo(AppState.NAVIGATING, spot);
+        if (dynamicSpot != null) {
+            getContext().goTo(AppState.NAVIGATING, dynamicSpot);
+        } else {
+            getContext().goTo(AppState.NAVIGATING);
+        }
 
         if (getContext().user.doesPreferExternalNavigation()) {
             // launch external navigation as well
-            LatLng latLng = spot.getLatLng();
+            LatLng latLng = dynamicSpot.getLatLng();
             Uri gmmIntentUri = Uri.parse(String.format("google.navigation:q=%s,%s", latLng.latitude, latLng.longitude));
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
@@ -227,10 +237,10 @@ public class LookingState extends UserState implements ClusterManager.OnClusterI
     }
 
     @Override
-    public boolean onClusterItemClick(Spot spot) {
-        showParkingSpaceDetails(spot);
+    public boolean onClusterItemClick(DynamicSpot dynamicSpot) {
+        showParkingSpaceDetails(dynamicSpot);
         bottomSheet.expand();
-        this.spot = spot;
+        this.dynamicSpot = dynamicSpot;
         return true;
     }
 }

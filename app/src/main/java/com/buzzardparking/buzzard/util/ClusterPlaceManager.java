@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
+import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.models.Spot;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -25,7 +26,7 @@ import com.google.maps.android.ui.SquareTextView;
 /**
  * {@link ClusterPlaceManager}: Manages the display and rendering of place clusters on the map
  */
-public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
+public class ClusterPlaceManager extends DefaultClusterRenderer<DynamicSpot>{
     MapActivity context;
     private final IconGenerator iconGenerator;
     private IconManager iconManager;
@@ -34,7 +35,10 @@ public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
     private ShapeDrawable coloredCircleBackground;
 
 
-    public ClusterPlaceManager(MapActivity context, ClusterManager<Spot> clusterManager, IconManager iconManager) {
+    public ClusterPlaceManager(
+            MapActivity context,
+            ClusterManager<DynamicSpot> clusterManager,
+            IconManager iconManager) {
         super(context, context.getMap(), clusterManager);
         this.context = context;
         this.iconManager = iconManager;
@@ -47,8 +51,8 @@ public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
     }
 
     @Override
-    protected void onBeforeClusterItemRendered(Spot spot, MarkerOptions markerOptions) {
-        if (isNew(spot)) {
+    protected void onBeforeClusterItemRendered(DynamicSpot spot, MarkerOptions markerOptions) {
+        if (spot.isNew()) {
             markerOptions
                     .position(spot.getLatLng())
                     .icon(BitmapDescriptorFactory.fromBitmap(iconManager.getDecoratedSpotIcon()));
@@ -60,14 +64,14 @@ public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
     }
 
     @Override
-    protected void onClusterItemRendered(Spot clusterItem, Marker marker) {
+    protected void onClusterItemRendered(DynamicSpot clusterItem, Marker marker) {
         super.onClusterItemRendered(clusterItem, marker);
 //        MarkerManager.animate(context.getMap(), marker, 500);
 
     }
 
     @Override
-    protected void onBeforeClusterRendered(Cluster<Spot> cluster, MarkerOptions markerOptions) {
+    protected void onBeforeClusterRendered(Cluster<DynamicSpot> cluster, MarkerOptions markerOptions) {
 
         int clusterColor = ContextCompat.getColor(context, R.color.colorPrimary);
 
@@ -106,15 +110,6 @@ public class ClusterPlaceManager extends DefaultClusterRenderer<Spot>{
         int strokeWidth = (int)(this.density * 3.0F);
         background.setLayerInset(1, strokeWidth, strokeWidth, strokeWidth, strokeWidth);
         return background;
-    }
-
-    public boolean isNew(Spot spot) {
-        long age = spot.getAgeInMinutes();
-        if (age < 15) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public float getAlpha(Spot spot) {
