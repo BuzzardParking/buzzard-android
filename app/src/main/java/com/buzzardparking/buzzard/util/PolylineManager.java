@@ -67,8 +67,9 @@ public class PolylineManager {
 
     private void notifyUser(Route route) {
         // TODO: add nice animation here
-        String message = "You are " + route.getDuration() + " away (" + route.getDistance() + ")";
+        String message = "You are " + route.getDuration() + ".";
         context.tvBottomSheetHeading.setText(message);
+        context.tvBottomSheetSubheadingRight.setText(route.getDistance());
         context.hideProgressBar();
     }
 

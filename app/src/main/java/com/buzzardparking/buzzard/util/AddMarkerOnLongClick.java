@@ -1,9 +1,7 @@
 package com.buzzardparking.buzzard.util;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Vibrator;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.buzzardparking.buzzard.R;
@@ -60,7 +58,7 @@ public class AddMarkerOnLongClick implements OnMap.Listener {
         placeManager.addPlace(cameraManager.getMapCenter());
 
         getContext().fabBtnSecondary.setImageResource(R.drawable.ic_add);
-        getContext().fabBtnSecondary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorPrimary)));
+//        getContext().fabBtnSecondary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorPrimary)));
 
         addingMode = false;
     }
@@ -74,7 +72,7 @@ public class AddMarkerOnLongClick implements OnMap.Listener {
         }
 
 
-        getContext().fabBtnSecondary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorAccent)));
+//        getContext().fabBtnSecondary.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.colorPrimary)));
         getContext().fabBtnSecondary.setImageResource(R.drawable.ic_check);
 
         addingMode = true;

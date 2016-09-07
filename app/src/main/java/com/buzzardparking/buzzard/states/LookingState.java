@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.buzzardparking.buzzard.R;
@@ -106,9 +105,6 @@ public class LookingState extends UserState
         });
 
         displayPlaceImage(googlePlace.getLatLng());
-
-        Toast.makeText(getContext(), "Choose closest parking space to " + googlePlace.getName(), Toast.LENGTH_SHORT).show();
-
     }
 
 
