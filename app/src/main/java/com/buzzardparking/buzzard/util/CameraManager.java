@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -24,6 +25,8 @@ public class CameraManager implements
         OnClient.Listener {
 
     private final Bundle mSavedInstanceState;
+
+    private static final int CAMERA_ANIMATION_DURATION = 1000;
 
     private GoogleApiClient mClient;
     private GoogleMap mGoogleMap;
@@ -52,14 +55,16 @@ public class CameraManager implements
 
         if (lastLocation != null) {
             LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, zoom, tilt)));
+            CameraUpdate update = CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, zoom, tilt));
+            map.animateCamera(update, CAMERA_ANIMATION_DURATION, null);
         } else {
             Log.v("DEBUG", "Location null");
         }
     }
 
     public void moveToLocation(GoogleMap map, LatLng latLng) {
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, defaultZoom, defaultTilt)));
+        CameraUpdate update = CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, defaultZoom, defaultTilt));
+        map.animateCamera(update, CAMERA_ANIMATION_DURATION, null);
     }
 
     public LatLng getMapCenter() {

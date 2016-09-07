@@ -45,6 +45,7 @@ public class HistoryActivity extends AppCompatActivity {
                 .include("consumer")
                 .include("snapshot")
                 .whereEqualTo("consumer", User.getInstance().parseUser)
+                .orderByDescending("takenAt")
                 .findInBackground(new FindCallback() {
                     @Override
                     public void done(Object spots, Throwable throwable) {

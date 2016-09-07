@@ -11,6 +11,7 @@ import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.GeofenceController;
 import com.buzzardparking.buzzard.util.PlaceManager;
 import com.buzzardparking.buzzard.util.PolylineManager;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -89,7 +90,9 @@ public class NavigatingState extends UserState {
                 .include(currentLocation)
                 .include(dynamicSpot.getLatLng())
                 .build();
-        getContext().getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
+
+        CameraUpdate update = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+        getContext().getMap().animateCamera(update, 1000, null);
 
         bottomSheet.setFabIcon(R.drawable.ic_parking);
 

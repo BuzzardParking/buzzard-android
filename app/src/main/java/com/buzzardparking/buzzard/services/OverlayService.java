@@ -14,6 +14,8 @@ import android.widget.ImageView;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
+import com.buzzardparking.buzzard.models.AppState;
+import com.buzzardparking.buzzard.models.User;
 import com.buzzardparking.buzzard.util.Foreground;
 
 /**
@@ -56,7 +58,9 @@ public class OverlayService extends Service {
                 mIconImageView.setVisibility(View.GONE);
             }
             public void onBecameBackground() {
-                mIconImageView.setVisibility(View.VISIBLE);
+                if (User.getInstance().getCurrentState() == AppState.NAVIGATING) {
+                    mIconImageView.setVisibility(View.VISIBLE);
+                }
             }
         };
         Foreground.get(this).addListener(myListener);
