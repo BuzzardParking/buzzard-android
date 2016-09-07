@@ -8,7 +8,7 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:visibility="gone"
-    android:paddingTop="@dimen/centering_offset">
+    android:paddingBottom="@dimen/centering_offset">
 
     <ImageView
         android:id="@+id/ivAddMarkerIcon"

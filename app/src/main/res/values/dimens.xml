@@ -16,7 +16,7 @@
     <dimen name="imageMargin">4dp</dimen>
 
     <!-- Add marker -->
-    <dimen name="centering_offset">30dp</dimen>
+    <dimen name="centering_offset">10dp</dimen>
     <dimen name="icon_margin">8dp</dimen>
 
     <!--Dimen for progressBar-->
