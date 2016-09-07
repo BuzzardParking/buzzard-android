@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/ivParkingSpot"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/bg_no_data"
-        android:id="@+id/ivParkingSpot" />
+        android:src="@drawable/bg_no_data"/>
+
     <TextView
         android:id="@+id/tvParkingSpot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        tools:text="Parking Location"/>
+
     <TextView
         android:id="@+id/tvParkingTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        tools:text="Parking Details"/>
 </LinearLayout>

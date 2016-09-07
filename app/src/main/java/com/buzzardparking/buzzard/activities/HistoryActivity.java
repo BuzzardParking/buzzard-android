@@ -2,6 +2,7 @@ package com.buzzardparking.buzzard.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 
 import com.buzzardparking.buzzard.R;
@@ -20,12 +21,13 @@ public class HistoryActivity extends AppCompatActivity {
     private ArrayList<DynamicSpot> spotsArray;
     private SpotsArrayAdapter spotsArrayAdapter;
     private ListView lvSpots;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
+        setupToolbar();
         spotsArray = new ArrayList<>();
         spotsArrayAdapter = new SpotsArrayAdapter(this, spotsArray);
         lvSpots = (ListView) findViewById(R.id.lvParkingHistory);
@@ -43,16 +45,24 @@ public class HistoryActivity extends AppCompatActivity {
                 .include("snapshot")
                 .whereEqualTo("consumer", User.getInstance().parseUser)
                 .findInBackground(new FindCallback() {
-            @Override
-            public void done(Object spots, Throwable throwable) {
-                spotsArray.clear();
-                spotsArrayAdapter.addAll(DynamicSpot.fromParseDynamicSpots(spots));
-            }
+                    @Override
+                    public void done(Object spots, Throwable throwable) {
+                        spotsArray.clear();
+                        spotsArrayAdapter.addAll(DynamicSpot.fromParseDynamicSpots(spots));
+                    }
 
-            @Override
-            public void done(List spots, ParseException e) {
+                    @Override
+                    public void done(List spots, ParseException e) {
 
-            }
-        });
+                    }
+                });
+    }
+
+
+    private void setupToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

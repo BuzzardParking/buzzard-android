@@ -3,6 +3,7 @@ package com.buzzardparking.buzzard.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -15,11 +16,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     private User user;
     private Switch swNavigationSetting;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        setupToolbar();
         user = User.getInstance();
 
         swNavigationSetting = (Switch) findViewById(R.id.swExternalNavigation);
@@ -37,5 +40,12 @@ public class SettingsActivity extends AppCompatActivity {
         LoginManager.getInstance().logOut();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    private void setupToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
