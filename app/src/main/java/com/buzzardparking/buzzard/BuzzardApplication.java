@@ -3,6 +3,7 @@ package com.buzzardparking.buzzard;
 import android.content.Context;
 
 import com.buzzardparking.buzzard.util.Foreground;
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
 
 /**
@@ -15,6 +16,7 @@ public class BuzzardApplication extends com.activeandroid.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FacebookSdk.sdkInitialize(getApplicationContext());
         BuzzardApplication.context = this;
         Foreground.init(this);
         Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
