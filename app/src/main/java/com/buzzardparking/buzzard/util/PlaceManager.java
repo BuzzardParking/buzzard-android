@@ -67,7 +67,6 @@ public class PlaceManager implements
     public void loadPlaces(GoogleMap map) {
 //        loadFromLocal(map); // If you uncomment this, you must reinstall the app first
         loadFromParse(map);
-//        deleteFromParse();
     }
 
 //    public void loadFromLocal(GoogleMap map) {
@@ -170,24 +169,6 @@ public class PlaceManager implements
                 iter.remove();
             }
         }
-    }
-
-    public void deleteFromParse(){
-        ParseQuery query = new ParseQuery("DynamicSpot");
-        query.findInBackground(new FindCallback() {
-            @Override
-            public void done(List objects, ParseException e) {
-
-            }
-
-            @Override
-            public void done(Object places, Throwable throwable) {
-                ArrayList<ParseObject> placesToDelete = (ArrayList<ParseObject>) places;
-                for (ParseObject place: placesToDelete) {
-                    place.deleteInBackground();
-                }
-            }
-        });
     }
 
     public ClusterManager getClusterManager() {
