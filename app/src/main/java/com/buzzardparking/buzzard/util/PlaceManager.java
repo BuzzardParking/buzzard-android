@@ -15,6 +15,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -103,13 +104,15 @@ public class PlaceManager implements
                 .include("consumer")
                 .whereEqualTo("takenAt", null)
                 .whereEqualTo("lockedAt", null)
+                .whereEqualTo("expiredAt", null)
                 .whereNear("location", geoPoint)
                 .setLimit(limit)
                 .findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> objects, ParseException e) {
-                        ArrayList<DynamicSpot> spotsArray = DynamicSpot.fromParseDynamicSpots(objects);
-                        nearestSpotListener.onReturn(spotsArray);
+                        ArrayList<DynamicSpot> spots = DynamicSpot.fromParseDynamicSpots(objects);
+                        filterOutExpiredSpots(spots);
+                        nearestSpotListener.onReturn(spots);
 
                         context.hideProgressBar();
 
@@ -130,6 +133,7 @@ public class PlaceManager implements
                 .include("consumer")
                 .whereEqualTo("takenAt", null)
                 .whereEqualTo("lockedAt", null)
+                .whereEqualTo("expiredAt", null)
                 .orderByDescending("updatedAt")
                 .findInBackground(new FindCallback() {
                     @Override
@@ -137,7 +141,11 @@ public class PlaceManager implements
                         mSpots.clear();
                         mMarkerManager.removeMarkers();
 
-                        mSpots.addAll(DynamicSpot.fromParseDynamicSpots(places));
+                        List<DynamicSpot> spots = DynamicSpot.fromParseDynamicSpots(places);
+
+                        filterOutExpiredSpots(spots);
+
+                        mSpots.addAll(spots);
 
                         mMarkerManager.addAll(mSpots);
 
@@ -149,6 +157,19 @@ public class PlaceManager implements
                 Log.v("DEBUG", objects.toString());
             }
         });
+    }
+
+    private void filterOutExpiredSpots(List<DynamicSpot> spots) {
+        // TODO: do batch operation in the future
+        Iterator<DynamicSpot> iter = spots.iterator();
+
+        while (iter.hasNext()) {
+            DynamicSpot spot = iter.next();
+            if (spot.isExpired()) {
+                spot.expireSpot();
+                iter.remove();
+            }
+        }
     }
 
     public void deleteFromParse(){

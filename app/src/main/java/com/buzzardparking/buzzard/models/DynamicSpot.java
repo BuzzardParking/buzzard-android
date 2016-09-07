@@ -219,8 +219,16 @@ public class DynamicSpot implements ClusterItem {
         return newSpot;
     }
 
+    public boolean isExpired() {
+        long currentTime = (new Date()).getTime();
+        return !isLocked()
+                && !isTaken()
+                && currentTime - createdAt.getTime() > DEFAULT_EXPIRATION_DURATION_IN_MILL;
+    }
+
     public void expireSpot() {
         this.expiredAt = new Date();
+        saveParse();
     }
 
     public long timeRemaining() {
@@ -254,6 +262,10 @@ public class DynamicSpot implements ClusterItem {
 
     private boolean isTaken() {
         return takenAt != null;
+    }
+
+    private boolean isLocked() {
+        return lockedAt != null;
     }
 
     @Override
