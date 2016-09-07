@@ -17,9 +17,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent i = new Intent(context, TimerService.class);
-        i.putExtra("remainingMill", "bar");
-        Log.d("DEBUG", "come to alarm receiver");
-        //TODO: show user notification
         context.startService(i);
     }
 }

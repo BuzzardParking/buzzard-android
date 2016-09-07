@@ -64,7 +64,6 @@ public class ParkedState extends UserState {
         // 1. a evaluation modal to ask user to give a thumb up/down about its parking experience
 
         getContext().prepareView();
-        // show parking timer here
 
         // Temporary marker to show the car location
         getPlaceManager().addCarParkedMarker(getContext().getMap(), dynamicSpot.getLatLng());
@@ -215,11 +214,20 @@ public class ParkedState extends UserState {
         getContext().tvParkingTimer.setText("");
     }
 
+    private void cancelAlarm() {
+        Intent intent = new Intent(getContext().getApplicationContext(), AlarmReceiver.class);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(getContext(), AlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarm = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        alarm.cancel(pIntent);
+    }
+
     @Override
     public void stop() {
         super.stop();
         getPlaceManager().removeDestinationMarker();
         stopTimer();
+        cancelAlarm();
     }
 
     private void setBackButtonListener() {
