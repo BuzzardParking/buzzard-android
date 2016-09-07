@@ -40,7 +40,7 @@ import com.buzzardparking.buzzard.states.OverviewState;
 import com.buzzardparking.buzzard.states.ParkedState;
 import com.buzzardparking.buzzard.states.UserState;
 import com.buzzardparking.buzzard.util.AddLocationLayer;
-import com.buzzardparking.buzzard.util.AddMarkerOnLongClick;
+import com.buzzardparking.buzzard.util.AddMarkerManager;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.IconManager;
@@ -109,7 +109,7 @@ public class MapActivity extends AppCompatActivity
     public Button btnFindParking;
     public FloatingActionButton fabBtnSecondary;
     public FloatingActionButton fabBack;
-    public ImageView ivAddMarkerIcon;
+    public RelativeLayout rlAddMarker;
     public ImageView ivStreetView;
 
     public BottomSheetBehavior bottomSheetBehavior;
@@ -140,7 +140,7 @@ public class MapActivity extends AppCompatActivity
 
         AddLocationLayer layer = new AddLocationLayer();
         cameraManager = new CameraManager(savedInstanceState);
-        AddMarkerOnLongClick click = new AddMarkerOnLongClick(this, placeManager, cameraManager);
+        AddMarkerManager click = new AddMarkerManager(this, placeManager, cameraManager);
         TrackLocation track = new TrackLocation(getLocationRequest(), new LogLocation());
 
         new OnActivity.Builder(this, track).build();
@@ -227,7 +227,7 @@ public class MapActivity extends AppCompatActivity
     }
 
     private void setUpAddMarkerLayer() {
-        ivAddMarkerIcon = (ImageView) findViewById(R.id.ivAddMarkerIcon);
+        rlAddMarker = (RelativeLayout) findViewById(R.id.rlAddMarker);
     }
 
     private void setupBottomSheet() {
