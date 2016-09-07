@@ -59,4 +59,7 @@
     <string name="settingsToolbarTitle">Settings</string>
 
     <string name="yes_set_timer">Yes, set it up!</string>
+    <string name="parkingHistoryToolbarTitle">Parking History</string>
+    <string name="settingsToolbarTitle">Settings</string>
+
 </resources>
