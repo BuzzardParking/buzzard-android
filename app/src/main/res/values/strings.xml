@@ -59,5 +59,7 @@
     <string name="yes_set_timer">Yes, set it up!</string>
     <string name="parkingHistoryToolbarTitle">Parking History</string>
     <string name="settingsToolbarTitle">Settings</string>
+    <string name="parking_alert">Buzzard Parking Alert</string>
+    <string name="parking_time_is_up">Your parking timer is up.</string>
 
 </resources>
