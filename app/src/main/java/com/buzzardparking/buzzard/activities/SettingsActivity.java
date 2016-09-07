@@ -11,13 +11,21 @@ import android.widget.TextView;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.User;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.facebook.login.widget.ProfilePictureView;
+
+import org.json.JSONObject;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private User user;
     private Switch swNavigationSetting;
     private Toolbar toolbar;
+    private TextView tvUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +33,9 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         setupToolbar();
         user = User.getInstance();
+
+        tvUserName = (TextView) findViewById(R.id.tvUserName);
+        tvUserName.setText(user.getName());
 
         swNavigationSetting = (Switch) findViewById(R.id.swExternalNavigation);
         swNavigationSetting.setChecked(user.doesPreferExternalNavigation());
@@ -35,6 +46,25 @@ public class SettingsActivity extends AppCompatActivity {
                 user.saveParse(null);
             }
         });
+
+        setProfilePic();
+    }
+
+    public void setProfilePic() {
+        final ProfilePictureView profilePic = (ProfilePictureView)findViewById(R.id.ivProfilePic);
+        if(user.getUserId() == null) {
+            GraphRequestAsyncTask request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                @Override
+                public void onCompleted(JSONObject user, GraphResponse response) {
+                    if (user != null) {
+                        profilePic.setProfileId(user.optString("id"));
+                    }
+                }
+            }).executeAsync();
+        } else {
+            profilePic.setProfileId(user.getUserId());
+        }
+
     }
 
     public void logout(View view) {

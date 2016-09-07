@@ -22,6 +22,18 @@ public class User {
     boolean preferExternalNavigation;
     AppState currentState;
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public boolean isPreferExternalNavigation() {
+        return preferExternalNavigation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Transient
     private static User instance;
 
