@@ -55,5 +55,8 @@
     <string name="confirm_agree_leaving">Yes, I\'m leaving</string>
     <string name="confirm_cancel">Cancel</string>
     <string name="tv_navigating_subtitle">Tap park button when you get parked successfully.</string>
+    <string name="parkingHistoryToolbarTitle">Parking History</string>
+    <string name="settingsToolbarTitle">Settings</string>
+
     <string name="yes_set_timer">Yes, set it up!</string>
 </resources>
