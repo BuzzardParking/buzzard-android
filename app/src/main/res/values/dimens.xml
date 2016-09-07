@@ -12,5 +12,6 @@
     <dimen name="pbRadius">6dp</dimen>
     <dimen name="pbSize">55dp</dimen>
     <dimen name="pbStroke">4dp</dimen>
+    <dimen name="fontH1">24sp</dimen>
 </resources>
 
