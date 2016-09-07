@@ -23,10 +23,6 @@ import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 /**
  * {@link ParkedState}: a user's car is parked at a parking dynamicSpot.
  */
@@ -141,7 +137,8 @@ public class ParkedState extends UserState {
                         startTimer(dynamicSpot.timeRemaining());
                     }
                 })
-                .negativeText(R.string.no)
+                .positiveText(R.string.yes_set_timer)
+                .negativeText(R.string.no_set_timer)
                 .cancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
