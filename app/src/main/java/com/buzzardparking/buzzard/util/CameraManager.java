@@ -29,7 +29,7 @@ public class CameraManager implements
     private GoogleMap mGoogleMap;
     private OnPermission.Result mPermissionResult;
     private int defaultZoom = 17;
-    private int defaultTilt = 90;
+    private int defaultTilt = 0;
 
     public CameraManager(@Nullable Bundle savedInstanceState) {
         mSavedInstanceState = savedInstanceState;

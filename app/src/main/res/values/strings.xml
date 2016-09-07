@@ -50,4 +50,8 @@
     <string name="parking_duration_hint">60 min</string>
     <string name="parking_duration_prefill">60</string>
     <string name="no">No</string>
+    <string name="confirm_leaving_title">Are you sure to leave?</string>
+    <string name="confirm_leaving_instruction">By clicking confirm button, your current parking spot will be marked as open for others. Thanks for using buzzard and contributing to the community!</string>
+    <string name="confirm_agree_leaving">Yes, I\'m leaving</string>
+    <string name="confirm_cancel">Cancel</string>
 </resources>
