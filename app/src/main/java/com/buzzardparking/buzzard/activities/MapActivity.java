@@ -34,7 +34,6 @@ import com.buzzardparking.buzzard.models.Map;
 import com.buzzardparking.buzzard.models.Permission;
 import com.buzzardparking.buzzard.models.User;
 import com.buzzardparking.buzzard.services.OverlayService;
-import com.buzzardparking.buzzard.states.LeavingState;
 import com.buzzardparking.buzzard.states.LookingState;
 import com.buzzardparking.buzzard.states.NavigatingState;
 import com.buzzardparking.buzzard.states.OverviewState;
@@ -297,9 +296,6 @@ public class MapActivity extends AppCompatActivity
                 break;
             case PARKED:
                 currentState = new ParkedState(this, placeManager, cameraManager);
-                break;
-            case LEAVING:
-                currentState = new LeavingState(this, placeManager, cameraManager);
                 break;
             default:
                 break;

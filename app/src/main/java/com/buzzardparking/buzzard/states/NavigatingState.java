@@ -69,14 +69,6 @@ public class NavigatingState extends UserState {
 
     public void updateUI() {
 
-        // TODO:
-        // 1. hide other unrelated parking spaces during navigation
-        // 2. draw poly line of navigation path from current location to the destination parking dynamicSpot
-        // 3. stop button to stop navigating, and back to looking state
-        // 4. button to go to the parked state
-        // 5. Show the parking space as well as the destination
-        // ...
-
         getContext().prepareView();
         getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
         getContext().tvBottomSheetSubheadingRight.setVisibility(View.GONE);

@@ -16,7 +16,7 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="tv_parked">Woot! You are parked!</string>
-    <string name="tv_parked_subtitle">You can navigate to your parking spot anytime by tapping the navigation button. Please kindly mark your spot as empty when you leave.</string>
+    <string name="tv_parked_subtitle">Please kindly mark your spot as empty when you leave by tapping the leave button.</string>
     <string name="tv_optimizing_navigation">Optimizing your route...</string>
     <string name="setting_navigation">Use External Navigation</string>
     <string name="tap_to_park">Tap to find closest parking spaces</string>

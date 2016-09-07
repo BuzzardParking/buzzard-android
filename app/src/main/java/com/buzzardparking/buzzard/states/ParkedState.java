@@ -21,6 +21,10 @@ import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * {@link ParkedState}: a user's car is parked at a parking dynamicSpot.
  */
@@ -57,12 +61,7 @@ public class ParkedState extends UserState {
 
     public void updateUI() {
         // TODO:
-        // 1. show only your car location and your current location on the map
-        // 2. a timer hovers above the car starting counting the time
-        // 3. a button to switch to leaving state
-        // 4. a evaluation modal to ask user to give a thumb up/down about its parking experience
-        // 5. able to set up an alarm clock to remind the parking duration
-        // 6. able to fav the parking location, and revisit your parking history
+        // 1. a evaluation modal to ask user to give a thumb up/down about its parking experience
 
         getContext().prepareView();
         // show parking timer here
@@ -83,7 +82,7 @@ public class ParkedState extends UserState {
             @Override
             public void onClick() {
                 getContext().captureMapScreen(dynamicSpot);
-                getContext().goTo(AppState.LEAVING);
+                getContext().goTo(AppState.OVERVIEW);
             }
         });
 
@@ -126,6 +125,9 @@ public class ParkedState extends UserState {
                     .input(R.string.parking_duration_hint, R.string.parking_duration_prefill, new MaterialDialog.InputCallback() {
                         @Override
                         public void onInput(MaterialDialog dialog, CharSequence input) {
+                            // TODO: temporarily replay the takenBy to here so that we can reset
+                            // the takenAt to now, and start counting from now
+                            dynamicSpot.takenBy(getContext().user);
                             dynamicSpot.setDuration(Integer.parseInt(String.valueOf(input)));
                             startAlarmService(dynamicSpot.durationInMill);
                             startTimer(dynamicSpot.timeRemaining());
@@ -160,13 +162,25 @@ public class ParkedState extends UserState {
         timer = new CountDownTimer(timeRemaining, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                getContext().tvParkingTimer.setText("seconds remaining: " + millisUntilFinished / 1000);
+                getContext().tvParkingTimer.setText(formatTime(millisUntilFinished));
             }
 
             public void onFinish() {
-                getContext().tvParkingTimer.setText("done!");
+                getContext().tvParkingTimer.setText("Time is up!");
             }
         }.start();
+    }
+
+    private String formatTime(long millis) {
+        int seconds = (int) ((millis / 1000) % 60);
+        int minutes = (int) ((millis / 1000) / 60 % 60);
+        int hours = (int) ((millis / 1000) / 60 / 60);
+
+        if (hours > 0) {
+            return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        } else {
+            return String.format("%02d:%02d", minutes, seconds);
+        }
     }
 
     private void stopTimer() {
