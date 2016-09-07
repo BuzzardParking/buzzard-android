@@ -56,14 +56,13 @@
             android:id="@+id/rlTopPieceContainer"
             android:layout_width="match_parent"
             android:layout_marginTop="24dp"
-            android:background="@android:color/white"
+            android:background="@drawable/bottom_sheet_background"
             android:layout_height="wrap_content">
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                >
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" >
                 <RelativeLayout
                     android:id="@+id/rlTopPiece"
                     android:layout_width="match_parent"
@@ -111,7 +110,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginLeft="@dimen/imageMargin"
-                        android:layout_marginBottom="@dimen/imageMargin"
                         android:layout_marginRight="@dimen/imageMargin"
                         android:scaleType="centerCrop"
                         android:adjustViewBounds="true" />

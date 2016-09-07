@@ -3,6 +3,7 @@ package com.buzzardparking.buzzard.util;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.activities.MapActivity;
@@ -20,6 +21,7 @@ public class BottomSheetManager {
     private BottomSheetBehavior bottomSheetBehavior;
     private MapActivity context;
     private BottomSheetListeners bottomSheetListeners;
+    private SheetRendering sheetRendering;
     private FabListener fabListener;
     private FloatingActionButton fabBtn;
 
@@ -35,6 +37,10 @@ public class BottomSheetManager {
         void onSettling();
     }
 
+    public interface SheetRendering {
+        void done();
+    }
+
     public void setBottomSheetStateListeners(BottomSheetListeners listener) {
         this.bottomSheetListeners = listener;
     }
@@ -47,8 +53,21 @@ public class BottomSheetManager {
         this.bottomSheetBehavior = bottomSheet;
         this.context = context;
         this.bottomSheetListeners = null;
+        this.sheetRendering = null;
         this.fabListener = null;
         initListeners();
+    }
+
+    public void viewRendered(final SheetRendering listener) {
+        final View myBottomSheet = context.findViewById(R.id.rlBottomSheet);
+        myBottomSheet.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                myBottomSheet.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                listener.done();
+            }
+        });
+
     }
 
     public void collapse() {

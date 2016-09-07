@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -120,8 +119,23 @@ public class LookingState extends UserState
         getContext().tvBottomSheetSubHeading.setText("details");
         getContext().tvBottomSheetSubheadingRight.setText("...");
 
+        displayAddress(spot.getLatLng());
+
+        LatLng userLoc = getCameraManager().getLastLocation();
+        RouteGateway.getRoute(userLoc, spot.getLatLng(), new RouteGateway.RouteGatewayListener() {
+            @Override
+            public void onReturn(Route returnedRoute) {
+                getContext().tvBottomSheetSubheadingRight.setText(returnedRoute.getDuration());
+            }
+        });
+
+        displayPlaceImage(spot.getLatLng());
+
+    }
+
+    public void displayAddress(LatLng latLng) {
         ReverseGeocodingGateway geocodingGateway = new ReverseGeocodingGateway();
-        geocodingGateway.FetchAddressInBackground(spot.getLatLng(), new ReverseGeocodingGateway.GetAddressCallback() {
+        geocodingGateway.FetchAddressInBackground(latLng, new ReverseGeocodingGateway.GetAddressCallback() {
             @Override
             public void done(JSONObject jsonObject) throws JSONException {
                 try {
@@ -143,17 +157,6 @@ public class LookingState extends UserState
                 }
             }
         });
-
-        LatLng userLoc = getCameraManager().getLastLocation();
-        RouteGateway.getRoute(userLoc, spot.getLatLng(), new RouteGateway.RouteGatewayListener() {
-            @Override
-            public void onReturn(Route returnedRoute) {
-                getContext().tvBottomSheetSubheadingRight.setText(returnedRoute.getDuration());
-            }
-        });
-
-        displayPlaceImage(spot.getLatLng());
-
     }
 
     private void displayPlaceImage(LatLng latLng) {
@@ -176,6 +179,12 @@ public class LookingState extends UserState
 
 
         bottomSheet.expand();
+        bottomSheet.viewRendered(new BottomSheetManager.SheetRendering() {
+            @Override
+            public void done() {
+                bottomSheet.expand();
+            }
+        });
 
         setBackButtonListener();
         bottomSheet.setFabIcon(R.drawable.ic_navigation);
@@ -210,12 +219,10 @@ public class LookingState extends UserState
             public void onCollapsed() {
                 if (isDestinationDetails) {
                     initialUI();
-                    final View myBottomSheet = getContext().findViewById(R.id.rlBottomSheet);
 
-                    myBottomSheet.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        public void onGlobalLayout() {
-                            myBottomSheet.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
+                    bottomSheet.viewRendered(new BottomSheetManager.SheetRendering() {
+                        @Override
+                        public void done() {
                             bottomSheet.expand();
                         }
                     });

@@ -47,6 +47,15 @@ public class OverviewState extends UserState {
         ///
 
         bottomSheet.expand();
+
+        bottomSheet.viewRendered(new BottomSheetManager.SheetRendering() {
+            @Override
+            public void done() {
+                bottomSheet.expand();
+            }
+        });
+
+
         getPlaceManager().loadPlaces(getContext().getMap());
 
         getCameraManager().moveToUserLocation(12, 0); // This must be coordinated with the callbacks at the bottom of cameraManager
