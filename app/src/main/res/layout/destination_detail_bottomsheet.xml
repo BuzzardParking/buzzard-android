@@ -111,6 +111,7 @@
                         android:layout_height="150dp"
                         android:layout_marginLeft="@dimen/imageMargin"
                         android:layout_marginRight="@dimen/imageMargin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:scaleType="centerCrop"
                         android:adjustViewBounds="true" />
                     <TextView

@@ -70,8 +70,8 @@ public class NavigatingState extends UserState {
     public void updateUI() {
 
         getContext().prepareView();
-        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
-        getContext().tvBottomSheetSubheadingRight.setVisibility(View.GONE);
+//        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
+//        getContext().tvBottomSheetSubheadingRight.setVisibility(View.GONE);
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_optimizing_navigation));
         // Temporary marker to show the parking dynamicSpot location
@@ -91,8 +91,16 @@ public class NavigatingState extends UserState {
                 .build();
         getContext().getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
 
-        bottomSheet.expand();
         bottomSheet.setFabIcon(R.drawable.ic_parking);
+
+        bottomSheet.expand();
+        bottomSheet.viewRendered(new BottomSheetManager.SheetRendering() {
+            @Override
+            public void done() {
+                bottomSheet.expand();
+            }
+        });
+
         bottomSheet.setFabListener(new BottomSheetManager.FabListener() {
             @Override
             public void onClick() {

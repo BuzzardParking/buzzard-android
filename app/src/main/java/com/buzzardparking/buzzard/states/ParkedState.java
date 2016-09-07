@@ -23,10 +23,6 @@ import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 /**
  * {@link ParkedState}: a user's car is parked at a parking dynamicSpot.
  */
@@ -70,8 +66,6 @@ public class ParkedState extends UserState {
         getContext().prepareView();
         // show parking timer here
 
-        bottomSheet.expand();
-
         // Temporary marker to show the car location
         getPlaceManager().addCarParkedMarker(getContext().getMap(), dynamicSpot.getLatLng());
         getCameraManager().moveToLocation(getContext().getMap(), dynamicSpot.getLatLng());
@@ -90,6 +84,12 @@ public class ParkedState extends UserState {
         });
 
         bottomSheet.expand();
+        bottomSheet.viewRendered(new BottomSheetManager.SheetRendering() {
+            @Override
+            public void done() {
+                bottomSheet.expand();
+            }
+        });
 
         bottomSheet.setBottomSheetStateListeners(new BottomSheetManager.BottomSheetListeners() {
             @Override
