@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlAddMarker"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:visibility="gone"
+    android:paddingTop="@dimen/centering_offset">
+
+    <ImageView
+        android:id="@+id/ivAddMarkerIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/spot_add_modal"/>
+
+    <ImageView
+        android:id="@+id/ivCancelAddMarker"
+        android:layout_marginLeft="@dimen/icon_margin"
+        android:layout_marginTop="@dimen/icon_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cancel"/>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabPositiveAddMarker"
+        android:src="@drawable/ic_check"
+        android:layout_alignBottom="@id/ivAddMarkerIcon"
+        android:layout_alignRight="@id/ivAddMarkerIcon"
+        android:layout_marginRight="@dimen/icon_margin"
+        android:layout_marginBottom="@dimen/icon_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="mini" />
+</RelativeLayout>

@@ -6,12 +6,12 @@
 <path
     android:pathData="M19.536,3.633L21.871,5.329A1,1 85.514,0 1,22.092 6.726L11.512,21.288A1,1 74.828,0 1,10.115 21.509L7.781,19.813A1,1 77.612,0 1,7.559 18.416L18.14,3.854A1,1 62.548,0 1,19.536 3.633z"
     android:strokeColor="#00000000"
-    android:fillColor="@color/colorPrimary"
+    android:fillColor="@color/textIconColor"
     android:strokeWidth="1"/>
 <path
     android:pathData="M13.098,18.957L11.322,21.23A1,1 106.174,0 1,9.918 21.403L2.833,15.868A1,1 73.632,0 1,2.661 14.464L4.437,12.19A1,1 63.435,0 1,5.841 12.018L12.926,17.553A1,1 106.174,0 1,13.098 18.957z"
     android:strokeColor="#00000000"
-    android:fillColor="@color/colorPrimary"
+    android:fillColor="@color/textIconColor"
     android:strokeWidth="1"/>
 </vector>
 

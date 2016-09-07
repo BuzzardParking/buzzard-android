@@ -67,6 +67,7 @@ public class ParkedState extends UserState {
         // 1. a evaluation modal to ask user to give a thumb up/down about its parking experience
 
         getContext().prepareView();
+        getContext().tvParkingTimer.setVisibility(View.VISIBLE);
 
         // Temporary marker to show the car location
         getPlaceManager().addCarParkedMarker(getContext().getMap(), dynamicSpot.getLatLng());

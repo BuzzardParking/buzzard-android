@@ -106,7 +106,7 @@
                     <ImageView
                         android:id="@+id/ivStreetView"
                         android:layout_marginTop="@dimen/mbText"
-                        android:layout_below="@id/tvBottomSheetSubheadingRight"
+                        android:layout_below="@id/tvBottomSheetSubheading"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginLeft="@dimen/imageMargin"
@@ -118,6 +118,7 @@
                         android:id="@+id/tvParkingTimer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:textSize="@dimen/fontH1"
                         android:layout_below="@+id/tvBottomSheetSubheading"/>
                     <!--<fragment-->

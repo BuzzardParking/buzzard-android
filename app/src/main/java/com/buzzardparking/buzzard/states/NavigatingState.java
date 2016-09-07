@@ -70,8 +70,6 @@ public class NavigatingState extends UserState {
     public void updateUI() {
 
         getContext().prepareView();
-//        getContext().tvBottomSheetSubHeading.setVisibility(View.GONE);
-//        getContext().tvBottomSheetSubheadingRight.setVisibility(View.GONE);
 
         getContext().tvBottomSheetHeading.setText(getContext().getString(R.string.tv_optimizing_navigation));
         getContext().tvBottomSheetSubHeading.setText(getContext().getString(R.string.tv_navigating_subtitle));
