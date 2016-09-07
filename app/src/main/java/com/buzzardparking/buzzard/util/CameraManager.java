@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -52,7 +53,8 @@ public class CameraManager implements
 
         if (lastLocation != null) {
             LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, zoom, tilt)));
+            CameraUpdate update = CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, zoom, tilt));
+            map.animateCamera(update, 1000, null);
         } else {
             Log.v("DEBUG", "Location null");
         }

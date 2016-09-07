@@ -205,10 +205,17 @@ public class ParkedState extends UserState {
     }
 
     private void startTimer(long timeRemaining) {
-        // hacky check: duration is not set or too little time left
-        if (timeRemaining == Long.MAX_VALUE || timeRemaining <= 1000) {
+        // hacky check: duration is not set  if it's Long.MAX_VALUE
+        if (timeRemaining == Long.MAX_VALUE) {
             return;
         }
+
+        // heuristic check: if the time remaining is less than 1 second, we should set the label to "time up"
+        if (timeRemaining <= 1000) {
+            getContext().tvParkingTimer.setText(getContext().getString(R.string.parking_time_is_up));
+            return;
+        }
+
         timer = new CountDownTimer(timeRemaining, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -216,7 +223,7 @@ public class ParkedState extends UserState {
             }
 
             public void onFinish() {
-                getContext().tvParkingTimer.setText("Time is up!");
+                getContext().tvParkingTimer.setText(getContext().getString(R.string.parking_time_is_up));
             }
         }.start();
     }
