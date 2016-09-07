@@ -39,6 +39,9 @@ public class CameraManager implements
     public LatLng getLastLocation() {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mClient);
 
+        if (lastLocation == null) {
+            return null;
+        }
         return new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
     }
 

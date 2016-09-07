@@ -41,6 +41,10 @@ public class LookingState extends UserState
         @Override
         public void run() {
             LatLng userLoc = getCameraManager().getLastLocation();
+            if (userLoc == null) {
+                return;
+            }
+
             ParseGeoPoint userGeoPoint = new ParseGeoPoint(userLoc.latitude, userLoc.longitude);
             getPlaceManager().loadNearestSpotsOnMap(userGeoPoint, getContext().getMap()); // Loads 3 closest places
             getPlaceManager().loadPlaces(getContext().getMap());
