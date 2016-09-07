@@ -26,6 +26,8 @@ public class CameraManager implements
 
     private final Bundle mSavedInstanceState;
 
+    private static final int CAMERA_ANIMATION_DURATION = 1000;
+
     private GoogleApiClient mClient;
     private GoogleMap mGoogleMap;
     private OnPermission.Result mPermissionResult;
@@ -54,14 +56,15 @@ public class CameraManager implements
         if (lastLocation != null) {
             LatLng latLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
             CameraUpdate update = CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, zoom, tilt));
-            map.animateCamera(update, 1000, null);
+            map.animateCamera(update, CAMERA_ANIMATION_DURATION, null);
         } else {
             Log.v("DEBUG", "Location null");
         }
     }
 
     public void moveToLocation(GoogleMap map, LatLng latLng) {
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, defaultZoom, defaultTilt)));
+        CameraUpdate update = CameraUpdateFactory.newCameraPosition(getCameraPosition(latLng, defaultZoom, defaultTilt));
+        map.animateCamera(update, CAMERA_ANIMATION_DURATION, null);
     }
 
     public LatLng getMapCenter() {

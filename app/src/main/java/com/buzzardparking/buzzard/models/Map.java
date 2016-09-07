@@ -14,6 +14,8 @@ public class Map implements OnMap.Listener {
     @Override
     public void onMap(GoogleMap map) {
         this.googleMap = map;
+        // set a heuristic padding to accommodate bottom sheet
+        googleMap.setPadding(0, 30, 0, 150);
     }
 
     public Boolean isLoaded() {
