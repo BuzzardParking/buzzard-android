@@ -121,7 +121,6 @@ public class LookingState extends UserState
         getContext().tvBottomSheetSubheadingRight.setText("...");
 
         ReverseGeocodingGateway geocodingGateway = new ReverseGeocodingGateway();
-
         geocodingGateway.FetchAddressInBackground(spot.getLatLng(), new ReverseGeocodingGateway.GetAddressCallback() {
             @Override
             public void done(JSONObject jsonObject) throws JSONException {
@@ -129,12 +128,14 @@ public class LookingState extends UserState
                     JSONArray resultsArr = jsonObject.getJSONArray("results");
                     JSONObject first = resultsArr.getJSONObject(0);
                     JSONArray addressComponents = first.getJSONArray("address_components");
+
                     String streetNum = addressComponents.getJSONObject(0).getString("long_name");
                     String streetName = addressComponents.getJSONObject(1).getString("short_name");
+                    String city = addressComponents.getJSONObject(3).getString("long_name");
+                    String state = addressComponents.getJSONObject(5).getString("short_name");
 
-                    String address = streetNum + " " + streetName;
-                    getContext().tvBottomSheetHeading.setText(address);
-
+                    getContext().tvBottomSheetHeading.setText(streetNum + " " + streetName);
+                    getContext().tvBottomSheetSubHeading.setText(city + ", " + state);
 
 
                 } catch (JSONException e) {
