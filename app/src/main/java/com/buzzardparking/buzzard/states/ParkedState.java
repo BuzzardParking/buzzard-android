@@ -161,6 +161,7 @@ public class ParkedState extends UserState {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         getContext().captureMapScreen(dynamicSpot);
+                        dynamicSpot.leaveSpot();
                         getContext().goTo(AppState.OVERVIEW);
                     }
                 })
