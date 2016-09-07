@@ -338,6 +338,7 @@ public class MapActivity extends AppCompatActivity
                         .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
                         .build(this);
                 startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             } catch (GooglePlayServicesRepairableException e) {
                 // TODO: Handle the error.
             } catch (GooglePlayServicesNotAvailableException e) {

@@ -106,7 +106,7 @@
                     <ImageView
                         android:id="@+id/ivStreetView"
                         android:layout_marginTop="@dimen/mbText"
-                        android:layout_below="@id/tvBottomSheetSubheadingRight"
+                        android:layout_below="@id/tvBottomSheetSubheading"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginLeft="@dimen/imageMargin"
