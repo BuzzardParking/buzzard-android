@@ -50,8 +50,6 @@ public class ParkedState extends UserState {
 
     @Override
     public void start() {
-        getContext().user.setCurrentState(AppState.OVERVIEW);
-
         if (isFromTransition) {
             getContext().user.setCurrentState(AppState.PARKED);
             dynamicSpot.takenBy(getContext().user);

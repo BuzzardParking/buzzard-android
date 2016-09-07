@@ -49,7 +49,6 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 user.setPreferExternalNavigation(isChecked);
-                user.saveParse(null);
             }
         });
 
