@@ -21,7 +21,9 @@ import com.google.android.gms.maps.GoogleMap;
  */
 public abstract class UserState implements OnMap.Listener, OnClient.Listener,  OnPermission.Listener {
 
-    protected static final int POLLING_INTERVAL = 4000;
+    // polling every 10s
+    protected static final int POLLING_INTERVAL = 10000;
+
     private Context context;
     private PlaceManager manager;
     private CameraManager cameraManager;
