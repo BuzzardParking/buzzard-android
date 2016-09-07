@@ -11,8 +11,10 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -65,7 +67,8 @@ public class ParkedState extends UserState {
         // 1. a evaluation modal to ask user to give a thumb up/down about its parking experience
 
         getContext().prepareView();
-        getContext().tvParkingTimer.setVisibility(View.VISIBLE);
+        getContext().tvBottomSheetSubheadingRight.setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.fontH1));
+        getContext().tvBottomSheetSubheadingRight.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
 
         // Temporary marker to show the car location
         getPlaceManager().addCarParkedMarker(getContext().getMap(), dynamicSpot.getLatLng());
@@ -210,18 +213,19 @@ public class ParkedState extends UserState {
 
         // heuristic check: if the time remaining is less than 1 second, we should set the label to "time up"
         if (timeRemaining <= 1000) {
-            getContext().tvParkingTimer.setText(getContext().getString(R.string.parking_time_is_up));
+            getContext().tvBottomSheetSubheadingRight.setText(getContext().getString(R.string.parking_time_is_up));
             return;
         }
 
         timer = new CountDownTimer(timeRemaining, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                getContext().tvParkingTimer.setText(formatTime(millisUntilFinished));
+                getContext().tvBottomSheetSubheadingRight.setText(formatTime(millisUntilFinished));
             }
 
             public void onFinish() {
-                getContext().tvParkingTimer.setText(getContext().getString(R.string.parking_time_is_up));
+                getContext().tvBottomSheetSubheadingRight.setText(getContext().getString(R.string.parking_time_is_up));
+                getContext().tvBottomSheetSubheadingRight.setTextColor(ContextCompat.getColor(getContext(), R.color.alert_color));
             }
         }.start();
     }
@@ -243,7 +247,7 @@ public class ParkedState extends UserState {
             timer.cancel();
         }
 
-        getContext().tvParkingTimer.setText("");
+        getContext().tvBottomSheetSubheadingRight.setText("");
     }
 
     private void cancelAlarm() {
@@ -257,6 +261,8 @@ public class ParkedState extends UserState {
     @Override
     public void stop() {
         super.stop();
+        getContext().tvBottomSheetSubheadingRight.setTextSize(TypedValue.COMPLEX_UNIT_PX, getContext().getResources().getDimension(R.dimen.secondary_text));
+        getContext().tvBottomSheetSubheadingRight.setTextColor(ContextCompat.getColor(getContext(), R.color.secondary_text));
         getPlaceManager().removeDestinationMarker();
         stopTimer();
         cancelAlarm();

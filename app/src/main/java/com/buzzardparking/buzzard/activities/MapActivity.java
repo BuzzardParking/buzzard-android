@@ -104,7 +104,6 @@ public class MapActivity extends AppCompatActivity
     public TextView tvBottomSheetHeading;
     public TextView tvBottomSheetSubHeading;
     public TextView tvBottomSheetSubheadingRight;
-    public TextView tvParkingTimer;
     public RelativeLayout rlTopPieceContainer;
     public Button btnFindParking;
     public FloatingActionButton fabBtnSecondary;
@@ -235,7 +234,6 @@ public class MapActivity extends AppCompatActivity
         tvBottomSheetHeading = (TextView) findViewById(R.id.tvBottomSheetHeading);
         tvBottomSheetSubHeading = (TextView) findViewById(R.id.tvBottomSheetSubheading);
         tvBottomSheetSubheadingRight = (TextView) findViewById(R.id.tvBottomSheetSubheadingRight);
-        tvParkingTimer = (TextView) findViewById(R.id.tvParkingTimer);
         rlTopPieceContainer = (RelativeLayout) findViewById(R.id.rlTopPieceContainer);
         btnFindParking = (Button) findViewById(R.id.btnFindParking);
         fabBtnSecondary = (FloatingActionButton) findViewById(R.id.fabActionSecondary);
@@ -425,7 +423,6 @@ public class MapActivity extends AppCompatActivity
         this.clearBottomSheetHeadings();
         this.rlTopPieceContainer.setVisibility(View.VISIBLE);
         this.btnFindParking.setVisibility(View.GONE);
-        this.tvParkingTimer.setVisibility(View.GONE);
         this.bottomSheetManager.showFab();
         this.ivStreetView.setVisibility(View.GONE);
     }
