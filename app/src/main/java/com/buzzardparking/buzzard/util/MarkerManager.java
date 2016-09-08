@@ -70,6 +70,24 @@ public class MarkerManager {
         MarkerManager.animate(map, parkingSpotMarker, 1000);
     }
 
+    public void addParkingSpotMarkerNew(GoogleMap map, LatLng latLng) {
+        MarkerOptions opts = new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromBitmap(iconManager.getSpotIcon()));
+        parkingSpotMarker = map.addMarker(opts);
+
+        MarkerManager.animate(map, parkingSpotMarker, 1000);
+    }
+
+    public void addParkingSpotMarkerOld(GoogleMap map, LatLng latLng) {
+        MarkerOptions opts = new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromBitmap(iconManager.getSpotIcon()));
+        parkingSpotMarker = map.addMarker(opts);
+
+        MarkerManager.animate(map, parkingSpotMarker, 1000);
+    }
+
     public void removeDestinationMarker() {
         if (destinationMarker != null) {
             destinationMarker.remove();
