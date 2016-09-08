@@ -76,7 +76,7 @@ public class NavigatingState extends UserState {
         getContext().tvBottomSheetSubHeading.setText(getContext().getString(R.string.tv_navigating_subtitle));
 
         // Temporary marker to show the parking dynamicSpot location
-        getPlaceManager().addParkingSpotMarker(getContext().getMap(), dynamicSpot.getLatLng());
+        getPlaceManager().addParkingSpotMarker(getContext().getMap(), dynamicSpot);
 
         getCameraManager().moveToLocation(getContext().getMap(), dynamicSpot.getLatLng());
 
