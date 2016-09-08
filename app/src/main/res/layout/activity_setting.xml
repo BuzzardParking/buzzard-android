@@ -38,15 +38,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/tvCreatedAt"
         android:text="@string/setting_navigation"/>
+
+    <TextView
+        android:id="@+id/tvChartTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/primary_text"
+        android:text="# Of Contribution Overtime"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/swExternalNavigation"/>
+
+    <lecho.lib.hellocharts.view.LineChartView
+        android:id="@+id/chartReportedSpot"
+        android:layout_below="@+id/tvChartTitle"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/swExternalNavigation"
+        android:layout_below="@+id/chartReportedSpot"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:onClick="logout"
         android:text="@string/btn_logout"/>
 

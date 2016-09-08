@@ -92,6 +92,7 @@
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_alignParentLeft="true"
                         android:gravity="left"/>
+
                     <TextView
                         android:id="@+id/tvBottomSheetSubheadingRight"
                         android:textSize="@dimen/secondary_text"
@@ -103,10 +104,23 @@
                         android:layout_below="@+id/tvBottomSheetHeading"
                         android:layout_alignParentRight="true"
                         android:gravity="right" />
+
+                    <TextView
+                        android:id="@+id/tvBottomSheetReporter"
+                        android:layout_below="@+id/tvBottomSheetSubheading"
+                        android:textSize="@dimen/body_text"
+                        android:textColor="@color/secondary_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/mbText"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="left"/>
+
                     <ImageView
                         android:id="@+id/ivStreetView"
                         android:layout_marginTop="@dimen/mbText"
-                        android:layout_below="@id/tvBottomSheetSubheading"
+                        android:layout_below="@id/tvBottomSheetReporter"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginLeft="@dimen/imageMargin"
@@ -114,13 +128,6 @@
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:scaleType="centerCrop"
                         android:adjustViewBounds="true" />
-                    <TextView
-                        android:id="@+id/tvParkingTimer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:textSize="@dimen/fontH1"
-                        android:layout_below="@+id/tvBottomSheetSubheading"/>
                     <!--<fragment-->
                         <!--android:name="com.google.android.gms.maps.StreetViewPanoramaFragment"-->
                         <!--android:id="@+id/streetviewpanorama"-->

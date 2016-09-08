@@ -1,7 +1,6 @@
 package com.buzzardparking.buzzard.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.buzzardparking.buzzard.R;
+import com.buzzardparking.buzzard.gateways.ReverseGeocodingGateway;
 import com.buzzardparking.buzzard.models.DynamicSpot;
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -50,6 +55,8 @@ public class SpotsArrayAdapter extends ArrayAdapter<DynamicSpot> {
 
         String displayLocation = String.format("%s, %s", String.format("%.4f", spot.getLatLng().latitude), String.format("%.4f", spot.getLatLng().longitude));
         viewHolder.tvParkingSpot.setText(displayLocation);
+
+        displayAddress(spot.getLatLng(), viewHolder); // This will happen async
         viewHolder.tvParkingTime.setText(spot.getTakenAtTimestamp());
 
         if (spot.snapshot != null) {
@@ -65,5 +72,37 @@ public class SpotsArrayAdapter extends ArrayAdapter<DynamicSpot> {
         }
 
         return convertView;
+    }
+
+    private void displayAddress(LatLng latLng, final ViewHolder viewHolder) {
+        ReverseGeocodingGateway geocodingGateway = new ReverseGeocodingGateway();
+        geocodingGateway.FetchAddressInBackground(latLng, new ReverseGeocodingGateway.GetAddressCallback() {
+            @Override
+            public void done(JSONObject jsonObject) throws JSONException {
+                try {
+                    JSONArray resultsArr = jsonObject.getJSONArray("results");
+                    JSONObject first = resultsArr.getJSONObject(0);
+                    JSONArray addressComponents = first.getJSONArray("address_components");
+
+                    String streetNum = addressComponents.getJSONObject(0).getString("long_name");
+                    String streetName = addressComponents.getJSONObject(1).getString("short_name");
+                    String city = addressComponents.getJSONObject(3).getString("long_name");
+                    String state = addressComponents.getJSONObject(5).getString("short_name");
+
+                    String address = streetNum + " " + streetName;
+
+                    if ((streetName == "null") || (city == "null")) {
+                        return;
+                    }
+
+                    viewHolder.tvParkingSpot.setText(address + "., " + city + ", " + state);
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

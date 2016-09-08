@@ -100,6 +100,7 @@ public class User {
 
     public void setPreferExternalNavigation(boolean preferExternalNavigation) {
         this.preferExternalNavigation = preferExternalNavigation;
+        saveParse(null);
     }
 
     public void saveParse(SaveCallback saveCallback) {

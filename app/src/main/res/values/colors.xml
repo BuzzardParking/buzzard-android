@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#00BCD4</color>
     <color name="colorPrimaryDark">#0097A7</color>
+    <color name="olderMarkerBackground">#a5005e68</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorAccent">#FFC107</color>
     <color name="textIconColor">#FFFFFF</color>
@@ -10,6 +11,7 @@
     <color name="secondary_text">#757575</color>
     <color name="divider_color">#e4e4e4</color>
     <color name="nav_line_color">#FFC107</color>
+    <color name="alert_color">#E91E63</color>
 
     <!--Progress Bar-->
     <color name="pbBackground">#d0ffffff</color>
