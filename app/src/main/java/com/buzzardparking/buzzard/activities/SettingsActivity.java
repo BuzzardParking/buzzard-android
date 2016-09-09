@@ -2,6 +2,7 @@ package com.buzzardparking.buzzard.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -94,7 +95,7 @@ public class SettingsActivity extends AppCompatActivity {
         values.add(new PointValue(5, 80));
 
         //In most cased you can call data model methods in builder-pattern-like manner.
-        Line line = new Line(values).setColor(getColor(R.color.colorAccent)).setCubic(true);
+        Line line = new Line(values).setColor(ContextCompat.getColor(this, R.color.colorAccent)).setCubic(true);
         List<Line> lines = new ArrayList<Line>();
         lines.add(line);
 
