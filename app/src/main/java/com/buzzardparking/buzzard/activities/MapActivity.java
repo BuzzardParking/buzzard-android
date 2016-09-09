@@ -428,6 +428,7 @@ public class MapActivity extends AppCompatActivity
         this.btnFindParking.setVisibility(View.GONE);
         this.bottomSheetManager.showFab();
         this.ivStreetView.setVisibility(View.GONE);
+        getMap().getUiSettings().setMapToolbarEnabled(false);
     }
 
     public void hideProgressBar() {

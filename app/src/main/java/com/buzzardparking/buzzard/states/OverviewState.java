@@ -54,6 +54,7 @@ public class OverviewState extends UserState {
         getContext().btnFindParking.setVisibility(View.VISIBLE);
         getContext().fabBack.setVisibility(View.GONE);
         bottomSheet.hideFab();
+        getContext().getMap().getUiSettings().setMapToolbarEnabled(false);
         ///
 
         bottomSheet.expand();
