@@ -1,6 +1,5 @@
 package com.buzzardparking.buzzard.gateways;
 
-import android.location.Address;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -23,7 +22,6 @@ public class ReverseGeocodingGateway {
     }
 
     public class FetchAdressAsyncTask extends AsyncTask<Void, Void, JSONObject> {
-        private Address address;
         private String GEOCODINGKEY = "&key=AIzaSyAioPp8n-B9GiEaoIZTbTE0KwJms6_cFqI";
         private String REVERSE_GEOCODING_URL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 

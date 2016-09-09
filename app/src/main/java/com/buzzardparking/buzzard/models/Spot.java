@@ -4,6 +4,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.buzzardparking.buzzard.gateways.ReverseGeocodingGateway;
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -13,6 +14,9 @@ import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcel;
 import org.parceler.Transient;
 
@@ -38,8 +42,24 @@ public class Spot extends Model {
     @Column(name = "Timestamp")
     public String timestamp;
 
+    @Column(name = "Address")
+    public String address;
+
+    @Column(name = "City")
+    public String city;
+
+    @Column(name = "State")
+    public String state;
+
     @Transient
     public ParseObject parseSpot;
+
+    @Transient
+    private final String default_address = "User Reported Space";
+    @Transient
+    private final String default_city = "Right Here!";
+    @Transient
+    private final String default_state = "USA";
 
     public Spot(){ super();}
 
@@ -47,8 +67,54 @@ public class Spot extends Model {
         this.latitude = latLng.latitude;
         this.longitude = latLng.longitude;
         this.timestamp = formatter().print(DateTime.now());
-
         this.parseSpot = new ParseObject("StaticSpot");
+        this.address = default_address;
+        this.city = default_city;
+        this.state = default_state;
+        addAddressAsync();
+    }
+
+    public void addAddressAsync() {
+        final Spot currentSpot = this;
+        ReverseGeocodingGateway geocodingGateway = new ReverseGeocodingGateway();
+        geocodingGateway.FetchAddressInBackground(this.getLatLng(), new ReverseGeocodingGateway.GetAddressCallback() {
+
+            @Override
+            public void done(JSONObject jsonObject) throws JSONException {
+                try {
+                    JSONArray addressComponents = jsonObject.getJSONArray("results").getJSONObject(0).getJSONArray("address_components");
+
+                    String streetNum = addressComponents.getJSONObject(0).getString("long_name");
+                    String streetName = addressComponents.getJSONObject(1).getString("short_name");
+                    String city = addressComponents.getJSONObject(3).getString("long_name");
+                    String state = addressComponents.getJSONObject(5).getString("short_name");
+
+                    String address = streetNum + " " + streetName;
+
+                    currentSpot.address = address;
+                    currentSpot.city = city;
+                    currentSpot.state = state;
+
+                    if ((streetName == "null") || (streetName == null) || (streetName == "")) {
+                        currentSpot.address = default_address;
+                    }
+
+                    if ((city == "null") || (city == null) || (city == "")) {
+                        currentSpot.city = default_city;
+                        currentSpot.state = default_state;
+                    }
+
+                    parseSpot.put("address", address);
+                    parseSpot.put("city", city);
+                    parseSpot.put("state", state);
+                    parseSpot.saveInBackground();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public Spot(ParseObject parsePlace) {
@@ -56,6 +122,9 @@ public class Spot extends Model {
         this.longitude = parsePlace.getDouble("longitude");
         this.latitude = parsePlace.getDouble("latitude");
         this.timestamp = parsePlace.getString("timestamp");
+        this.address = parsePlace.getString("address");
+        this.city = parsePlace.getString("city");
+        this.state = parsePlace.getString("state");
     }
 
 
@@ -73,23 +142,12 @@ public class Spot extends Model {
         parseSpot.put("latitude", latitude);
         parseSpot.put("longitude", longitude);
         parseSpot.put("timestamp", timestamp);
+        parseSpot.put("address", address);
+        parseSpot.put("city", city);
+        parseSpot.put("state", state);
         ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
         parseSpot.put("location", point);
         parseSpot.saveInBackground(callback);
-    }
-
-    public void saveParkedSpot(String userId) {
-        parseSpot.put("userId", userId);
-        parseSpot.put("latitude", latitude);
-        parseSpot.put("longitude", longitude);
-        parseSpot.put("timestamp", timestamp);
-        ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
-        parseSpot.put("location", point);
-        parseSpot.saveInBackground();
-    }
-
-    public String getTimestampStr() {
-        return timestamp;
     }
 
     public long getAgeInMinutes() {

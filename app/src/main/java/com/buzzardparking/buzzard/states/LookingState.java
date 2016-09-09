@@ -9,7 +9,6 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.gateways.ImageGateway;
-import com.buzzardparking.buzzard.gateways.ReverseGeocodingGateway;
 import com.buzzardparking.buzzard.gateways.RouteGateway;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.DynamicSpot;
@@ -21,10 +20,6 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseGeoPoint;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -127,7 +122,6 @@ public class LookingState extends UserState
 
 
     public void showParkingSpaceDetails(DynamicSpot spot) {
-        // TODO: load google map street view as part of the details
         isDestinationDetails = true;
         getContext().tvBottomSheetHeading.setText(getContext().getResources().getString(R.string.default_address));
         getContext().tvBottomSheetSubHeading.setText("Right Here, USA");
@@ -135,7 +129,9 @@ public class LookingState extends UserState
         getContext().tvBottomSheetReporter.setText(
                 "Reported by: " + spot.getReporterFirstName() + "\nReported: " + spot.getCreatedAtTimestamp());
 
-        displayAddress(spot.getLatLng());
+
+        getContext().tvBottomSheetHeading.setText(spot.getStaticSpot().address);
+        getContext().tvBottomSheetSubHeading.setText(spot.getStaticSpot().city + ", " + spot.getStaticSpot().state);
 
         LatLng userLoc = getCameraManager().getLastLocation();
         RouteGateway.getRoute(userLoc, spot.getLatLng(), new RouteGateway.RouteGatewayListener() {
@@ -147,42 +143,6 @@ public class LookingState extends UserState
 
         displayPlaceImage(spot.getLatLng());
 
-    }
-
-    public void displayAddress(LatLng latLng) {
-        ReverseGeocodingGateway geocodingGateway = new ReverseGeocodingGateway();
-        geocodingGateway.FetchAddressInBackground(latLng, new ReverseGeocodingGateway.GetAddressCallback() {
-            @Override
-            public void done(JSONObject jsonObject) throws JSONException {
-                try {
-                    JSONArray resultsArr = jsonObject.getJSONArray("results");
-                    JSONObject first = resultsArr.getJSONObject(0);
-                    JSONArray addressComponents = first.getJSONArray("address_components");
-
-                    String streetNum = addressComponents.getJSONObject(0).getString("long_name");
-                    String streetName = addressComponents.getJSONObject(1).getString("short_name");
-                    String city = addressComponents.getJSONObject(3).getString("long_name");
-                    String state = addressComponents.getJSONObject(5).getString("short_name");
-
-                    String address = streetNum + " " + streetName;
-
-                    if (streetName == "null") {
-                        address = getContext().getResources().getString(R.string.default_address);
-                    }
-
-                    if (city == "null") {
-                        city = getContext().getResources().getString(R.string.default_city);
-                        state = "USA";
-                    }
-
-                    getContext().tvBottomSheetHeading.setText(address);
-                    getContext().tvBottomSheetSubHeading.setText(city + ", " + state);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     private void displayPlaceImage(LatLng latLng) {
@@ -198,8 +158,8 @@ public class LookingState extends UserState
 
         handler.post(loadPlacesRunnable);
 
+        // TODO: This must all close in on the closest space
         getCameraManager().moveToUserLocation();
-
 
         bottomSheet.expand();
         bottomSheet.viewRendered(new BottomSheetManager.SheetRendering() {
