@@ -8,11 +8,11 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.buzzardparking.buzzard.R;
-import com.buzzardparking.buzzard.gateways.ImageGateway;
 import com.buzzardparking.buzzard.gateways.RouteGateway;
 import com.buzzardparking.buzzard.models.AppState;
 import com.buzzardparking.buzzard.models.DynamicSpot;
 import com.buzzardparking.buzzard.models.Route;
+import com.buzzardparking.buzzard.models.Spot;
 import com.buzzardparking.buzzard.util.BottomSheetManager;
 import com.buzzardparking.buzzard.util.CameraManager;
 import com.buzzardparking.buzzard.util.PlaceManager;
@@ -146,9 +146,8 @@ public class LookingState extends UserState
     }
 
     private void displayPlaceImage(LatLng latLng) {
-        String imageUrl = ImageGateway.getPlaceImage(latLng);
         Glide.with(getContext())
-                .load(imageUrl)
+                .load(Spot.getImageUrl(latLng))
                 .into(getContext().ivStreetView);
         getContext().ivStreetView.setVisibility(View.VISIBLE);
     }
