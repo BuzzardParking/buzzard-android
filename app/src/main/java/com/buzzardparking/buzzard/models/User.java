@@ -41,6 +41,9 @@ public class User {
         return createdAt;
     }
 
+    public String getProfileImageUrl() {
+        return "https://graph.facebook.com/v2.2/" + getUserId() + "/picture";
+    }
 
     @Transient
     private static User instance;

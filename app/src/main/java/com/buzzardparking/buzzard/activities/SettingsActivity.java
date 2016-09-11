@@ -7,24 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.models.User;
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphRequestAsyncTask;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
-import com.facebook.login.widget.ProfilePictureView;
-
-import org.json.JSONObject;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
@@ -67,20 +63,13 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setProfilePic() {
-        final ProfilePictureView profilePic = (ProfilePictureView)findViewById(R.id.ivProfilePic);
-        if(user.getUserId() == null) {
-            GraphRequestAsyncTask request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                @Override
-                public void onCompleted(JSONObject user, GraphResponse response) {
-                    if (user != null) {
-                        profilePic.setProfileId(user.optString("id"));
-                    }
-                }
-            }).executeAsync();
-        } else {
-            profilePic.setProfileId(user.getUserId());
-        }
+        ImageView profilePic = (ImageView) findViewById(R.id.ivProfilePic);
 
+        Picasso.with(this)
+                .load(user.getProfileImageUrl() + "?height=120&type=normal")
+                .transform(new CropCircleTransformation())
+                .resize(96, 96)
+                .into(profilePic);
     }
 
     private void setReportedSpotChart() {

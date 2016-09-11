@@ -7,7 +7,7 @@
 
     <include layout="@layout/toolbar"/>
 
-    <com.facebook.login.widget.ProfilePictureView
+    <ImageView
         android:id="@+id/ivProfilePic"
         android:layout_width="96dp"
         android:layout_height="96dp"
@@ -16,46 +16,47 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"/>
 
+
     <TextView
         android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfilePic"
         android:layout_centerHorizontal="true"
-        tools:text="User Name"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="User Name"/>
 
     <TextView
         android:id="@+id/tvCreatedAt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Buzzing since September 1, 2016"
+        android:layout_below="@+id/tvUserName"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/tvUserName"/>
+        tools:text="Buzzing since September 1, 2016"/>
 
     <Switch
         android:id="@+id/swExternalNavigation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/tvCreatedAt"
+        android:layout_centerHorizontal="true"
         android:text="@string/setting_navigation"/>
 
     <TextView
         android:id="@+id/tvChartTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="@dimen/primary_text"
-        android:text="# Of Contribution Overtime"
+        android:layout_below="@+id/swExternalNavigation"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/swExternalNavigation"/>
+        android:layout_marginTop="20dp"
+        android:text="# Of Contribution Overtime"
+        android:textSize="@dimen/primary_text"/>
 
     <lecho.lib.hellocharts.view.LineChartView
         android:id="@+id/chartReportedSpot"
-        android:layout_below="@+id/tvChartTitle"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_below="@+id/tvChartTitle"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         />
