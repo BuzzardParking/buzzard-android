@@ -46,15 +46,23 @@ public class LoginActivity extends FragmentActivity {
             loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
-                    ProfileTracker profileTracker = new ProfileTracker() {
-                        @Override
-                        protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                            this.stopTracking();
-                            Profile.setCurrentProfile(currentProfile);
-                        }
-                    };
-                    profileTracker.startTracking();
-                    startMapActivity();
+                    if (Profile.getCurrentProfile() == null) {
+                        ProfileTracker profileTracker = new ProfileTracker() {
+
+                            @Override
+                            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                                this.stopTracking();
+                                Profile.setCurrentProfile(currentProfile);
+
+                                // Case: When facebook is not logged in the users app and the user tries to login to buzzard
+                                if (Profile.getCurrentProfile() != null) {
+                                    startMapActivity();
+                                }
+                            }
+                        };
+                    } else {
+                        startMapActivity();
+                    }
                 }
 
                 @Override
@@ -64,6 +72,7 @@ public class LoginActivity extends FragmentActivity {
 
                 @Override
                 public void onError(FacebookException error) {
+                    Log.v("DEBUG", error.toString());
                 }
             });
         }
@@ -94,7 +103,8 @@ public class LoginActivity extends FragmentActivity {
 
     private boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        return accessToken != null;
+        Profile profile = Profile.getCurrentProfile();
+        return accessToken != null && profile != null;
     }
 
     private void startMapActivity() {
