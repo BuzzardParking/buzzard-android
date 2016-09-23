@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.buzzardparking.buzzard.R;
 import com.buzzardparking.buzzard.interfaces.UIStateMachine;
@@ -71,6 +72,7 @@ import com.parse.SaveCallback;
 import org.parceler.Parcels;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import cn.refactor.smileyloadingview.lib.SmileyLoadingView;
 
@@ -151,7 +153,11 @@ public class MapActivity extends AppCompatActivity
         googleClient = new Client();
 
         // initial state fetched from the server
-        goTo(user.getCurrentState());
+        if ( isOnline() ) {
+            goTo(user.getCurrentState());
+        } else {
+            Toast.makeText(getApplicationContext(), "No internet connection.", Toast.LENGTH_LONG).show();
+        }
 
         // initialize the map system and view
         FragmentManager fm = getSupportFragmentManager();
@@ -266,8 +272,11 @@ public class MapActivity extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putParcelable("dynamicSpot", Parcels.wrap(currentState.getDynamicSpot()));
-        super.onSaveInstanceState(savedInstanceState);
+        if (isOnline()
+                && currentState != null) {
+            savedInstanceState.putParcelable("dynamicSpot", Parcels.wrap(currentState.getDynamicSpot()));
+            super.onSaveInstanceState(savedInstanceState);
+        }
     }
 
     public GoogleMap getMap() {
@@ -475,5 +484,16 @@ public class MapActivity extends AppCompatActivity
 
     public BottomSheetManager getBottomSheetManager() {
         return bottomSheetManager;
+    }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+        return false;
     }
 }

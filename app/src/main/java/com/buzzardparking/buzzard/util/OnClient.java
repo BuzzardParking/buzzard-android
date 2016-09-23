@@ -27,7 +27,9 @@ public class OnClient implements GoogleApiClient.ConnectionCallbacks {
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(MapActivity.TAG, "Client connected!");
         for (Listener listener : mListeners) {
-            listener.onClient(mGoogleApiClient);
+            if (listener != null) { // Case: no internet
+                listener.onClient(mGoogleApiClient);
+            }
         }
     }
 

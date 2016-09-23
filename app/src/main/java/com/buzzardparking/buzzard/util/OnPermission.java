@@ -98,7 +98,9 @@ public class OnPermission extends Fragment {
     private void notifyListeners(Request request, Result result) {
         Log.d(MapActivity.TAG, "Location permission request " + request.mRequestCode + " " + result);
         for (Listener listener : request.mListeners) {
-            listener.onResult(request.mRequestCode, result);
+            if (listener != null) { // Case: When the internet is shutdown
+                listener.onResult(request.mRequestCode, result);
+            }
         }
     }
 

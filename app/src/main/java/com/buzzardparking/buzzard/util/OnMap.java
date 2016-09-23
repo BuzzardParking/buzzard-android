@@ -25,7 +25,9 @@ public class OnMap implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         for (Listener listener : mListeners) {
-            listener.onMap(googleMap);
+            if (listener != null) { // Case: No internet
+                listener.onMap(googleMap);
+            }
         }
     }
 
