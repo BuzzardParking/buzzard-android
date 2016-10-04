@@ -38,6 +38,15 @@ Bonus:
 * [ ] Reroute a user based on parking availability or if a their spot gets taken
 * [ ] Dispatch selected spaces to each users so not all users receive all spaces
 
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+<img src='http://i.giphy.com/l0HlDV9ILQpWweZz2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+
+http://gph.is/2duQmCu
+
 ## Wireframes
 ![A user opens the app and sees open spots in their vicinity.](https://s4.postimg.org/8e2o52twt/OpeningScreen.png)
 ![A user can search for parking in an area they are going and be directed to a spot through an external app.](https://s4.postimg.org/7r3rfjx0t/Search+Screen.png)
