@@ -76,7 +76,7 @@ public class OverlayService extends Service {
 
     private void setupIconImageView() {
         mIconImageView = new ImageView(mApplication);
-        mIconImageView.setImageResource(R.mipmap.ic_buzzard);
+        mIconImageView.setImageResource(R.mipmap.ic_buzzard_shadow);
         mIconImageView.setVisibility(View.GONE);
         mIconImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
