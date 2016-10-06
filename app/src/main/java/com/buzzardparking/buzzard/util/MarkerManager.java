@@ -73,7 +73,7 @@ public class MarkerManager {
     public void addParkingSpotMarkerNew(GoogleMap map, LatLng latLng) {
         MarkerOptions opts = new MarkerOptions()
                 .position(latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(iconManager.getSpotIcon()));
+                .icon(BitmapDescriptorFactory.fromBitmap(iconManager.getDecoratedSpotIcon()));
         parkingSpotMarker = map.addMarker(opts);
 
         MarkerManager.animate(map, parkingSpotMarker, 1000);

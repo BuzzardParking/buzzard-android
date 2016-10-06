@@ -52,10 +52,6 @@ public class PlaceManager implements
         mMarkerManager.addCarParkedMarker(map, latLng);
     }
 
-//    public void addParkingSpotMarker(GoogleMap map, LatLng latLng) {
-//        mMarkerManager.addParkingSpotMarker(map, latLng);
-//    }
-
     public void addParkingSpotMarker(GoogleMap map, DynamicSpot spot) {
         if (spot.isNew()) {
             mMarkerManager.addParkingSpotMarkerNew(map, spot.getLatLng());
