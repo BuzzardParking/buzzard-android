@@ -140,7 +140,13 @@ public class ParkedState extends UserState {
                         // TODO: temporarily replay the takenBy here so that we can reset
                         // the takenAt to now, and start counting from now
                         dynamicSpot.takenBy(getContext().user);
-                        dynamicSpot.setDuration(Integer.parseInt(String.valueOf(input)));
+                        int time;
+                        try {
+                            time = Integer.parseInt(String.valueOf(input));
+                        } catch (NumberFormatException e) {
+                            time = 60;
+                        }
+                        dynamicSpot.setDuration(time);
                         startAlarmService(dynamicSpot.durationInMill);
                         startTimer(dynamicSpot.timeRemaining());
                     }
