@@ -2,6 +2,14 @@
 
 **Buzzard** is here to help tech-savvy drivers secure an on street parking space immediately. Instead of searching high and low, buzzard user's are navigated directly to an open space.
 
+Upon opening the app, a new user will see the available spaces in their vicinity. When they tap the big blue button, they are dispatched a few of the freshest parking spaces to choose from. They can either select one of these spaces to be navigated to or they can press the navigate button and be navigated to the closest one.
+
+For convenience, users can choose between being navigated in the app or externally by google maps.
+
+Upon arriving at a parking spot, a buzzard driver can set a timer to be reminded of parking restrictions. The app will send a push notification before the time is up.
+
+Buzzard provides a seamless solution for finding parking spaces, navigating to them and avoiding tickets along the way. Join us!
+
 ## User Stories
 
 The following functionality is completed:
